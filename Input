@@ -16,5 +16,5 @@ else{
 }
 
 int thisisfunction(int value){
-
+    return 42;
 }
