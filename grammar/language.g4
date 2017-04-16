@@ -30,8 +30,8 @@ statements
 
 statement
 	: declaration
-	| expression
 	| compoundstatement
+	| expression
 	| printstatement
 	;
 
@@ -47,8 +47,8 @@ compoundstatement
 	;
 
 selection
-	: 'if' '(' expression ')'  '{' statements* '}'
-	| 'if' '(' expression ')'  '{' statements* '}' 'else' '{' declarations* statements* '}'
+	: 'if' '(' expression ')'  '{' declarations* statements* '}'
+	| 'if' '(' expression ')'  '{' declarations* statements* '}' 'else' '{' declarations* statements* '}'
 	;
 
 iteration
