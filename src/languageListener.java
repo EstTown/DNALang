@@ -1,4 +1,4 @@
-// Generated from language.g4 by ANTLR 4.7
+// Generated from /Users/frederik/Desktop/P4Project/grammar/language.g4 by ANTLR 4.7
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
