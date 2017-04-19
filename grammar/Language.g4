@@ -1,4 +1,4 @@
-grammar language;
+grammar Language;
 
 prog
 	: declarations* statements* functions*

@@ -5,33 +5,33 @@ import Node.*;
 import org.antlr.runtime.tree.*;
 
 
-public class BuildAstVisitor extends languageBaseVisitor<ExpressionNode>{
+public class BuildAstVisitor extends LanguageBaseVisitor<ExpressionNode>{
 
-    public ExpressionNode VisitAssignment(languageParser.AssignmentContext context){
+    public ExpressionNode VisitAssignment(LanguageParser.AssignmentContext context){
         return  visitAssignment(context);
     }
 
-    public ExpressionNode VisitArrayType(languageParser.ArraytypeContext context){
+    public ExpressionNode VisitArrayType(LanguageParser.ArraytypeContext context){
         return visitArraytype(context);
     }
 
-    public ExpressionNode VisitCompoundStatement(languageParser.CompoundstatementContext context){
+    public ExpressionNode VisitCompoundStatement(LanguageParser.CompoundstatementContext context){
         return visitCompoundstatement(context);
     }
 
-    public ExpressionNode VisitDeclaration(languageParser.DeclarationContext context){
+    public ExpressionNode VisitDeclaration(LanguageParser.DeclarationContext context){
         return visitDeclaration(context);
     }
 
-    public ExpressionNode VisitDeclarations(languageParser.DeclarationsContext context){
+    public ExpressionNode VisitDeclarations(LanguageParser.DeclarationsContext context){
         return visitDeclarations(context);
     }
 
-    public ExpressionNode VisitExpression(languageParser.ExpressionContext context){
+    public ExpressionNode VisitExpression(LanguageParser.ExpressionContext context){
         return visitExpression(context);
     }
 
-    public ExpressionNode VisitFunction(languageParser.FunctionContext context){
+    public ExpressionNode VisitFunction(LanguageParser.FunctionContext context){
         return visitFunction(context);
     }
 

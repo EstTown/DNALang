@@ -22,11 +22,11 @@ public class Main
 
             ANTLRInputStream input = new ANTLRInputStream(stream);
 
-            languageLexer lexer = new languageLexer(input);
+            LanguageLexer lexer = new LanguageLexer(input);
 
             CommonTokenStream tokens = new CommonTokenStream(lexer);
 
-            languageParser parser = new languageParser(tokens);
+            LanguageParser parser = new LanguageParser(tokens);
 
             ParseTree tree = parser.prog();
 
