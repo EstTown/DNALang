@@ -19,21 +19,4 @@ public class BuildAstVisitor extends LanguageBaseVisitor<ExpressionNode>{
         return visitCompoundstatement(context);
     }
 
-    public ExpressionNode VisitDeclaration(LanguageParser.DeclarationContext context){
-        return visitDeclaration(context);
-    }
-
-    public ExpressionNode VisitDeclarations(LanguageParser.DeclarationsContext context){
-        return visitDeclarations(context);
-    }
-
-    public ExpressionNode VisitExpression(LanguageParser.ExpressionContext context){
-        return visitExpression(context);
-    }
-
-    public ExpressionNode VisitFunction(LanguageParser.FunctionContext context){
-        return visitFunction(context);
-    }
-
-
 }

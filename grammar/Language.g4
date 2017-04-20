@@ -9,11 +9,9 @@ declarations
 	;
 
 declaration
-	: TYPE assignment
-	| TYPE identifier
-	| arraytype identifier
-	| arraytype assignment
-	| assignment
+	: (TYPE | arraytype) assignment     #dclAssign
+	| (TYPE | arraytype) identifier     #dcl
+	| assignment      +                  #assign
 	;
 
 arraytype
@@ -21,7 +19,7 @@ arraytype
 	;
 
 identifier
-	: Word
+	: Word                              #id
 	;
 
 statements
@@ -35,10 +33,6 @@ statement
 	| printstatement
 	;
 
-//boolexpression
-//	: term (operator term)*
-//	| term
-//	;
 
 compoundstatement
 	: iteration
@@ -47,49 +41,36 @@ compoundstatement
 	;
 
 selection
-	: 'if' '(' expression ')'  '{' declarations* statements* '}'
-	| 'if' '(' expression ')'  '{' declarations* statements* '}' 'else' '{' declarations* statements* '}'
+	: 'if' '(' expression ')'  '{' declarations* statements* '}'                                            #if
+	| 'if' '(' expression ')'  '{' declarations* statements* '}' 'else' '{' declarations* statements* '}'   #ifelse
 	;
 
 iteration
-	: 'while' '(' expression ')' '{' statements* '}'
-	| 'for' '(' assignment ';' expression ';' expression ')' '{' statements* '}'
+	: 'while' '(' expression ')' '{' statements* '}'                                #while
+	| 'for' '(' assignment ';' expression ';' expression ')' '{' statements* '}'    #for
 	;
 
 functioncall
-	: identifier '(' (identifier | expression) (',' (identifier | expression))* ')'
-	// identifier '(' TYPE identifier (',' TYPE identifier)* ')'
-	//| identifier '(' 'void' identifier (',' TYPE identifier)* ')'
-	//| identifier '(' 'void' identifier (',' expression)* ')'
+	: identifier '(' (identifier | expression) (',' (identifier | expression))* ')' #funcCall
 	;
-
-//functionparams
-//	: expression (',' expression)
-//	;
 
 functions
 	: function
 	;
 
 function
-	: TYPE identifier '(' (TYPE identifier)* ')' '{' declarations* statements* '}' compoundstatement*
-	| 'void' identifier '(' (TYPE identifier)* ')' '{' declarations* statements* '}' compoundstatement*
+	: TYPE identifier '(' (TYPE identifier)* ')' '{' declarations* statements* '}' compoundstatement*   #func
+	| 'void' identifier '(' (TYPE identifier)* ')' '{' declarations* statements* '}' compoundstatement* #voidfunc
 	;
 
 assignment
 	: identifier '=' expression
 	;
 
-/*postfix
-	: INT '++'
-	| INT '--'
-	;
-*/
-
 expression
-	: term (operator expression)
-	| term
-	| '(' expression ')'
+	: term (operator expression)    #termExp
+	| term                          #singleTerm
+	| '(' expression ')'            #parensExp
 	;
 
 term
@@ -104,36 +85,17 @@ term
 	;
 
 jump
-	: 'break' ';'
-	| 'return' expression ';'
+	: 'break' ';'                   #break
+	| 'return' expression ';'       #return
 	;
 
 printstatement
-	: 'Print' '(' identifier ')'
+	: 'Print' '(' identifier ')'    #print
 	;
 
-/*
-logicaloperator
-	: EQEQ
-	| LT
-	| GT
-	| LTEQ
-	| GTEQ
-	| AND
-	| OR
-	;
-
-arithmeticoperator
-	: PLUS
-	| MINUS
-	| MUL
-	| DIV
-	| MOD
-	;
-*/
 operator
-	: PLUS
-	| MINUS
+	: ADD
+	| SUB
 	| MUL
 	| DIV
 	| MOD
@@ -276,11 +238,11 @@ GTEQ    : '>=';
 UNDERSCORE : '_' ;
 BANG    : '!' ;
 AND     : '&' ;
-MINUS   : '-' ;
+SUB     : '-' ;
 EQUAL   : '=' ;
 EQEQ	: '==';
 OR      : '|' ;
 DIV     : '/' ;
-PLUS    : '+' ;
+ADD     : '+' ;
 MUL     : '*' ;
 MOD		: '%' ;
