@@ -2,7 +2,7 @@
  * Created by frederik on 18/04/2017.
  */
 import Node.*;
-import Generated.*;
+//import Generated.*;
 import org.antlr.runtime.tree.*;
 
 
