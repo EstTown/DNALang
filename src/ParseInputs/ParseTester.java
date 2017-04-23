@@ -37,9 +37,6 @@ public class ParseTester
 
                 ANTLRInputStream input = new ANTLRInputStream(stream);
 
-                //This will display the parsetree in a window, when compiled
-                ParseTreeGUI.Show(input);
-
                 LanguageLexer lexer = new LanguageLexer(input);
 
                 CommonTokenStream tokens = new CommonTokenStream(lexer);
