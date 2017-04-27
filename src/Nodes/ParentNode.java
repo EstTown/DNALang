@@ -13,8 +13,25 @@ public class ParentNode extends Node{
         this.name = name;
     }
 
-    public Node leftmostChild;
+    private ParentNode leftmostChild;
+    private LeafNode leftMostLeaf;
 
+    public Node getLeftMostChild(){
+        if (this.parentNode != null)
+            return this.parentNode;
+        else
+            return this.leftMostLeaf;
+    }
+
+    public void setLeftMostChild(ParentNode node){
+        this.leftmostChild = node;
+        this.leftMostLeaf = null;
+    }
+
+    public void setLeftmostChild(LeafNode node){
+        this.leftMostLeaf = node;
+        this.leftmostChild = null;
+    }
 
 
     //Call to add a child - this allows for an unlimited number of children
@@ -22,16 +39,32 @@ public class ParentNode extends Node{
          return recRightSiblingTraversal(this, nodeTobeAdded);
     }
 
+    public Node AddSibling(Node nodeToBeAdded){
+        return recRightSiblingTraversal(this.parentNode, nodeToBeAdded);
+    }
+
     //We're adding a parentnode
     private Node recRightSiblingTraversal (ParentNode parent, Node nodeToBeAdded){
         //If this is node has no children, just add it
-        if (this.leftmostChild == null){
-            this.leftmostChild = nodeToBeAdded;
+        if (this.leftmostChild == null && this.leftMostLeaf == null){
+            if (nodeToBeAdded instanceof LeafNode){
+                this.leftMostLeaf = LeafNode.class.cast(nodeToBeAdded);
+            }
+            else {
+                this.leftmostChild = ParentNode.class.cast(nodeToBeAdded);
+            }
             return this.leftmostChild;
         }
         //If a right sibling doesn't exist, add it!
         else if (parent.leftmostChild.rightSibling == null){
-            parent.leftmostChild.rightSibling = nodeToBeAdded;
+            if (nodeToBeAdded instanceof LeafNode){
+                parent.leftmostChild.rightSibling = LeafNode.class.cast(nodeToBeAdded);
+            }
+            else {
+                parent.leftmostChild.rightSibling = ParentNode.class.cast(nodeToBeAdded);
+            }
+            parent.leftmostChild.rightSibling.mostLeftSibling = this.leftmostChild;
+            //System.out.println(parent.leftmostChild.rightSibling.mostLeftSibling.name);
             return parent.leftmostChild.rightSibling;
         }
         //If all else fails, recursively call the next right sibling.
@@ -44,33 +77,15 @@ public class ParentNode extends Node{
     private Node recNextRightSibling(Node node, Node nodeToBeAdded){
         if (node.rightSibling == null){
             node.rightSibling = nodeToBeAdded;
+            if (this.leftmostChild != null)
+                node.rightSibling.mostLeftSibling = this.leftmostChild;
+            else
+                node.rightSibling.mostLeftSibling = this.leftMostLeaf;
             return node.rightSibling;
         }
         else{
             return recNextRightSibling(node.rightSibling, nodeToBeAdded);
         }
     }
-/*
-    //Printing from this node, and down
-    public void PrintTree(){
-        System.out.println(this.name);
 
-        System.out.println("Children:");
-        recTreeTraversalPrint(this);
-    }
-
-    private void recTreeTraversalPrint(LeafNode node){
-        if (node.rightSibling != null){
-            System.out.println(node.rightSibling.name);
-            recTreeTraversalPrint(node.rightSibling);
-        }
-    }
-
-    private void recTreeTraversalPrint(Node node){
-        if (node.rightSibling != null){
-            System.out.println(node.rightSibling.name);
-            recTreeTraversalPrint(node.rightSibling);
-        }
-    }
-    */
 }

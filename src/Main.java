@@ -38,29 +38,18 @@ public class Main
             //builder.AST.PrintTree();
 
             System.out.println(builder.AST.name);
+            builder.AST.AddChild(new LeafNode("leaf", 452));
+            builder.AST.getLeftMostChild().AddSibling(new LeafNode("dsjfsdofsd", 7845));
 
-            builder.AST.AddChild(new ParentNode("child1"));
-            builder.AST.AddChild(new LeafNode("leaf1", 7));
-            System.out.println(builder.AST.leftmostChild.getClass());
-            System.out.println(builder.AST.leftmostChild.rightSibling.getClass());
+            System.out.println(builder.AST.getLeftMostChild().rightSibling.name);
+            /*builder.AST.leftMostLeaf.AddSibling(new LeafNode("leafnode", 3424));
+            builder.AST.leftMostLeaf.rightSibling.AddSibling(new ParentNode("leafnodesibling"));
+
+            System.out.println(builder.AST.leftMostLeaf.rightSibling.rightSibling.name);
+            System.out.println(builder.AST.leftMostLeaf);
+            */
 
 
-
-            /*builder.AST.leftmostChild.
-            builder.AST.leftmostChild.leftmostChild.AddChild(new Node("leaf1", 7));
-
-            builder.AST.AddChild(new Node("sibling of child1"));
-
-            System.out.println(builder.AST.leftmostChild.name);
-            System.out.println(builder.AST.leftmostChild.leftmostChild.name);
-            System.out.println(builder.AST.leftmostChild.leftmostChild.leftmostChild.name + " " + builder.AST.leftmostChild.leftmostChild.leftmostChild.content);
-            System.out.println(builder.AST.leftmostChild.rightSibling.name);
-
-            //Note to SELF!
-            //This shit works!
-            //BUT! It's possibly to add a child to a leaf, and parents can contain content
-            //This needs to be fixed somehow
-*/
         }
         catch (Exception parser)
         {
