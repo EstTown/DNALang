@@ -21,7 +21,7 @@ public class ParseTreeGUI {
     {
         try
         {
-            InputStream stream = new FileInputStream("InputFiles/Input1");
+            InputStream stream = new FileInputStream("InputFiles/Input3");
 
             ANTLRInputStream input = new ANTLRInputStream(stream);
             LanguageLexer lexer = new LanguageLexer(input);
