@@ -43,12 +43,11 @@ public class ParseTester
 
                 LanguageParser parser = new LanguageParser(tokens);
 
+                //stackoverflow guide, uses "parser.compileUnit();", but that one is the same as "parser.prog();" in our case
                 ParseTree tree = parser.prog();
 
-                System.out.print(tree.toStringTree(parser)); //print tree as text
-                System.out.print("\n");
 
-
+                System.out.println(tree.toStringTree(parser)); //print tree as text
             }
             catch (Exception parser)
             {

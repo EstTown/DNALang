@@ -31,6 +31,7 @@ public class ParseTreeGUI {
             List<String> ruleNames = new ArrayList<String>(Arrays.asList(LanguageParser.ruleNames));
             TreeViewer view = new TreeViewer(ruleNames, tree);
             view.open();
+
         }
         catch(IOException stream){
             System.out.println("Something failed\n");

@@ -36,9 +36,7 @@ public class Main
             builder.visit(tree);
             //builder.AST.PrintTree();
 
-
             System.out.println(builder.AST.name);
-
 
             builder.AST.AddChild(new Node("child1"));
             builder.AST.leftmostChild.AddChild(new Node("child1child"));

@@ -1,6 +1,7 @@
 import Generated.*;
 import Nodes.*;
 
+//this class is supposed to build the AST, so that we can use it in the remaining phases
 
 public class AST {
 
