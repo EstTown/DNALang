@@ -21,6 +21,15 @@ public class Node{
         return LeafNode.class.cast(recNextRightSibling(this, nodeToBeAdded));
     }
 
+    public ParentNode castToParent(){
+        return ((ParentNode) this);
+    }
+
+    public LeafNode castToLeaf(){
+        return ((LeafNode) this);
+    }
+
+
     private Node recNextRightSibling(Node node, Node nodeToBeAdded){
         if (node.rightSibling == null){
             node.rightSibling = nodeToBeAdded;

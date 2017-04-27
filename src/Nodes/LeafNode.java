@@ -16,7 +16,4 @@ public class LeafNode extends Node{
     public Object content;
 
 
-
-
-
 }

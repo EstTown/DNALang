@@ -37,17 +37,15 @@ public class Main
             builder.visit(tree);
             //builder.AST.PrintTree();
 
-            System.out.println(builder.AST.name);
-            builder.AST.AddChild(new LeafNode("leaf", 452));
-            builder.AST.getLeftMostChild().AddSibling(new LeafNode("dsjfsdofsd", 7845));
+            //System.out.println(builder.AST.name);
+            builder.AST.AddChild(new LeafNode("leaf1", 452));
+            builder.AST.getLeftMostChild().AddSibling(new ParentNode("parent1"));
+            builder.AST.getLeftMostChild().rightSibling.castToParent().AddChild(new LeafNode("leaf2", 3423));
 
-            System.out.println(builder.AST.getLeftMostChild().rightSibling.name);
-            /*builder.AST.leftMostLeaf.AddSibling(new LeafNode("leafnode", 3424));
-            builder.AST.leftMostLeaf.rightSibling.AddSibling(new ParentNode("leafnodesibling"));
+            //System.out.println(builder.AST.getLeftMostChild().rightSibling.castToParent().getLeftMostChild().name);
+            builder.AST.PrintTree();
 
-            System.out.println(builder.AST.leftMostLeaf.rightSibling.rightSibling.name);
-            System.out.println(builder.AST.leftMostLeaf);
-            */
+            //Adding a child, works wit leaf, but not with parent. Dunno why.... work in progress
 
 
         }
