@@ -14,7 +14,7 @@ public class AST {
         public Void visitProg(LanguageParser.ProgContext ctx) {
 
             //Congratz! We have a root node!
-            this.AST = new Node("Root");
+            this.AST = new ParentNode("Root");
 
             return null;
         }

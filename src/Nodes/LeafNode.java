@@ -6,7 +6,7 @@ and a parent. Although, this node is the node
 containing the actual semantic information
 (Strings, ints, etc...)
  */
-public class LeafNode{
+public class LeafNode extends Node{
 
     public LeafNode(){};
     public LeafNode(String name, Object content){
@@ -14,9 +14,5 @@ public class LeafNode{
         this.name = name;
     }
     public Object content;
-    public String name;
-    public Node rightSibling;
-    public Node mostLeftSibling;
-
 
 }

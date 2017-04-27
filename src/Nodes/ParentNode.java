@@ -5,10 +5,13 @@ This is a typical node, with two children, without its
 own content. Content will be contained within leafnodes.
  */
 
-public class ParentNode extends LeafNode{
+public class ParentNode extends Node{
 
 
     public ParentNode(){};
+    public ParentNode(String name){
+        this.name = name;
+    }
 
     public Node leftmostChild;
 
@@ -38,7 +41,7 @@ public class ParentNode extends LeafNode{
     }
 
 
-    private Node recNextRightSibling(ParentNode node, Node nodeToBeAdded){
+    private Node recNextRightSibling(Node node, Node nodeToBeAdded){
         if (node.rightSibling == null){
             node.rightSibling = nodeToBeAdded;
             return node.rightSibling;

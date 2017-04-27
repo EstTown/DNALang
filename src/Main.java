@@ -6,6 +6,7 @@ import Generated.LanguageLexer;
 import Generated.LanguageParser;
 import Nodes.LeafNode;
 import Nodes.Node;
+import Nodes.ParentNode;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.*;
@@ -38,8 +39,14 @@ public class Main
 
             System.out.println(builder.AST.name);
 
-            builder.AST.AddChild(new Node("child1"));
-            builder.AST.leftmostChild.AddChild(new Node("child1child"));
+            builder.AST.AddChild(new ParentNode("child1"));
+            builder.AST.AddChild(new LeafNode("leaf1", 7));
+            System.out.println(builder.AST.leftmostChild.getClass());
+            System.out.println(builder.AST.leftmostChild.rightSibling.getClass());
+
+
+
+            /*builder.AST.leftmostChild.
             builder.AST.leftmostChild.leftmostChild.AddChild(new Node("leaf1", 7));
 
             builder.AST.AddChild(new Node("sibling of child1"));
@@ -53,7 +60,7 @@ public class Main
             //This shit works!
             //BUT! It's possibly to add a child to a leaf, and parents can contain content
             //This needs to be fixed somehow
-
+*/
         }
         catch (Exception parser)
         {
