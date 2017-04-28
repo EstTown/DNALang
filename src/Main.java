@@ -18,13 +18,19 @@ public class Main
 {
     public static void main(String[] args)
     {
-        ParseTester parseTester = new ParseTester();
-        parseTester.ParseAllInputs(2);
+
+        //ParseTester parseTester = new ParseTester();
+
+        //parseTester.ParseAllInputs(3);
+
+        //parseTester.ParseSpecificInput(3);
+
 
         ParseTreeGUI ptg = new ParseTreeGUI();
-        //ptg.Show();
+        ptg.Show();
 
 
+        /*
         try {
             InputStream stream = new FileInputStream("InputFiles/Input3");
             ANTLRInputStream input = new ANTLRInputStream(stream);
@@ -53,8 +59,6 @@ public class Main
         {
             System.out.print("Other stuff failed!");
         }
-
-
-
+        */
     }
 }

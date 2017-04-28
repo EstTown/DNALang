@@ -1,4 +1,5 @@
 package Nodes;
+import Interfaces.*;
 /*
 This node is the outter-most node, meaning
 it doesn't have any children, only siblings

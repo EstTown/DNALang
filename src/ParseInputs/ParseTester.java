@@ -1,5 +1,5 @@
 package ParseInputs;
-
+import AST.*;
 import Generated.*;
 
 import java.io.*;
@@ -46,13 +46,44 @@ public class ParseTester
                 //stackoverflow guide, uses "parser.compileUnit();", but that one is the same as "parser.prog();" in our case
                 ParseTree tree = parser.prog();
 
+                tree.accept(new ASTBuilder());
 
                 System.out.println(tree.toStringTree(parser)); //print tree as text
+                System.out.println(); // extra line
             }
             catch (Exception parser)
             {
                 System.out.print("Other stuff failed!");
             }
+        }
+    }
+    public void ParseSpecificInput(int i)
+    {
+        try
+        {
+            String str = "InputFiles/Input" + Integer.toString(i);
+            //This would not work, if "InputFiles" was a "package". It has to be a folder
+            InputStream stream = new FileInputStream(str);
+            ANTLRInputStream input = new ANTLRInputStream(stream);
+
+            LanguageLexer lexer = new LanguageLexer(input);
+
+            CommonTokenStream tokens = new CommonTokenStream(lexer);
+
+            LanguageParser parser = new LanguageParser(tokens);
+
+            //stackoverflow guide, uses "parser.compileUnit();", but that one is the same as "parser.prog();" in our case
+            ParseTree tree = parser.prog();
+
+            //tree.accept(new ASTBuilder());
+
+            System.out.println(tree.getText());
+
+            System.out.println(tree.toStringTree(parser)); //print tree as text
+        }
+        catch (Exception parser)
+        {
+            System.out.print("Other stuff failed!");
         }
     }
 }
