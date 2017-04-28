@@ -27,8 +27,8 @@ public class Main
         parseTester.ParseAllInputs(2);
 
         ParseTreeGUI ptg = new ParseTreeGUI();
-        //ptg.Show();
-
+        ptg.Show();
+        /*
         try {
             InputStream stream = new FileInputStream("InputFiles/Input3");
             ANTLRInputStream input = new ANTLRInputStream(stream);
@@ -46,20 +46,21 @@ public class Main
             ast.AddChild(new AssignCommandNode());
 
             ast.PrintTree();
-/*
+
             builder.AST.AddChild(new ParentNode("A"));
             builder.AST.AddChild(new ParentNode("B"));
             builder.AST.getLeftMostChild().rightSibling.castToParent().AddChild(new ParentNode("Martin"));
             builder.AST.getLeftMostChild().rightSibling.castToParent().getLeftMostChild().AddSibling(new LeafNode("Anders", 4543));
 
             builder.AST.PrintTree();
-*/
+
 
         }
         catch (Exception parser)
         {
             System.out.print("Other stuff failed!");
         }
+        */
 
 
 
