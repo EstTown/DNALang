@@ -11,7 +11,7 @@ import ASTNodes.TerminalNodes.IntegerLiteralNode;
 import ASTNodes.TerminalNodes.OperatorNode;
 import Interfaces.ASTVisitor;
 
-public class Visitor implements ASTVisitor
+public abstract class Visitor implements ASTVisitor
 {
 
     @Override

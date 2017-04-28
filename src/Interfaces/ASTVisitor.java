@@ -8,6 +8,8 @@ import ASTNodes.ExpressionNodes.*;
 import ASTNodes.ProgNode;
 import ASTNodes.TerminalNodes.*;
 
+//not used right now
+
 public interface ASTVisitor
 {
     //needs a visit method for each type of node
