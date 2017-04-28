@@ -1,6 +1,6 @@
 package ASTNodes.TerminalNodes;
 
-public class IntegerLiteralNode
+public class IntegerLiteralNode extends TerminalNode
 {
 
 }

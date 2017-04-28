@@ -1,5 +1,5 @@
 package ASTNodes.CommandNodes;
 
-public class PrintCommandNode
+public class PrintCommandNode extends CommandNode
 {
 }

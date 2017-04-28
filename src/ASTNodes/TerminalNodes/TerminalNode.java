@@ -1,6 +1,8 @@
 package ASTNodes.TerminalNodes;
 
-public abstract class TerminalNode
+import ASTNodes.BaseNode;
+
+public abstract class TerminalNode extends BaseNode
 {
     String spelling;
 }

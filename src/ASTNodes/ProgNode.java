@@ -1,9 +1,8 @@
 package ASTNodes;
 
 import Interfaces.ASTVisitor;
-import Interfaces.NodeInterface;
 
-public class ProgNode implements NodeInterface
+public class ProgNode extends BaseNode
 {
-    public void Accept(ASTVisitor visitor){visitor.Visit(this);}
+
 }

@@ -1,5 +1,5 @@
 package ASTNodes.CommandNodes;
 
-public class BreakCommandNode
+public class BreakCommandNode extends CommandNode
 {
 }

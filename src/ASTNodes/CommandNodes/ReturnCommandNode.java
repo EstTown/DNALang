@@ -1,6 +1,6 @@
 package ASTNodes.CommandNodes;
 
-public class ReturnCommandNode
+public class ReturnCommandNode extends CommandNode
 {
 
 }

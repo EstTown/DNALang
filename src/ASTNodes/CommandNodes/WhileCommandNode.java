@@ -1,5 +1,5 @@
 package ASTNodes.CommandNodes;
 
-public class WhileCommandNode
+public class WhileCommandNode extends CommandNode
 {
 }

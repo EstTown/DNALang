@@ -1,8 +1,8 @@
 package ASTNodes.CommandNodes;
 
-import Nodes.NodeBase;
+import ASTNodes.*;
 
-public abstract class CommandNode extends NodeBase
+public abstract class CommandNode extends BaseNode
 {
 
 }
