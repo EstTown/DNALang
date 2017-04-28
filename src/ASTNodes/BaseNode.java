@@ -5,7 +5,7 @@ import Interfaces.NodeInterface;
 
 import java.util.ArrayList;
 
-public class BaseNode implements NodeInterface
+public abstract class BaseNode implements NodeInterface
 {
     private BaseNode parent;
     private BaseNode leftmostsibling;
@@ -28,7 +28,6 @@ public class BaseNode implements NodeInterface
 
     //ArrayList<BaseNode> siblings;
 
-    public void Accept(ASTVisitor visitor){visitor.Visit(this);}
 
     public BaseNode AddSibling(BaseNode nodeToBeAdded){
         return RecNextRightSibling(this, nodeToBeAdded);

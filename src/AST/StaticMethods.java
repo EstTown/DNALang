@@ -8,6 +8,7 @@ public class StaticMethods
 {
     public static int Add(int a, int b){return a+b;}
 
+    //wanted to make a factory method, but we might not need it.
     public static BaseNode MakeNode(){
 
 
