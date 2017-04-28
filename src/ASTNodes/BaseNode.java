@@ -13,6 +13,7 @@ public abstract class BaseNode implements NodeInterface
     private BaseNode leftmostchild;
     private Object content;
 
+    ///////Private getters///////
     public BaseNode getParent(){
         return this.parent;
     }
@@ -25,9 +26,6 @@ public abstract class BaseNode implements NodeInterface
     public BaseNode getLeftmostchild(){
         return this.leftmostchild;
     }
-
-    //ArrayList<BaseNode> siblings;
-
 
     public BaseNode AddSibling(BaseNode nodeToBeAdded){
         return RecNextRightSibling(this, nodeToBeAdded);
@@ -62,7 +60,7 @@ public abstract class BaseNode implements NodeInterface
         System.out.println("_________________________");
     }
 
-    ///////Privates///////
+    ///////Private methods///////
     private void recPrinter(BaseNode node){
         if (node != null) {
             //Print self
