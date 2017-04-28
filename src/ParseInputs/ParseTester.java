@@ -1,5 +1,7 @@
 package ParseInputs;
 import AST.*;
+import ASTNodes.BaseNode;
+import ASTNodes.ProgNode;
 import Generated.*;
 
 import java.io.*;
@@ -75,11 +77,18 @@ public class ParseTester
             //stackoverflow guide, uses "parser.compileUnit();", but that one is the same as "parser.prog();" in our case
             ParseTree tree = parser.prog();
 
-            //tree.accept(new ASTBuilder());
+            //AST ast = new AST(); what we want to write
+            BaseNode AST = new ProgNode();
 
+
+
+            tree.accept(new ASTBuilder());
+
+            /*
             System.out.println(tree.getText());
 
             System.out.println(tree.toStringTree(parser)); //print tree as text
+            */
         }
         catch (Exception parser)
         {
