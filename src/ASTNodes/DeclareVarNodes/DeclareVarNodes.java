@@ -1,6 +1,8 @@
 package ASTNodes.DeclareVarNodes;
 
-public class DeclareVarNodes
+import ASTNodes.BaseNode;
+
+public class DeclareVarNodes extends BaseNode
 {
 
 }

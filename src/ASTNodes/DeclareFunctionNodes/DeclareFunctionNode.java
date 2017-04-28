@@ -1,5 +1,8 @@
 package ASTNodes.DeclareFunctionNodes;
 
-public class DeclareFunctionNode
+import ASTNodes.BaseNode;
+
+public class DeclareFunctionNode extends BaseNode
 {
+
 }
