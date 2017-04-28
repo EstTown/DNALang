@@ -9,7 +9,6 @@ containing the actual semantic information
  */
 public class LeafNode extends Node{
 
-    public LeafNode(){};
     public LeafNode(String name, Object content){
         this.content = content;
         this.name = name;

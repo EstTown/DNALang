@@ -1,8 +1,12 @@
 import java.io.*;
-import AST.*;
 
 import java.io.FileInputStream;
 
+import ASTNodes.BaseNode;
+import ASTNodes.CommandNodes.AssignCommandNode;
+import ASTNodes.ExpressionNodes.AndNode;
+import ASTNodes.ProgNode;
+import ASTNodes.TerminalNodes.IdentifierNode;
 import Generated.LanguageLexer;
 import Generated.LanguageParser;
 import Nodes.LeafNode;
@@ -19,21 +23,12 @@ public class Main
 {
     public static void main(String[] args)
     {
-
-        //ParseTester parseTester = new ParseTester();
-
-        //parseTester.ParseAllInputs(3);
-
-        //parseTester.ParseSpecificInput(3);
-
+        ParseTester parseTester = new ParseTester();
+        parseTester.ParseAllInputs(2);
 
         ParseTreeGUI ptg = new ParseTreeGUI();
-        ptg.Show();
+        //ptg.Show();
 
-
-
-
-        /*
         try {
             InputStream stream = new FileInputStream("InputFiles/Input3");
             ANTLRInputStream input = new ANTLRInputStream(stream);
@@ -42,26 +37,31 @@ public class Main
             LanguageParser parser = new LanguageParser(tokens);
             ParseTree tree = parser.prog();
 
-            AST.Builder builder = new AST.Builder();
-            builder.visit(tree);
-            //builder.AST.PrintTree();
+            //AST.Builder builder = new AST.Builder();
+            //builder.visit(tree);
 
-            //System.out.println(builder.AST.name);
-            builder.AST.AddChild(new LeafNode("leaf1", 452));
-            builder.AST.getLeftMostChild().AddSibling(new ParentNode("parent1"));
-            builder.AST.getLeftMostChild().rightSibling.castToParent().AddChild(new LeafNode("leaf2", 3423));
+            BaseNode ast = new ProgNode();
+            ast.AddChild(new AndNode());
+            ast.getLeftmostchild().AddChild(new IdentifierNode("bob"));
+            ast.AddChild(new AssignCommandNode());
 
-            //System.out.println(builder.AST.getLeftMostChild().rightSibling.castToParent().getLeftMostChild().name);
+            ast.PrintTree();
+/*
+            builder.AST.AddChild(new ParentNode("A"));
+            builder.AST.AddChild(new ParentNode("B"));
+            builder.AST.getLeftMostChild().rightSibling.castToParent().AddChild(new ParentNode("Martin"));
+            builder.AST.getLeftMostChild().rightSibling.castToParent().getLeftMostChild().AddSibling(new LeafNode("Anders", 4543));
+
             builder.AST.PrintTree();
-
-            //Adding a child, works wit leaf, but not with parent. Dunno why.... work in progress
-
+*/
 
         }
         catch (Exception parser)
         {
             System.out.print("Other stuff failed!");
         }
-        */
+
+
+
     }
 }
