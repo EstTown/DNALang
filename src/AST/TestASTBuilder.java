@@ -9,7 +9,7 @@ public class TestASTBuilder extends LanguageBaseVisitor<Object>
     @Override
     public Object visitProg(LanguageParser.ProgContext ctx)
     {
-        System.out.println("Found prog"+ " " + Iterator);
+        //System.out.println("Found prog"+ " " + Iterator);
         Iterator++;
         return null;
     }
@@ -17,7 +17,7 @@ public class TestASTBuilder extends LanguageBaseVisitor<Object>
     @Override
     public Object visitStatements(LanguageParser.StatementsContext ctx)
     {
-        System.out.println("Found statementS"+ " " + Iterator);
+        //System.out.println("Found statementS"+ " " + Iterator);
         Iterator++;
         return null;
     }
@@ -25,7 +25,7 @@ public class TestASTBuilder extends LanguageBaseVisitor<Object>
     @Override
     public Object visitStatement(LanguageParser.StatementContext ctx)
     {
-        System.out.println("Found statemenT"+ " " + Iterator);
+        //System.out.println("Found statemenT"+ " " + Iterator);
         Iterator++;
         return null;
     }
