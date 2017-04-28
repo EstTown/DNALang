@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import ASTNodes.BaseNode;
 import ASTNodes.CommandNodes.AssignCommandNode;
 import ASTNodes.ExpressionNodes.AndNode;
+import ASTNodes.ProgNode;
 import ASTNodes.TerminalNodes.IdentifierNode;
 import Generated.LanguageLexer;
 import Generated.LanguageParser;
@@ -39,7 +40,7 @@ public class Main
             //AST.Builder builder = new AST.Builder();
             //builder.visit(tree);
 
-            BaseNode ast = new BaseNode();
+            BaseNode ast = new ProgNode();
             ast.AddChild(new AndNode());
             ast.getLeftmostchild().AddChild(new IdentifierNode("bob"));
             ast.AddChild(new AssignCommandNode());
