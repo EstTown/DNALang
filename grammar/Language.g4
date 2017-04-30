@@ -112,7 +112,7 @@ jump
 	;
 
 printstatement
-	: 'Print' '(' identifier ')'    #print
+	: 'Print' '(' identifier ')' ';'   #print
 	;
 
 

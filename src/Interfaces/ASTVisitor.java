@@ -10,10 +10,10 @@ import ASTNodes.TerminalNodes.*;
 
 //not used right now
 
-public interface ASTVisitor
+public interface ASTVisitor<T>
 {
     //needs a visit method for each type of node
-    void Visit(BlockNode blockNode);
+    T Visit(BlockNode blockNode);
 
     void Visit(AssignCommandNode assignCommandNode);
     void Visit(BreakCommandNode breakCommandNode);

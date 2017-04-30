@@ -1,5 +1,6 @@
 package AST;
 
+import ASTNodes.BaseNode;
 import ASTNodes.BlockNodes.BlockNode;
 import ASTNodes.CommandNodes.*;
 import ASTNodes.DeclareFunctionNodes.DeclareFunctionNode;
@@ -11,14 +12,11 @@ import ASTNodes.TerminalNodes.IntegerLiteralNode;
 import ASTNodes.TerminalNodes.OperatorNode;
 import Interfaces.ASTVisitor;
 
-public abstract class Visitor implements ASTVisitor
+public abstract class Visitor<BaseNode> implements ASTVisitor<BaseNode>
 {
-
     @Override
-    public void Visit(BlockNode blockNode)
-    {
+    public BaseNode Visit(BlockNode blockNode){return null;}
 
-    }
 
     @Override
     public void Visit(AssignCommandNode assignCommandNode)

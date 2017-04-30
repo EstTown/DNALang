@@ -1,42 +1,32 @@
 package AST;
 
-import ASTNodes.CommandNodes.CallCommandNode;
-import ASTNodes.ProgNode;
-import Generated.LanguageBaseVisitor;
-import Generated.LanguageParser;
+import ASTNodes.*;
+import ASTNodes.ExpressionNodes.ExpressionNode;
+import ASTNodes.ExpressionNodes.PlusNode;
+import Generated.*;
 
-/*
+import java.io.NotActiveException;
 
-public class ASTBuilder extends LanguageBaseVisitor<Object>
+
+public class ASTBuilder<BaseNode> extends LanguageBaseVisitor<BaseNode>
 {
     @Override
-    public Object visitOperator(LanguageParser.OperatorContext ctx)
+    public BaseNode visitBinaryExp(LanguageParser.BinaryExpContext ctx)
     {
+        ExpressionNode node;
 
-        return null;
+        switch(ctx.op.getType())
+        {
+            case LanguageLexer.ADD:
+                node = new PlusNode();
+                break;
+            default:
+
+                break;
+        }
+
+
+
+        return null; //should return node
     }
-
-    @Override
-    public Object visitTermExp(LanguageParser.TermExpContext ctx)
-    {
-
-        String a = ctx.term().getChild(0).getText();
-
-
-        return super.visitTermExp(ctx);
-
-
-        System.out.println("FOUND TERM");
-        return null;
-    }
-
-    @Override
-    public Object visitProg(LanguageParser.ProgContext ctx)
-    {
-
-
-        return super.visitProg(ctx);
-    }
-
 }
-*/
