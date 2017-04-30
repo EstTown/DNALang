@@ -11,7 +11,7 @@ declarations
 declaration
 	: (TYPE | arraytype) assignment     #dclAssign
 	| (TYPE | arraytype) identifier     #dcl
-	| assignment      +                  #assign
+	| assignment      +                 #assign
 	;
 
 arraytype
@@ -66,13 +66,34 @@ function
 assignment
 	: identifier '=' expression
 	;
-
+/*
 expression
 	: term (operator expression)    #termExp
 	| term                          #singleTerm
 	| '(' expression ')'            #parensExp
 	;
+*/
 
+//rewriting expression
+expression
+    : LPAREN expression RPAREN #parensExp
+    | <assoc=right> NOT expression           #unaryExp //I think this one is now right associative, not sure because it's a unary operator
+    | expression op=(MUL|DIV|MOD) expression #binaryExp
+    | expression op=(ADD|SUB) expression #binaryExp
+    | expression op=(LT|GT|LTEQ|GTEQ) expression #binaryExp
+    | expression op=(EQEQ|NOTEQ) expression #binaryExp
+    | expression AND  expression #binaryExp
+    | expression OR expression #binaryExp
+    | functioncall             #functionallExp
+    | identifier               #variableExp
+    | INT                      #numberExp
+    | BOOL                     #boolExp
+    | DNA                      #dnaExp
+    | RNA                      #rnaExp
+    | CODON                    #codonExp
+    | PROTEIN                  #proteinExp
+    ;
+/*
 term
 	: functioncall
 	| identifier
@@ -83,6 +104,7 @@ term
 	| CODON
 	| PROTEIN
 	;
+*/
 
 jump
 	: 'break' ';'                   #break
@@ -93,21 +115,22 @@ printstatement
 	: 'Print' '(' identifier ')'    #print
 	;
 
-operator
-	: ADD
-	| SUB
-	| MUL
-	| DIV
-	| MOD
-	| EQEQ
-	| LT
-	| GT
-	| LTEQ
-	| GTEQ
-	| AND
-	| OR
-	;
 
+/*
+operator
+    : MUL
+    | DIV
+    | ADD
+    | SUB
+    | LT
+    | GT
+    | LTEQ
+    | GTEQ
+    | AND
+    | OR
+    ;
+
+*/
 
 //*******************
 //		Lexer		|
@@ -236,11 +259,12 @@ GT      : '>' ;
 LTEQ    : '<=';
 GTEQ    : '>=';
 UNDERSCORE : '_' ;
-BANG    : '!' ;
+NOT    : '!' ;
 AND     : '&' ;
 SUB     : '-' ;
 EQUAL   : '=' ;
 EQEQ	: '==';
+NOTEQ   : '!=';
 OR      : '|' ;
 DIV     : '/' ;
 ADD     : '+' ;

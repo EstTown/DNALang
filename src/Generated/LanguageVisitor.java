@@ -1,4 +1,4 @@
-// Generated from C:/Stuff/Dropbox/ProgrammingProjects/JavaProjects/DNALang/grammar\Language.g4 by ANTLR 4.7
+// Generated from E:/Stuff/Dropbox/ProgrammingProjects/JavaProjects/DNALang/grammar\Language.g4 by ANTLR 4.7
 package Generated;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -136,20 +136,6 @@ public interface LanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAssignment(LanguageParser.AssignmentContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code termExp}
-	 * labeled alternative in {@link LanguageParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitTermExp(LanguageParser.TermExpContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code singleTerm}
-	 * labeled alternative in {@link LanguageParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSingleTerm(LanguageParser.SingleTermContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code parensExp}
 	 * labeled alternative in {@link LanguageParser#expression}.
 	 * @param ctx the parse tree
@@ -157,11 +143,75 @@ public interface LanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitParensExp(LanguageParser.ParensExpContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LanguageParser#term}.
+	 * Visit a parse tree produced by the {@code numberExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitTerm(LanguageParser.TermContext ctx);
+	T visitNumberExp(LanguageParser.NumberExpContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code binaryExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBinaryExp(LanguageParser.BinaryExpContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code unaryExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUnaryExp(LanguageParser.UnaryExpContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code boolExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolExp(LanguageParser.BoolExpContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code dnaExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDnaExp(LanguageParser.DnaExpContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code variableExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVariableExp(LanguageParser.VariableExpContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code rnaExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRnaExp(LanguageParser.RnaExpContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code functionallExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctionallExp(LanguageParser.FunctionallExpContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code codonExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCodonExp(LanguageParser.CodonExpContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code proteinExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitProteinExp(LanguageParser.ProteinExpContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code break}
 	 * labeled alternative in {@link LanguageParser#jump}.
@@ -183,10 +233,4 @@ public interface LanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitPrint(LanguageParser.PrintContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link LanguageParser#operator}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitOperator(LanguageParser.OperatorContext ctx);
 }

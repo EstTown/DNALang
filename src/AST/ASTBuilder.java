@@ -5,6 +5,8 @@ import ASTNodes.ProgNode;
 import Generated.LanguageBaseVisitor;
 import Generated.LanguageParser;
 
+/*
+
 public class ASTBuilder extends LanguageBaseVisitor<Object>
 {
     @Override
@@ -17,12 +19,12 @@ public class ASTBuilder extends LanguageBaseVisitor<Object>
     @Override
     public Object visitTermExp(LanguageParser.TermExpContext ctx)
     {
-        /*
+
         String a = ctx.term().getChild(0).getText();
 
 
         return super.visitTermExp(ctx);
-        */
+
 
         System.out.println("FOUND TERM");
         return null;
@@ -35,4 +37,6 @@ public class ASTBuilder extends LanguageBaseVisitor<Object>
 
         return super.visitProg(ctx);
     }
+
 }
+*/

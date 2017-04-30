@@ -48,7 +48,7 @@ public class ParseTester
                 //stackoverflow guide, uses "parser.compileUnit();", but that one is the same as "parser.prog();" in our case
                 ParseTree tree = parser.prog();
 
-                tree.accept(new ASTBuilder());
+                //tree.accept(new ASTBuilder());
 
                 System.out.println(tree.toStringTree(parser)); //print tree as text
                 System.out.println(); // extra line
@@ -82,7 +82,7 @@ public class ParseTester
 
 
 
-            tree.accept(new ASTBuilder());
+            //tree.accept(new ASTBuilder());
 
             /*
             System.out.println(tree.getText());

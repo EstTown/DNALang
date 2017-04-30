@@ -23,11 +23,17 @@ public class Main
 {
     public static void main(String[] args)
     {
+        /*
         ParseTester parseTester = new ParseTester();
         parseTester.ParseAllInputs(2);
+        */
 
         ParseTreeGUI ptg = new ParseTreeGUI();
         ptg.Show();
+
+
+
+
         /*
         try {
             InputStream stream = new FileInputStream("InputFiles/Input3");
@@ -61,8 +67,5 @@ public class Main
             System.out.print("Other stuff failed!");
         }
         */
-
-
-
     }
 }
