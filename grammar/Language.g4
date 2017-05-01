@@ -77,7 +77,7 @@ expression
 //rewriting expression
 expression
     : LPAREN expression RPAREN #parensExp
-    | <assoc=right> NOT expression           #unaryExp //I think this one is now right associative, not sure because it's a unary operator
+    | <assoc=right> NOT expression           #unaryExp //I think this one is now right associative, not sure how to check if correct
     | expression op=(MUL|DIV|MOD) expression #binaryExp
     | expression op=(ADD|SUB) expression #binaryExp
     | expression op=(LT|GT|LTEQ|GTEQ) expression #binaryExp

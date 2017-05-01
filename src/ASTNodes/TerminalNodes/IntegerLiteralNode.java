@@ -1,8 +1,9 @@
 package ASTNodes.TerminalNodes;
 
 import AST.Visitor;
+import ASTNodes.BaseNode;
 
-public class IntegerLiteralNode extends TerminalNode
+public class IntegerLiteralNode extends BaseNode
 {
 
     @Override
