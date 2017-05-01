@@ -31,10 +31,10 @@ public class Main
         parseTester.ParseAllInputs(2);
         */
 
-        /*
+
         ParseTreeGUI ptg = new ParseTreeGUI();
-        ptg.Show(1); //specify input file by giving an integer
-        */
+        ptg.Show(6); //specify input file by giving an integer
+
 
         /*
         try {

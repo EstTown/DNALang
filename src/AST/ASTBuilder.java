@@ -7,7 +7,7 @@ import ASTNodes.TerminalNodes.IntegerLiteralNode;
 import ASTNodes.TerminalNodes.OperatorNode;
 import ASTNodes.TerminalNodes.TerminalNode;
 import Generated.*;
-
+import org.antlr.v4.runtime.tree.RuleNode;
 
 
 public class ASTBuilder extends LanguageBaseVisitor
@@ -35,47 +35,44 @@ public class ASTBuilder extends LanguageBaseVisitor
     @Override
     public BaseNode visitExpression(LanguageParser.ExpressionContext ctx)
     {
-        ExpressionNode node;
+        BaseNode node;
         switch (ctx.op.getType())
         {
             case LanguageLexer.ADD:
                 node = new PlusNode();
                 break;
+            case LanguageLexer.INT:
+                node = new IntegerLiteralNode();
+                break;
             default:
                 node = null;
-                break;
+                return node;
+                //break;
         }
+        int a = ctx.getChildCount();
+        System.out.println(a);
 
-
-        return node;
-    }
-    /*
-    @Override
-    public BaseNode visitBinaryExp(LanguageParser.BinaryExpContext ctx)
-    {
-        ExpressionNode node;
-
-        switch(ctx.op.getType())
+        /*
+        switch(a)
         {
-            case LanguageLexer.ADD:
-                node = new PlusNode();
+            case 0:
+                break;
+            case 1:
+                left = visitExpression(ctx.expression(0));
+                break;
+            case 3:
+                left = visitExpression(ctx.expression(0));
+                right = visitExpression(ctx.expression(2));
                 break;
             default:
-                node = null;
                 break;
         }
-        Object a;
-        a = visit(ctx.ADD());
+        */
+        System.out.println(ctx.getChild(0).getChildCount());
+        System.out.println(ctx.getChild(1).getChildCount());
+        System.out.println(ctx.getChild(2).getChildCount());
+        //visit(ctx.getChild(0));
 
         return node;
     }
-    */
-
-    /*
-    @Override
-    public BaseNode visitNumberExp(LanguageParser.NumberExpContext ctx)
-    {
-        return new IntegerLiteralNode();
-    }
-    */
 }

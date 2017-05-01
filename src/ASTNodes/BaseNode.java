@@ -54,10 +54,13 @@ public abstract class BaseNode implements NodeInterface
     }
 
     public void PrintTree(){
-        System.out.println(this.getClass().getSimpleName());
-        System.out.println("_________________________");
-        recPrinter(this.leftmostchild);
-        System.out.println("_________________________");
+        if(this != null)
+        {
+            System.out.println(this.getClass().getSimpleName());
+            System.out.println("_________________________");
+            recPrinter(this.leftmostchild);
+            System.out.println("_________________________");
+        }
     }
 
 
