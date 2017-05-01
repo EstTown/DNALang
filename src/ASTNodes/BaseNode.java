@@ -60,6 +60,7 @@ public abstract class BaseNode implements NodeInterface
         System.out.println("_________________________");
     }
 
+
     ///////Private methods///////
     private void recPrinter(BaseNode node){
         if (node != null) {
@@ -115,6 +116,4 @@ public abstract class BaseNode implements NodeInterface
             return RecNextRightSibling(node.rightsibling, nodeToBeAdded);
         }
     }
-
-
 }

@@ -23,16 +23,18 @@ public class Main
 {
     public static void main(String[] args)
     {
-        /*
+
         ParseTester parseTester = new ParseTester();
+        parseTester.ParseSpecificInput(6);
+
+        /*
         parseTester.ParseAllInputs(2);
         */
 
+        /*
         ParseTreeGUI ptg = new ParseTreeGUI();
-        ptg.Show();
-
-
-
+        ptg.Show(1); //specify input file by giving an integer
+        */
 
         /*
         try {

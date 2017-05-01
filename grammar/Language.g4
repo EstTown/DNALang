@@ -76,22 +76,22 @@ expression
 
 //rewriting expression
 expression
-    : LPAREN expression RPAREN #parensExp
-    | <assoc=right> NOT expression           #unaryExp //I think this one is now right associative, not sure how to check if correct
-    | expression op=(MUL|DIV|MOD) expression #binaryExp
-    | expression op=(ADD|SUB) expression #binaryExp
-    | expression op=(LT|GT|LTEQ|GTEQ) expression #binaryExp
-    | expression op=(EQEQ|NOTEQ) expression #binaryExp
-    | expression AND  expression #binaryExp
-    | expression OR expression #binaryExp
-    | functioncall             #functionallExp
-    | identifier               #variableExp
-    | INT                      #numberExp
-    | BOOL                     #boolExp
-    | DNA                      #dnaExp
-    | RNA                      #rnaExp
-    | CODON                    #codonExp
-    | PROTEIN                  #proteinExp
+    : LPAREN expression RPAREN                   //#parensExp
+    | <assoc=right> NOT expression               //#unaryExp    //I think this one is now right associative, not sure how to check if correct
+    | expression op=(MUL|DIV|MOD) expression     //#binaryExp
+    | expression op=(ADD|SUB) expression         //#binaryExp
+    | expression op=(LT|GT|LTEQ|GTEQ) expression //#binaryExp
+    | expression op=(EQEQ|NOTEQ) expression      //#binaryExp
+    | expression AND  expression                 //#binaryExp
+    | expression OR expression                   //#binaryExp
+    | functioncall                               //#functionallExp
+    | identifier                                 //#variableExp
+    | INT                                        //#numberExp
+    | BOOL                                       //#boolExp
+    | DNA                                        //#dnaExp
+    | RNA                                        //#rnaExp
+    | CODON                                      //#codonExp
+    | PROTEIN                                    //#proteinExp
     ;
 /*
 term

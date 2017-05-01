@@ -77,8 +77,14 @@ public class ParseTester
             //stackoverflow guide, uses "parser.compileUnit();", but that one is the same as "parser.prog();" in our case
             ParseTree tree = parser.prog();
 
-            //AST ast = new AST(); what we want to write
-            BaseNode AST = new ProgNode();
+            //TestASTBuilder testAstBuilder = new TestASTBuilder();
+
+            //build ast
+            ASTBuilder astBuilder = new ASTBuilder();
+
+
+
+
 
 
 

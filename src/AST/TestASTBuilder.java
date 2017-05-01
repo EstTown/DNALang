@@ -1,35 +1,32 @@
 package AST;
 
-import ASTNodes.BaseNode;
 import Generated.LanguageBaseVisitor;
 import Generated.LanguageParser;
 
-public class TestASTBuilder extends LanguageBaseVisitor<BaseNode>
+public class TestASTBuilder extends LanguageBaseVisitor
 {
     public static int Iterator = 0;
     @Override
-    public BaseNode visitProg(LanguageParser.ProgContext ctx)
+    public Object visitProg(LanguageParser.ProgContext ctx)
     {
-        ctx.accept(this);
-        //System.out.println("Found prog"+ " " + Iterator);
+        System.out.println("Found prog"+ " " + Iterator);
         Iterator++;
-
-        return null;
+        return visitChildren(ctx);
     }
 
     @Override
-    public BaseNode visitStatements(LanguageParser.StatementsContext ctx)
+    public Object visitStatements(LanguageParser.StatementsContext ctx)
     {
-        //System.out.println("Found statementS"+ " " + Iterator);
+        System.out.println("Found statementS"+ " " + Iterator);
         Iterator++;
-        return null;
+        return visitChildren(ctx);
     }
 
     @Override
-    public BaseNode visitStatement(LanguageParser.StatementContext ctx)
+    public Object visitStatement(LanguageParser.StatementContext ctx)
     {
-        //System.out.println("Found statemenT"+ " " + Iterator);
+        System.out.println("Found statemenT"+ " " + Iterator);
         Iterator++;
-        return null;
+        return visitChildren(ctx);
     }
 }

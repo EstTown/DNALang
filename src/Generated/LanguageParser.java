@@ -1,4 +1,4 @@
-// Generated from E:/Stuff/Dropbox/ProgrammingProjects/JavaProjects/DNALang/grammar\Language.g4 by ANTLR 4.7
+// Generated from C:/Stuff/Dropbox/ProgrammingProjects/JavaProjects/DNALang/grammar\Language.g4 by ANTLR 4.7
 package Generated;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -1602,62 +1602,28 @@ public class LanguageParser extends Parser {
 	}
 
 	public static class ExpressionContext extends ParserRuleContext {
-		public ExpressionContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_expression; }
-	 
-		public ExpressionContext() { }
-		public void copyFrom(ExpressionContext ctx) {
-			super.copyFrom(ctx);
-		}
-	}
-	public static class ParensExpContext extends ExpressionContext {
-		public TerminalNode LPAREN() { return getToken(LanguageParser.LPAREN, 0); }
-		public ExpressionContext expression() {
-			return getRuleContext(ExpressionContext.class,0);
-		}
-		public TerminalNode RPAREN() { return getToken(LanguageParser.RPAREN, 0); }
-		public ParensExpContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterParensExp(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitParensExp(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitParensExp(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class NumberExpContext extends ExpressionContext {
-		public TerminalNode INT() { return getToken(LanguageParser.INT, 0); }
-		public NumberExpContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterNumberExp(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitNumberExp(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitNumberExp(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class BinaryExpContext extends ExpressionContext {
 		public Token op;
+		public TerminalNode LPAREN() { return getToken(LanguageParser.LPAREN, 0); }
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
 		}
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
 		}
+		public TerminalNode RPAREN() { return getToken(LanguageParser.RPAREN, 0); }
+		public TerminalNode NOT() { return getToken(LanguageParser.NOT, 0); }
+		public FunctioncallContext functioncall() {
+			return getRuleContext(FunctioncallContext.class,0);
+		}
+		public IdentifierContext identifier() {
+			return getRuleContext(IdentifierContext.class,0);
+		}
+		public TerminalNode INT() { return getToken(LanguageParser.INT, 0); }
+		public TerminalNode BOOL() { return getToken(LanguageParser.BOOL, 0); }
+		public TerminalNode DNA() { return getToken(LanguageParser.DNA, 0); }
+		public TerminalNode RNA() { return getToken(LanguageParser.RNA, 0); }
+		public TerminalNode CODON() { return getToken(LanguageParser.CODON, 0); }
+		public TerminalNode PROTEIN() { return getToken(LanguageParser.PROTEIN, 0); }
 		public TerminalNode MUL() { return getToken(LanguageParser.MUL, 0); }
 		public TerminalNode DIV() { return getToken(LanguageParser.DIV, 0); }
 		public TerminalNode MOD() { return getToken(LanguageParser.MOD, 0); }
@@ -1671,161 +1637,21 @@ public class LanguageParser extends Parser {
 		public TerminalNode NOTEQ() { return getToken(LanguageParser.NOTEQ, 0); }
 		public TerminalNode AND() { return getToken(LanguageParser.AND, 0); }
 		public TerminalNode OR() { return getToken(LanguageParser.OR, 0); }
-		public BinaryExpContext(ExpressionContext ctx) { copyFrom(ctx); }
+		public ExpressionContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_expression; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterBinaryExp(this);
+			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterExpression(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitBinaryExp(this);
+			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitExpression(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitBinaryExp(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class UnaryExpContext extends ExpressionContext {
-		public TerminalNode NOT() { return getToken(LanguageParser.NOT, 0); }
-		public ExpressionContext expression() {
-			return getRuleContext(ExpressionContext.class,0);
-		}
-		public UnaryExpContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterUnaryExp(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitUnaryExp(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitUnaryExp(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class BoolExpContext extends ExpressionContext {
-		public TerminalNode BOOL() { return getToken(LanguageParser.BOOL, 0); }
-		public BoolExpContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterBoolExp(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitBoolExp(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitBoolExp(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class DnaExpContext extends ExpressionContext {
-		public TerminalNode DNA() { return getToken(LanguageParser.DNA, 0); }
-		public DnaExpContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterDnaExp(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitDnaExp(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitDnaExp(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class VariableExpContext extends ExpressionContext {
-		public IdentifierContext identifier() {
-			return getRuleContext(IdentifierContext.class,0);
-		}
-		public VariableExpContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterVariableExp(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitVariableExp(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitVariableExp(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class RnaExpContext extends ExpressionContext {
-		public TerminalNode RNA() { return getToken(LanguageParser.RNA, 0); }
-		public RnaExpContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterRnaExp(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitRnaExp(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitRnaExp(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class FunctionallExpContext extends ExpressionContext {
-		public FunctioncallContext functioncall() {
-			return getRuleContext(FunctioncallContext.class,0);
-		}
-		public FunctionallExpContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterFunctionallExp(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitFunctionallExp(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitFunctionallExp(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class CodonExpContext extends ExpressionContext {
-		public TerminalNode CODON() { return getToken(LanguageParser.CODON, 0); }
-		public CodonExpContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterCodonExp(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitCodonExp(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitCodonExp(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class ProteinExpContext extends ExpressionContext {
-		public TerminalNode PROTEIN() { return getToken(LanguageParser.PROTEIN, 0); }
-		public ProteinExpContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterProteinExp(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitProteinExp(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitProteinExp(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitExpression(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1851,10 +1677,6 @@ public class LanguageParser extends Parser {
 			switch ( getInterpreter().adaptivePredict(_input,31,_ctx) ) {
 			case 1:
 				{
-				_localctx = new ParensExpContext(_localctx);
-				_ctx = _localctx;
-				_prevctx = _localctx;
-
 				setState(267);
 				match(LPAREN);
 				setState(268);
@@ -1865,9 +1687,6 @@ public class LanguageParser extends Parser {
 				break;
 			case 2:
 				{
-				_localctx = new UnaryExpContext(_localctx);
-				_ctx = _localctx;
-				_prevctx = _localctx;
 				setState(271);
 				match(NOT);
 				setState(272);
@@ -1876,72 +1695,48 @@ public class LanguageParser extends Parser {
 				break;
 			case 3:
 				{
-				_localctx = new FunctionallExpContext(_localctx);
-				_ctx = _localctx;
-				_prevctx = _localctx;
 				setState(273);
 				functioncall();
 				}
 				break;
 			case 4:
 				{
-				_localctx = new VariableExpContext(_localctx);
-				_ctx = _localctx;
-				_prevctx = _localctx;
 				setState(274);
 				identifier();
 				}
 				break;
 			case 5:
 				{
-				_localctx = new NumberExpContext(_localctx);
-				_ctx = _localctx;
-				_prevctx = _localctx;
 				setState(275);
 				match(INT);
 				}
 				break;
 			case 6:
 				{
-				_localctx = new BoolExpContext(_localctx);
-				_ctx = _localctx;
-				_prevctx = _localctx;
 				setState(276);
 				match(BOOL);
 				}
 				break;
 			case 7:
 				{
-				_localctx = new DnaExpContext(_localctx);
-				_ctx = _localctx;
-				_prevctx = _localctx;
 				setState(277);
 				match(DNA);
 				}
 				break;
 			case 8:
 				{
-				_localctx = new RnaExpContext(_localctx);
-				_ctx = _localctx;
-				_prevctx = _localctx;
 				setState(278);
 				match(RNA);
 				}
 				break;
 			case 9:
 				{
-				_localctx = new CodonExpContext(_localctx);
-				_ctx = _localctx;
-				_prevctx = _localctx;
 				setState(279);
 				match(CODON);
 				}
 				break;
 			case 10:
 				{
-				_localctx = new ProteinExpContext(_localctx);
-				_ctx = _localctx;
-				_prevctx = _localctx;
 				setState(280);
 				match(PROTEIN);
 				}
@@ -1961,15 +1756,15 @@ public class LanguageParser extends Parser {
 					switch ( getInterpreter().adaptivePredict(_input,32,_ctx) ) {
 					case 1:
 						{
-						_localctx = new BinaryExpContext(new ExpressionContext(_parentctx, _parentState));
+						_localctx = new ExpressionContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(283);
 						if (!(precpred(_ctx, 14))) throw new FailedPredicateException(this, "precpred(_ctx, 14)");
 						setState(284);
-						((BinaryExpContext)_localctx).op = _input.LT(1);
+						((ExpressionContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
 						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DIV) | (1L << MUL) | (1L << MOD))) != 0)) ) {
-							((BinaryExpContext)_localctx).op = (Token)_errHandler.recoverInline(this);
+							((ExpressionContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
 							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
@@ -1982,15 +1777,15 @@ public class LanguageParser extends Parser {
 						break;
 					case 2:
 						{
-						_localctx = new BinaryExpContext(new ExpressionContext(_parentctx, _parentState));
+						_localctx = new ExpressionContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(286);
 						if (!(precpred(_ctx, 13))) throw new FailedPredicateException(this, "precpred(_ctx, 13)");
 						setState(287);
-						((BinaryExpContext)_localctx).op = _input.LT(1);
+						((ExpressionContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
 						if ( !(_la==SUB || _la==ADD) ) {
-							((BinaryExpContext)_localctx).op = (Token)_errHandler.recoverInline(this);
+							((ExpressionContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
 							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
@@ -2003,15 +1798,15 @@ public class LanguageParser extends Parser {
 						break;
 					case 3:
 						{
-						_localctx = new BinaryExpContext(new ExpressionContext(_parentctx, _parentState));
+						_localctx = new ExpressionContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(289);
 						if (!(precpred(_ctx, 12))) throw new FailedPredicateException(this, "precpred(_ctx, 12)");
 						setState(290);
-						((BinaryExpContext)_localctx).op = _input.LT(1);
+						((ExpressionContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
 						if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LT) | (1L << GT) | (1L << LTEQ) | (1L << GTEQ))) != 0)) ) {
-							((BinaryExpContext)_localctx).op = (Token)_errHandler.recoverInline(this);
+							((ExpressionContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
 							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
@@ -2024,15 +1819,15 @@ public class LanguageParser extends Parser {
 						break;
 					case 4:
 						{
-						_localctx = new BinaryExpContext(new ExpressionContext(_parentctx, _parentState));
+						_localctx = new ExpressionContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(292);
 						if (!(precpred(_ctx, 11))) throw new FailedPredicateException(this, "precpred(_ctx, 11)");
 						setState(293);
-						((BinaryExpContext)_localctx).op = _input.LT(1);
+						((ExpressionContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
 						if ( !(_la==EQEQ || _la==NOTEQ) ) {
-							((BinaryExpContext)_localctx).op = (Token)_errHandler.recoverInline(this);
+							((ExpressionContext)_localctx).op = (Token)_errHandler.recoverInline(this);
 						}
 						else {
 							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
@@ -2045,7 +1840,7 @@ public class LanguageParser extends Parser {
 						break;
 					case 5:
 						{
-						_localctx = new BinaryExpContext(new ExpressionContext(_parentctx, _parentState));
+						_localctx = new ExpressionContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(295);
 						if (!(precpred(_ctx, 10))) throw new FailedPredicateException(this, "precpred(_ctx, 10)");
@@ -2057,7 +1852,7 @@ public class LanguageParser extends Parser {
 						break;
 					case 6:
 						{
-						_localctx = new BinaryExpContext(new ExpressionContext(_parentctx, _parentState));
+						_localctx = new ExpressionContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(298);
 						if (!(precpred(_ctx, 9))) throw new FailedPredicateException(this, "precpred(_ctx, 9)");

@@ -7,7 +7,11 @@ public class PlusNode extends ExpressionNode
 {
     public PlusNode(){
 
-
+    }
+    public PlusNode(BaseNode exp1, BaseNode exp2)
+    {
+        this.AddChild(exp1);
+        this.AddChild(exp2);
     }
 
 

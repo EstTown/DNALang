@@ -17,11 +17,11 @@ import java.util.List;
 
 public class ParseTreeGUI {
 
-    public void Show()
+    public void Show(int i)
     {
         try
         {
-            InputStream stream = new FileInputStream("InputFiles/Input5");
+            InputStream stream = new FileInputStream("InputFiles/Input" + Integer.toString(i));
 
             ANTLRInputStream input = new ANTLRInputStream(stream);
             LanguageLexer lexer = new LanguageLexer(input);
