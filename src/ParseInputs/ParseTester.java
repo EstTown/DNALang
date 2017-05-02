@@ -86,14 +86,16 @@ public class ParseTester
             LanguageParser.ProgContext cst = parser.prog();
 
 
-            //ast = astBuilder.visitProg(cst);
+            ast = astBuilder.visitProg(cst);
+
+
             ast.AddChild(astBuilder.visitProg(cst));
 
             ast.PrintTree();
 
 
         }
-        catch (Exception parser)
+        catch (IOException parser)
         {
             System.out.print("Other stuff failed!");
         }

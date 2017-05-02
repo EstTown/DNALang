@@ -28,41 +28,15 @@ public interface LanguageListener extends ParseTreeListener {
 	 */
 	void exitDeclarations(LanguageParser.DeclarationsContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code dclAssign}
-	 * labeled alternative in {@link LanguageParser#declaration}.
+	 * Enter a parse tree produced by {@link LanguageParser#declaration}.
 	 * @param ctx the parse tree
 	 */
-	void enterDclAssign(LanguageParser.DclAssignContext ctx);
+	void enterDeclaration(LanguageParser.DeclarationContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code dclAssign}
-	 * labeled alternative in {@link LanguageParser#declaration}.
+	 * Exit a parse tree produced by {@link LanguageParser#declaration}.
 	 * @param ctx the parse tree
 	 */
-	void exitDclAssign(LanguageParser.DclAssignContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code dcl}
-	 * labeled alternative in {@link LanguageParser#declaration}.
-	 * @param ctx the parse tree
-	 */
-	void enterDcl(LanguageParser.DclContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code dcl}
-	 * labeled alternative in {@link LanguageParser#declaration}.
-	 * @param ctx the parse tree
-	 */
-	void exitDcl(LanguageParser.DclContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code assign}
-	 * labeled alternative in {@link LanguageParser#declaration}.
-	 * @param ctx the parse tree
-	 */
-	void enterAssign(LanguageParser.AssignContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code assign}
-	 * labeled alternative in {@link LanguageParser#declaration}.
-	 * @param ctx the parse tree
-	 */
-	void exitAssign(LanguageParser.AssignContext ctx);
+	void exitDeclaration(LanguageParser.DeclarationContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link LanguageParser#arraytype}.
 	 * @param ctx the parse tree

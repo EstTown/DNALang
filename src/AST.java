@@ -40,6 +40,7 @@ public class AST {
             return null;
         }
 
+        /*
         @Override
         public Void visitAssign(LanguageParser.AssignContext ctx){
             //ParentNode tmp = AST.AddChild(new ParentNode("Root"));
@@ -47,5 +48,6 @@ public class AST {
             //tmp.AddChild(new LeafNode("Child2"));
             return null;
         }
+        */
     }
 }

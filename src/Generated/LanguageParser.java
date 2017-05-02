@@ -253,81 +253,34 @@ public class LanguageParser extends Parser {
 	}
 
 	public static class DeclarationContext extends ParserRuleContext {
-		public DeclarationContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_declaration; }
-	 
-		public DeclarationContext() { }
-		public void copyFrom(DeclarationContext ctx) {
-			super.copyFrom(ctx);
-		}
-	}
-	public static class DclAssignContext extends DeclarationContext {
-		public AssignmentContext assignment() {
-			return getRuleContext(AssignmentContext.class,0);
-		}
-		public TerminalNode TYPE() { return getToken(LanguageParser.TYPE, 0); }
-		public ArraytypeContext arraytype() {
-			return getRuleContext(ArraytypeContext.class,0);
-		}
-		public DclAssignContext(DeclarationContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterDclAssign(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitDclAssign(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitDclAssign(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class DclContext extends DeclarationContext {
-		public IdentifierContext identifier() {
-			return getRuleContext(IdentifierContext.class,0);
-		}
-		public TerminalNode TYPE() { return getToken(LanguageParser.TYPE, 0); }
-		public ArraytypeContext arraytype() {
-			return getRuleContext(ArraytypeContext.class,0);
-		}
-		public DclContext(DeclarationContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterDcl(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitDcl(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitDcl(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class AssignContext extends DeclarationContext {
 		public List<AssignmentContext> assignment() {
 			return getRuleContexts(AssignmentContext.class);
 		}
 		public AssignmentContext assignment(int i) {
 			return getRuleContext(AssignmentContext.class,i);
 		}
-		public AssignContext(DeclarationContext ctx) { copyFrom(ctx); }
+		public TerminalNode TYPE() { return getToken(LanguageParser.TYPE, 0); }
+		public ArraytypeContext arraytype() {
+			return getRuleContext(ArraytypeContext.class,0);
+		}
+		public IdentifierContext identifier() {
+			return getRuleContext(IdentifierContext.class,0);
+		}
+		public DeclarationContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_declaration; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterAssign(this);
+			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterDeclaration(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitAssign(this);
+			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitDeclaration(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitAssign(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitDeclaration(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -341,7 +294,6 @@ public class LanguageParser extends Parser {
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,6,_ctx) ) {
 			case 1:
-				_localctx = new DclAssignContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(57);
@@ -365,7 +317,6 @@ public class LanguageParser extends Parser {
 				}
 				break;
 			case 2:
-				_localctx = new DclContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(62);
@@ -389,7 +340,6 @@ public class LanguageParser extends Parser {
 				}
 				break;
 			case 3:
-				_localctx = new AssignContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(66); 
@@ -1602,7 +1552,9 @@ public class LanguageParser extends Parser {
 	}
 
 	public static class ExpressionContext extends ParserRuleContext {
+		public ExpressionContext left;
 		public Token op;
+		public ExpressionContext right;
 		public TerminalNode LPAREN() { return getToken(LanguageParser.LPAREN, 0); }
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
@@ -1757,6 +1709,8 @@ public class LanguageParser extends Parser {
 					case 1:
 						{
 						_localctx = new ExpressionContext(_parentctx, _parentState);
+						_localctx.left = _prevctx;
+						_localctx.left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(283);
 						if (!(precpred(_ctx, 14))) throw new FailedPredicateException(this, "precpred(_ctx, 14)");
@@ -1772,12 +1726,14 @@ public class LanguageParser extends Parser {
 							consume();
 						}
 						setState(285);
-						expression(15);
+						((ExpressionContext)_localctx).right = expression(15);
 						}
 						break;
 					case 2:
 						{
 						_localctx = new ExpressionContext(_parentctx, _parentState);
+						_localctx.left = _prevctx;
+						_localctx.left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(286);
 						if (!(precpred(_ctx, 13))) throw new FailedPredicateException(this, "precpred(_ctx, 13)");
@@ -1793,12 +1749,14 @@ public class LanguageParser extends Parser {
 							consume();
 						}
 						setState(288);
-						expression(14);
+						((ExpressionContext)_localctx).right = expression(14);
 						}
 						break;
 					case 3:
 						{
 						_localctx = new ExpressionContext(_parentctx, _parentState);
+						_localctx.left = _prevctx;
+						_localctx.left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(289);
 						if (!(precpred(_ctx, 12))) throw new FailedPredicateException(this, "precpred(_ctx, 12)");
@@ -1814,12 +1772,14 @@ public class LanguageParser extends Parser {
 							consume();
 						}
 						setState(291);
-						expression(13);
+						((ExpressionContext)_localctx).right = expression(13);
 						}
 						break;
 					case 4:
 						{
 						_localctx = new ExpressionContext(_parentctx, _parentState);
+						_localctx.left = _prevctx;
+						_localctx.left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(292);
 						if (!(precpred(_ctx, 11))) throw new FailedPredicateException(this, "precpred(_ctx, 11)");
@@ -1835,31 +1795,35 @@ public class LanguageParser extends Parser {
 							consume();
 						}
 						setState(294);
-						expression(12);
+						((ExpressionContext)_localctx).right = expression(12);
 						}
 						break;
 					case 5:
 						{
 						_localctx = new ExpressionContext(_parentctx, _parentState);
+						_localctx.left = _prevctx;
+						_localctx.left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(295);
 						if (!(precpred(_ctx, 10))) throw new FailedPredicateException(this, "precpred(_ctx, 10)");
 						setState(296);
 						match(AND);
 						setState(297);
-						expression(11);
+						((ExpressionContext)_localctx).right = expression(11);
 						}
 						break;
 					case 6:
 						{
 						_localctx = new ExpressionContext(_parentctx, _parentState);
+						_localctx.left = _prevctx;
+						_localctx.left = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(298);
 						if (!(precpred(_ctx, 9))) throw new FailedPredicateException(this, "precpred(_ctx, 9)");
 						setState(299);
 						match(OR);
 						setState(300);
-						expression(10);
+						((ExpressionContext)_localctx).right = expression(10);
 						}
 						break;
 					}

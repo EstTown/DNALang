@@ -23,26 +23,11 @@ public interface LanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDeclarations(LanguageParser.DeclarationsContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code dclAssign}
-	 * labeled alternative in {@link LanguageParser#declaration}.
+	 * Visit a parse tree produced by {@link LanguageParser#declaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDclAssign(LanguageParser.DclAssignContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code dcl}
-	 * labeled alternative in {@link LanguageParser#declaration}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDcl(LanguageParser.DclContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code assign}
-	 * labeled alternative in {@link LanguageParser#declaration}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAssign(LanguageParser.AssignContext ctx);
+	T visitDeclaration(LanguageParser.DeclarationContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LanguageParser#arraytype}.
 	 * @param ctx the parse tree
