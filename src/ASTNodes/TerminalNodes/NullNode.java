@@ -1,11 +1,12 @@
 package ASTNodes.TerminalNodes;
 
 import AST.Visitor;
-import ASTNodes.BaseNode;
 
-public class IntegerLiteralNode extends TerminalNode
+/**
+ * Created by Ruben on 02.05.2017.
+ */
+public class NullNode extends TerminalNode
 {
-
     @Override
     public void Accept(Visitor nodevisitor)
     {

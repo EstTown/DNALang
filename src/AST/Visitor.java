@@ -1,16 +1,14 @@
 package AST;
 
-import ASTNodes.BaseNode;
 import ASTNodes.BlockNodes.BlockNode;
 import ASTNodes.CommandNodes.*;
 import ASTNodes.DeclareFunctionNodes.DeclareFunctionNode;
 import ASTNodes.DeclareVarNodes.DeclareVarNodes;
 import ASTNodes.ExpressionNodes.*;
-import ASTNodes.ProgNode;
-import ASTNodes.TerminalNodes.IdentifierNode;
-import ASTNodes.TerminalNodes.IntegerLiteralNode;
-import ASTNodes.TerminalNodes.OperatorNode;
+import ASTNodes.*;
+import ASTNodes.TerminalNodes.*;
 import Interfaces.ASTVisitor;
+
 
 public abstract class Visitor<BaseNode> implements ASTVisitor<BaseNode>
 {
@@ -146,6 +144,11 @@ public abstract class Visitor<BaseNode> implements ASTVisitor<BaseNode>
 
     @Override
     public void Visit(IntegerLiteralNode integerLiteralNode)
+    {
+
+    }
+    @Override
+    public void Visit(NullNode nullNode)
     {
 
     }

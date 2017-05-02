@@ -1,14 +1,9 @@
 package AST;
 
 import ASTNodes.*;
-import ASTNodes.ExpressionNodes.ExpressionNode;
-import ASTNodes.ExpressionNodes.PlusNode;
-import ASTNodes.TerminalNodes.IntegerLiteralNode;
-import ASTNodes.TerminalNodes.OperatorNode;
-import ASTNodes.TerminalNodes.TerminalNode;
+import ASTNodes.ExpressionNodes.*;
+import ASTNodes.TerminalNodes.*;
 import Generated.*;
-import org.antlr.v4.runtime.tree.RuleNode;
-
 
 public class ASTBuilder extends LanguageBaseVisitor
 {
@@ -19,7 +14,9 @@ public class ASTBuilder extends LanguageBaseVisitor
     public BaseNode visitProg(LanguageParser.ProgContext ctx)
     {
         //order?
-        return visitStatements(ctx.statements(0));
+        BaseNode ast = new ProgNode();
+        ast.AddChild(visitStatements(ctx.statements(0)));
+        return ast;
     }
 
     @Override
@@ -47,23 +44,32 @@ public class ASTBuilder extends LanguageBaseVisitor
                 case LanguageLexer.ADD:
                     node = new PlusNode();
                     break;
+                case LanguageLexer.SUB:
+                    node = new MinusNode();
+                    break;
+                case LanguageLexer.MUL:
+                    node = new MultNode();
+                    break;
+                case LanguageLexer.DIV:
+                    node = new DivNode();
+                    break;
                 case LanguageLexer.INT:
                     node = new IntegerLiteralNode();
                     break;
                 default:
-                    //node = null;
-                    return node2;
-                //break;
+                    node = new NullNode();
+                    break;
+                //considering this is a null node, then something probably went wrong
+                //not sure if error message here or in a later phase
             }
         }
         catch(NullPointerException e)
         {
-            ProgNode node1 = new ProgNode();
+            NullNode node1 = new NullNode();
             return node1;
         }
-
-        BaseNode left;
         node.AddChild(visitExpression(ctx.left));
+        node.AddChild(visitExpression(ctx.right));
 
         return node;
     }

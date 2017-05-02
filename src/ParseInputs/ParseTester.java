@@ -78,22 +78,12 @@ public class ParseTester
             //TestASTBuilder testAstBuilder = new TestASTBuilder();
             //tree.accept(testAstBuilder);
 
-
             ASTBuilder astBuilder = new ASTBuilder();
-
-            BaseNode ast = new ProgNode();
-
             LanguageParser.ProgContext cst = parser.prog();
 
-
+            BaseNode ast;
             ast = astBuilder.visitProg(cst);
-
-
-            ast.AddChild(astBuilder.visitProg(cst));
-
             ast.PrintTree();
-
-
         }
         catch (IOException parser)
         {

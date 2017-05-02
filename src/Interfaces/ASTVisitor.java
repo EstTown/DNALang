@@ -41,6 +41,7 @@ public interface ASTVisitor<T>
 
     void Visit(IdentifierNode identifierNode);
     void Visit(IntegerLiteralNode integerLiteralNode);
+    void Visit(NullNode nullNode);
     void Visit(OperatorNode operatorNode);
 
     void Visit(ProgNode progNode);
