@@ -75,6 +75,7 @@ expression
 */
 
 //rewriting expression
+    /*
 expression
     : LPAREN expression RPAREN                   //#parensExp
     | <assoc=right> NOT expression               //#unaryExp    //I think this one is now right associative, not sure how to check if correct
@@ -93,6 +94,27 @@ expression
     | CODON                                      //#codonExp
     | PROTEIN                                    //#proteinExp
     ;
+    */
+
+expression
+    : LPAREN expression RPAREN                   #parensExp
+    | <assoc=right> NOT expression               #unaryExp    //I think this one is now right associative, not sure how to check if correct
+    | left=expression op=(MUL|DIV|MOD) right=expression     #binaryExp
+    | left=expression op=(ADD|SUB) right=expression         #binaryExp
+    | left=expression op=(LT|GT|LTEQ|GTEQ) right=expression #binaryExp
+    | left=expression op=(EQEQ|NOTEQ) right=expression      #binaryExp
+    | left=expression AND  right=expression                 #binaryExp
+    | left=expression OR right=expression                   #binaryExp
+    | functioncall                               #functionallExp
+    | identifier                                 #variableExp
+    | INT                                        #numberExp
+    | BOOL                                       #boolExp
+    | DNA                                        #dnaExp
+    | RNA                                        #rnaExp
+    | CODON                                      #codonExp
+    | PROTEIN                                    #proteinExp
+    ;
+
 /*
 term
 	: functioncall

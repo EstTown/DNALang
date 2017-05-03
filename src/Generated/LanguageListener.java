@@ -1,4 +1,4 @@
-// Generated from C:/Stuff/Dropbox/ProgrammingProjects/JavaProjects/DNALang/grammar\Language.g4 by ANTLR 4.7
+// Generated from E:/Stuff/Dropbox/ProgrammingProjects/JavaProjects/DNALang/grammar\Language.g4 by ANTLR 4.7
 package Generated;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -194,15 +194,137 @@ public interface LanguageListener extends ParseTreeListener {
 	 */
 	void exitAssignment(LanguageParser.AssignmentContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LanguageParser#expression}.
+	 * Enter a parse tree produced by the {@code parensExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void enterExpression(LanguageParser.ExpressionContext ctx);
+	void enterParensExp(LanguageParser.ParensExpContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LanguageParser#expression}.
+	 * Exit a parse tree produced by the {@code parensExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void exitExpression(LanguageParser.ExpressionContext ctx);
+	void exitParensExp(LanguageParser.ParensExpContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code numberExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterNumberExp(LanguageParser.NumberExpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code numberExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitNumberExp(LanguageParser.NumberExpContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code binaryExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterBinaryExp(LanguageParser.BinaryExpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code binaryExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitBinaryExp(LanguageParser.BinaryExpContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code unaryExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterUnaryExp(LanguageParser.UnaryExpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code unaryExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitUnaryExp(LanguageParser.UnaryExpContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code boolExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterBoolExp(LanguageParser.BoolExpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code boolExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitBoolExp(LanguageParser.BoolExpContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code dnaExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterDnaExp(LanguageParser.DnaExpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code dnaExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitDnaExp(LanguageParser.DnaExpContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code variableExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterVariableExp(LanguageParser.VariableExpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code variableExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitVariableExp(LanguageParser.VariableExpContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code rnaExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterRnaExp(LanguageParser.RnaExpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code rnaExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitRnaExp(LanguageParser.RnaExpContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code functionallExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionallExp(LanguageParser.FunctionallExpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code functionallExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionallExp(LanguageParser.FunctionallExpContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code codonExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterCodonExp(LanguageParser.CodonExpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code codonExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitCodonExp(LanguageParser.CodonExpContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code proteinExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterProteinExp(LanguageParser.ProteinExpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code proteinExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitProteinExp(LanguageParser.ProteinExpContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code break}
 	 * labeled alternative in {@link LanguageParser#jump}.

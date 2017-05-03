@@ -83,7 +83,7 @@ public class ParseTester
 
             BaseNode ast;
             ast = astBuilder.visitProg(cst);
-            ast.PrintTree();
+            //ast.PrintTree();
         }
         catch (IOException parser)
         {

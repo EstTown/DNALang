@@ -4,12 +4,11 @@ import ASTNodes.*;
 import ASTNodes.ExpressionNodes.*;
 import ASTNodes.TerminalNodes.*;
 import Generated.*;
+import org.antlr.v4.runtime.Token;
 
-public class ASTBuilder extends LanguageBaseVisitor
+public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
 {
-
-    static int counter = 0;
-
+    /*
     @Override
     public BaseNode visitProg(LanguageParser.ProgContext ctx)
     {
@@ -31,12 +30,13 @@ public class ASTBuilder extends LanguageBaseVisitor
         return visitExpression(ctx.expression());
     }
 
-
     @Override
     public BaseNode visitExpression(LanguageParser.ExpressionContext ctx)
     {
         BaseNode node;
         ProgNode node2 = new ProgNode();
+        //Token token = ctx.op.getType();
+        System.out.println(ctx.op.getType());
         try
         {
             switch (ctx.op.getType())
@@ -73,4 +73,5 @@ public class ASTBuilder extends LanguageBaseVisitor
 
         return node;
     }
+    */
 }

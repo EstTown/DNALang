@@ -5,7 +5,7 @@ import Interfaces.NodeInterface;
 
 import java.util.ArrayList;
 
-public abstract class BaseNode implements NodeInterface
+public abstract class BaseNode extends Object implements NodeInterface
 {
     private BaseNode parent;
     private BaseNode leftmostsibling;
