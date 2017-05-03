@@ -37,10 +37,9 @@ public class Main
         parseTester2.ParseSpecificInput2(6);
 
 
-        /*
         ParseTreeGUI ptg = new ParseTreeGUI();
         ptg.Show(6); //specify input file by giving an integer
-        */
+
 
         /*
         try {

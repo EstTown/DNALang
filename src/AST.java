@@ -5,7 +5,7 @@ import Nodes.*;
 
 public class AST {
 
-    public static class Builder extends LanguageBaseVisitor<Void> {
+    public static class Builder extends LanguageBaseVisitor<Object> {
 
         //This is the object that holds our tree, this is the root
         public ParentNode AST;
@@ -19,8 +19,12 @@ public class AST {
             return null;
         }
 
+
         @Override
         public Void visitFunc(LanguageParser.FuncContext ctx){
+
+
+
             /*
             System.out.println("Function encountered");
             System.out.println("ReturnType: " + ctx.TYPE(0).getText() );
