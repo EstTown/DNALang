@@ -4,8 +4,6 @@ import AST.Visitor;
 import Interfaces.ASTVisitor;
 import Interfaces.NodeInterface;
 
-import java.util.ArrayList;
-
 public abstract class BaseNode implements NodeInterface
 {
     private BaseNode parent;
@@ -14,7 +12,7 @@ public abstract class BaseNode implements NodeInterface
     private BaseNode leftmostchild;
     private Object content;
 
-    ///////Private getters///////
+    ///////Public methods///////
     public BaseNode getParent(){
         return this.parent;
     }
@@ -31,11 +29,9 @@ public abstract class BaseNode implements NodeInterface
     public BaseNode AddSibling(BaseNode nodeToBeAdded){
         return RecNextRightSibling(this, nodeToBeAdded);
     }
-
     public BaseNode AddChild(BaseNode nodeToBeAdded){
             return RecAddChild(this, nodeToBeAdded);
     }
-
     public BaseNode MakeFamily(BaseNode parent, BaseNode... children){
     	//Add children to parent
     	for (BaseNode x: children){
@@ -44,8 +40,6 @@ public abstract class BaseNode implements NodeInterface
 		//Add parent (family)
     	return this.AddChild(parent);
 	}
-
-    //Not done
     public BaseNode MakeSiblings(BaseNode node){
     	//remove old references, recursively travel through siblings
 		recMakeSiblingsHelper(node.leftmostsibling, node);
@@ -53,16 +47,6 @@ public abstract class BaseNode implements NodeInterface
     	//add child, via parent
         return RecNextRightSibling(this, node);
     }
-
-    private void recMakeSiblingsHelper(BaseNode node, BaseNode nodeToBeRemoved){
-    	//Find and destroy reference to node
-		if (node == nodeToBeRemoved)
-			node.rightsibling = null;
-		else
-			recMakeSiblingsHelper(node, nodeToBeRemoved);
-	}
-
-    //To be made
     public void AdoptChildren(BaseNode nodeToBeAdopted){
         if(this.leftmostchild != null)
             this.leftmostchild.MakeSiblings(nodeToBeAdopted);
@@ -72,15 +56,6 @@ public abstract class BaseNode implements NodeInterface
 			this.AddChild(nodeToBeAdopted.leftmostsibling);
         }
     }
-
-    private BaseNode recAdoptChildrenHelper(BaseNode node){
-    	if (node.rightsibling != null){
-    		this.AddChild(node);
-    		return recAdoptChildrenHelper(node.rightsibling);
-    	}
-    	return this.leftmostchild;
-	}
-
     public void PrintTree(){
         if(this != null)
         {
@@ -90,6 +65,7 @@ public abstract class BaseNode implements NodeInterface
             System.out.println("____________________________________________________________________");
         }
     }
+
 
     ///////Private methods///////
     private void recPrinter(BaseNode node){
@@ -122,8 +98,20 @@ public abstract class BaseNode implements NodeInterface
             }
         }
     }
-
-    //Helper for adding children
+    private void recMakeSiblingsHelper(BaseNode node, BaseNode nodeToBeRemoved){
+        //Find and destroy reference to node
+        if (node.rightsibling == nodeToBeRemoved)
+            node.rightsibling = null;
+        else
+            recMakeSiblingsHelper(node.rightsibling, nodeToBeRemoved);
+    }
+	private BaseNode recAdoptChildrenHelper(BaseNode node){
+		if (node.rightsibling != null){
+			this.AddChild(node);
+			return recAdoptChildrenHelper(node.rightsibling);
+		}
+		return this.leftmostchild;
+	}
     private BaseNode RecAddChild(BaseNode parent, BaseNode nodeToBeAdded){
         //If this is node has no children, just add it
         if (this.leftmostchild == null){
@@ -139,8 +127,6 @@ public abstract class BaseNode implements NodeInterface
         }
         else return RecNextRightSibling(parent.leftmostchild.rightsibling, nodeToBeAdded);
     }
-
-    //Helper adding siblings
     private BaseNode RecNextRightSibling(BaseNode node, BaseNode nodeToBeAdded){
         if (node == null){
             node.rightsibling = nodeToBeAdded;
@@ -152,5 +138,4 @@ public abstract class BaseNode implements NodeInterface
             return RecNextRightSibling(node.rightsibling, nodeToBeAdded);
         }
     }
-
 }
