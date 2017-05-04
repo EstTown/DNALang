@@ -5,6 +5,6 @@ import Interfaces.ASTVisitor;
 
 public abstract class TerminalNode extends BaseNode
 {
-    public String spelling;
+    //public String spelling;
 
 }

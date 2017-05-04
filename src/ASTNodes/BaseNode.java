@@ -10,7 +10,7 @@ public abstract class BaseNode implements NodeInterface
     private BaseNode leftmostsibling;
     private BaseNode rightsibling;
     private BaseNode leftmostchild;
-    private Object content;
+    public Object content;
 
 
     ///////Public methods///////
@@ -76,7 +76,7 @@ public abstract class BaseNode implements NodeInterface
             System.out.printf(format, "Type: ",node.getClass().getSimpleName(), System.identityHashCode(node));
             System.out.printf(format, "Parent: ", node.parent.getClass().getSimpleName(), System.identityHashCode(node.parent));
             if (node.content != null)
-                System.out.printf(format, "Content: ", node.content);
+                System.out.printf(format, "Content: ", node.content, "");
             if (node.rightsibling != null)
                 System.out.printf(format, "R sib: ", node.rightsibling.getClass().getSimpleName(), System.identityHashCode(node.rightsibling));
             if (node.leftmostsibling != null)

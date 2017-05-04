@@ -10,7 +10,7 @@ public class PrettyPrinter extends Visitor
     @Override
     public void Visit(DNALiteralNode dnaLiteralNode)
     {
-        System.out.println("This was my input: "+dnaLiteralNode.spelling);
+        System.out.println("This was my input: "+dnaLiteralNode.content);
     }
 
     @Override
