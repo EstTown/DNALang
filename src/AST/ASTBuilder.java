@@ -353,7 +353,13 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     {
         BreakCommandNode node = new BreakCommandNode();
 
+        return node;
+    }
 
+    @Override
+    public BaseNode visitReturn(LanguageParser.ReturnContext ctx)
+    {
+        ReturnCommandNode node = new ReturnCommandNode();
 
         return node;
     }
