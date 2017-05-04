@@ -12,6 +12,7 @@ public abstract class BaseNode implements NodeInterface
     private BaseNode leftmostchild;
     private Object content;
 
+
     ///////Public methods///////
     public BaseNode getParent(){
         return this.parent;
