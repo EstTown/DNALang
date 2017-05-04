@@ -36,45 +36,77 @@ public abstract class BaseNode implements NodeInterface
             return RecAddChild(this, nodeToBeAdded);
     }
 
+    public BaseNode MakeFamily(BaseNode parent, BaseNode... children){
+    	//Add children to parent
+    	for (BaseNode x: children){
+    		parent.AddChild(x);
+		}
+		//Add parent (family)
+    	return this.AddChild(parent);
+	}
+
     //Not done
     public BaseNode MakeSiblings(BaseNode node){
+    	//remove old references, recursively travel through siblings
+		recMakeSiblingsHelper(node.leftmostsibling, node);
+
+    	//add child, via parent
         return RecNextRightSibling(this, node);
     }
 
+    private void recMakeSiblingsHelper(BaseNode node, BaseNode nodeToBeRemoved){
+    	//Find and destroy reference to node
+		if (node == nodeToBeRemoved)
+			node.rightsibling = null;
+		else
+			recMakeSiblingsHelper(node, nodeToBeRemoved);
+	}
+
     //To be made
-    public BaseNode AdoptChildren(BaseNode y){
+    public void AdoptChildren(BaseNode nodeToBeAdopted){
         if(this.leftmostchild != null)
-        {
-            this.leftmostchild.MakeSiblings(y);
-        }
+            this.leftmostchild.MakeSiblings(nodeToBeAdopted);
         else
         {
-
+        	//Adopts all children of nodeToBeAdopted's parent, starting from leftmostsibling
+			this.AddChild(nodeToBeAdopted.leftmostsibling);
         }
-        return y;
     }
+
+    private BaseNode recAdoptChildrenHelper(BaseNode node){
+    	if (node.rightsibling != null){
+    		this.AddChild(node);
+    		return recAdoptChildrenHelper(node.rightsibling);
+    	}
+    	return this.leftmostchild;
+	}
 
     public void PrintTree(){
         if(this != null)
         {
             System.out.println(this.getClass().getSimpleName());
-            System.out.println("_________________________");
+            System.out.println("____________________________________________________________________");
             recPrinter(this.leftmostchild);
-            System.out.println("_________________________");
+            System.out.println("____________________________________________________________________");
         }
     }
-
 
     ///////Private methods///////
     private void recPrinter(BaseNode node){
         if (node != null) {
-            //Print self
-            System.out.println("Type    : " +node.getClass().getSimpleName());
-            System.out.println("Parent  : " + node.parent.getClass().getSimpleName());
+            //Print the node
+            String format = "%-10.10s %-30.30s  %-30.30s%n";
+            System.out.printf(format, "Type: ",node.getClass().getSimpleName(), System.identityHashCode(node));
+            System.out.printf(format, "Parent: ", node.parent.getClass().getSimpleName(), System.identityHashCode(node.parent));
             if (node.content != null)
-                System.out.println("Content : " + node.content);
-            System.out.println("-.-.-.-.-.-.-.-.-.-.-. ");
-
+                System.out.printf(format, "Content: ", node.content);
+            if (node.rightsibling != null)
+                System.out.printf(format, "R sib: ", node.rightsibling.getClass().getSimpleName(), System.identityHashCode(node.rightsibling));
+            if (node.leftmostsibling != null)
+                System.out.printf(format, "LM sib: ", node.leftmostsibling.getClass().getSimpleName(), System.identityHashCode(node.leftmostsibling));
+            if (node.leftmostchild != null)
+                System.out.printf(format, "LM child: ", node.leftmostchild.getClass().getSimpleName(), System.identityHashCode(node.leftmostchild));
+            System.out.println("-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-");
             if (node.leftmostchild != null){
                 recPrinter(node.leftmostchild);
             }

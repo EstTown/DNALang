@@ -1,14 +1,14 @@
 package AST;
 
 import ASTNodes.*;
+import Generated.*;
 import ASTNodes.ExpressionNodes.*;
 import ASTNodes.TerminalNodes.*;
-import Generated.*;
-import org.antlr.v4.runtime.Token;
+
+
 
 public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
 {
-    /*
     @Override
     public BaseNode visitProg(LanguageParser.ProgContext ctx)
     {
@@ -27,51 +27,68 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     @Override
     public BaseNode visitStatement(LanguageParser.StatementContext ctx)
     {
-        return visitExpression(ctx.expression());
+        return visit(ctx.expression());
     }
 
     @Override
-    public BaseNode visitExpression(LanguageParser.ExpressionContext ctx)
+    public BaseNode visitBinaryExp(LanguageParser.BinaryExpContext ctx)
     {
         BaseNode node;
-        ProgNode node2 = new ProgNode();
-        //Token token = ctx.op.getType();
-        System.out.println(ctx.op.getType());
-        try
+        switch (ctx.op.getType())
         {
-            switch (ctx.op.getType())
-            {
-                case LanguageLexer.ADD:
-                    node = new PlusNode();
-                    break;
-                case LanguageLexer.SUB:
-                    node = new MinusNode();
-                    break;
-                case LanguageLexer.MUL:
-                    node = new MultNode();
-                    break;
-                case LanguageLexer.DIV:
-                    node = new DivNode();
-                    break;
-                case LanguageLexer.INT:
-                    node = new IntegerLiteralNode();
-                    break;
-                default:
-                    node = new NullNode();
-                    break;
-                //considering this is a null node, then something probably went wrong
-                //not sure if error message here or in a later phase
-            }
+            case LanguageLexer.ADD:
+                node = new PlusNode();
+                break;
+            case LanguageLexer.SUB:
+                node = new MinusNode();
+                break;
+            case LanguageLexer.MUL:
+                node = new MultNode();
+                break;
+            case LanguageLexer.DIV:
+                node = new DivNode();
+                break;
+            case LanguageLexer.MOD:
+                node = new ModNode();
+                break;
+            case LanguageLexer.LT:
+                node = new LessThanNode();
+                break;
+            case LanguageLexer.GT:
+                node = new GreaterThanNode();
+                break;
+            case LanguageLexer.GTEQ:
+                node = new GreaterOrEqualNode();
+                break;
+            case LanguageLexer.LTEQ:
+                node = new LessOrEqualNode();
+                break;
+            case LanguageLexer.AND:
+                node = new AndNode();
+                break;
+            case LanguageLexer.OR:
+                node = new OrNode();
+                break;
+            case LanguageLexer.NOTEQ:
+                node = new NotEqualNode();
+                break;
+            default:
+                node = new NullNode();
+                break;
         }
-        catch(NullPointerException e)
-        {
-            NullNode node1 = new NullNode();
-            return node1;
-        }
-        node.AddChild(visitExpression(ctx.left));
-        node.AddChild(visitExpression(ctx.right));
+        node.AddChild(visit(ctx.left));
+        node.AddChild(visit(ctx.right));
 
         return node;
     }
-    */
+
+    @Override
+    public BaseNode visitNumberExp(LanguageParser.NumberExpContext ctx)
+    {
+        IntegerLiteralNode node = new IntegerLiteralNode();
+
+        node.setValue(Integer.parseInt(ctx.getText()));
+
+        return node;
+    }
 }

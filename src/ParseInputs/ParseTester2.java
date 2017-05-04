@@ -32,11 +32,11 @@ public class ParseTester2
             //TestASTBuilder testAstBuilder = new TestASTBuilder();
             //tree.accept(testAstBuilder);
 
-            ASTBuilder2 astBuilder2 = new ASTBuilder2();
+            ASTBuilder astBuilder = new ASTBuilder();
             LanguageParser.ProgContext cst = parser.prog();
 
             BaseNode ast;
-            ast = astBuilder2.visitProg(cst);
+            ast = astBuilder.visitProg(cst);
             ast.PrintTree();
 
             /*
