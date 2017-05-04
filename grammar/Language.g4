@@ -70,7 +70,7 @@ function
 
 
 assignment
-	: left=identifier op='=' right=expression
+	: left=identifier op='=' right=expression ';'
 	;
 
 
