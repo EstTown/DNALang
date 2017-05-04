@@ -3,7 +3,7 @@ package AST;
 import ASTNodes.BlockNodes.BlockNode;
 import ASTNodes.CommandNodes.*;
 import ASTNodes.DeclareFunctionNodes.DeclareFunctionNode;
-import ASTNodes.DeclareVarNodes.DeclareVarNodes;
+import ASTNodes.DeclareVarNodes.DeclareVarNode;
 import ASTNodes.ExpressionNodes.*;
 import ASTNodes.*;
 import ASTNodes.TerminalNodes.*;
@@ -86,7 +86,7 @@ public abstract class Visitor<BaseNode> implements ASTVisitor<BaseNode>
     }
 
     @Override
-    public void Visit(DeclareVarNodes declareVarNodes)
+    public void Visit(DeclareVarNode declareVarNode)
     {
 
     }

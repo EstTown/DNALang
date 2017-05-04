@@ -23,11 +23,19 @@ public interface LanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDeclarations(LanguageParser.DeclarationsContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LanguageParser#declaration}.
+	 * Visit a parse tree produced by the {@code dclAssign}
+	 * labeled alternative in {@link LanguageParser#declaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDeclaration(LanguageParser.DeclarationContext ctx);
+	T visitDclAssign(LanguageParser.DclAssignContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code declareVariable}
+	 * labeled alternative in {@link LanguageParser#declaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDeclareVariable(LanguageParser.DeclareVariableContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LanguageParser#arraytype}.
 	 * @param ctx the parse tree
@@ -35,12 +43,11 @@ public interface LanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitArraytype(LanguageParser.ArraytypeContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code id}
-	 * labeled alternative in {@link LanguageParser#identifier}.
+	 * Visit a parse tree produced by {@link LanguageParser#identifier}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitId(LanguageParser.IdContext ctx);
+	T visitIdentifier(LanguageParser.IdentifierContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LanguageParser#statements}.
 	 * @param ctx the parse tree
@@ -48,11 +55,33 @@ public interface LanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStatements(LanguageParser.StatementsContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LanguageParser#statement}.
+	 * Visit a parse tree produced by the {@code assign}
+	 * labeled alternative in {@link LanguageParser#statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStatement(LanguageParser.StatementContext ctx);
+	T visitAssign(LanguageParser.AssignContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code compoundstmt}
+	 * labeled alternative in {@link LanguageParser#statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCompoundstmt(LanguageParser.CompoundstmtContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code expr}
+	 * labeled alternative in {@link LanguageParser#statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExpr(LanguageParser.ExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code printstmt}
+	 * labeled alternative in {@link LanguageParser#statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrintstmt(LanguageParser.PrintstmtContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LanguageParser#compoundstatement}.
 	 * @param ctx the parse tree

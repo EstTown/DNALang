@@ -5,13 +5,13 @@ prog
 	;
 
 declarations
-	: (declaration ';')
+	: declaration ';'
 	;
 
 declaration
 	: (TYPE | arraytype) assignment     #dclAssign
 	| (TYPE | arraytype) identifier     #declareVariable
-	| assignment      +                 #assign
+	//| assignment                      #assign //this is moved to statement
 	;
 
 arraytype
@@ -19,20 +19,28 @@ arraytype
 	;
 
 identifier
-	: Word                              #id
+	: Word
 	;
 
 statements
 	: statement     //#stmts
 	;
 
+/*
 statement
-	: declaration
-	| compoundstatement
-	| expression
-	| printstatement
+	: assignment            //#assign
+	| compoundstatement     //#compoundstmt
+	| expression ';'        //#expr
+	| printstatement        //#printstmt
 	;
+*/
 
+statement
+	: assignment            #assign
+	| compoundstatement     #compoundstmt
+	| expression ';'        #expr
+	| printstatement        #printstmt
+	;
 
 compoundstatement
 	: iteration
@@ -63,9 +71,12 @@ function
 	| 'void' identifier '(' (TYPE identifier)* ')' '{' declarations* statements* '}' compoundstatement* #voidfunc
 	;
 
+
 assignment
-	: identifier op='=' expression
+	: left=identifier op='=' right=expression ';'
 	;
+
+
 /*
 expression
 	: term (operator expression)    #termExp
@@ -259,9 +270,16 @@ Digit
 	: [0-9]
 	;
 
+
 Word
 	: [a-zA-Z_][a-zA-Z_0-9]*
 	;
+
+/*
+Word
+	: ([a-z]|[A-Z_])[a-zA-Z_0-9]*
+	;
+*/
 
 WS
    : [ \r\n\t] -> skip
