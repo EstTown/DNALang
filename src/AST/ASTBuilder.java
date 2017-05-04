@@ -1,6 +1,7 @@
 package AST;
 
 import ASTNodes.*;
+import ASTNodes.CommandNodes.AssignCommandNode;
 import Generated.*;
 import ASTNodes.ExpressionNodes.*;
 import ASTNodes.TerminalNodes.*;
@@ -14,23 +15,40 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     {
         //order?
         BaseNode ast = new ProgNode();
-        ast.AddChild(visitDeclarations(ctx.declarations(0)));
+
+
+        int children = ctx.getChildCount();
+        System.out.println(children);
+        for (int i = 0; i < children; i++)
+        {
+            ast.AddChild(visitStatements(ctx.statements(i)));
+        }
+
+        /*
         ast.AddChild(visitStatements(ctx.statements(0)));
+        ast.AddChild(visitStatements(ctx.statements(1)));
+        */
         return ast;
     }
-
 
     @Override
     public BaseNode visitStatements(LanguageParser.StatementsContext ctx)
     {
-        return visitStatement(ctx.statement());
+        return visit(ctx.statement());
     }
 
     @Override
-    public BaseNode visitStatement(LanguageParser.StatementContext ctx)
+    public BaseNode visitAssign(LanguageParser.AssignContext ctx)
+    {
+        return visit(ctx.assignment());
+    }
+
+    @Override
+    public BaseNode visitExpr(LanguageParser.ExprContext ctx)
     {
         return visit(ctx.expression());
     }
+
 
     @Override
     public BaseNode visitUnaryExp(LanguageParser.UnaryExpContext ctx)
@@ -169,19 +187,46 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     @Override
     public BaseNode visitDeclarations(LanguageParser.DeclarationsContext ctx)
     {
-        return visitDeclaration(ctx.declaration());
+        return visit(ctx.declaration());
     }
 
-    @Override
-    public BaseNode visitDeclaration(LanguageParser.DeclarationContext ctx)
-    {
-        return super.visitDeclaration(ctx);
-
-    }
 
     @Override
     public BaseNode visitAssignment(LanguageParser.AssignmentContext ctx)
     {
-        return super.visitAssignment(ctx);
+        BaseNode node;
+        switch(ctx.op.getType())
+        {
+            case LanguageLexer.EQUAL:
+                node = new AssignCommandNode();
+                break;
+            default:
+                node = new NullNode();
+                break;
+        }
+        node.AddChild(visit(ctx.left));
+        node.AddChild(visit(ctx.right));
+        return node;
+    }
+
+    @Override
+    public BaseNode visitDclAssign(LanguageParser.DclAssignContext ctx)
+    {
+        return super.visitDclAssign(ctx);
+    }
+
+    @Override
+    public BaseNode visitDeclareVariable(LanguageParser.DeclareVariableContext ctx)
+    {
+        return super.visitDeclareVariable(ctx);
+    }
+
+    @Override
+    public BaseNode visitIdentifier(LanguageParser.IdentifierContext ctx)
+    {
+        IdentifierNode node = new IdentifierNode();
+        node.spelling = ctx.getText();
+
+        return node;
     }
 }

@@ -23,7 +23,9 @@ public class Main
         ParseTester parseTester = new ParseTester();
         parseTester.ParseSpecificInput(6);
 
+
         ParseTreeGUI ptg = new ParseTreeGUI();
         ptg.Show(6); //specify input file by giving an integer
+
     }
 }

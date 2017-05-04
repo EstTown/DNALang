@@ -22,6 +22,7 @@ public class TestASTBuilder extends LanguageBaseVisitor
         return visitChildren(ctx);
     }
 
+    /*
     @Override
     public Object visitStatement(LanguageParser.StatementContext ctx)
     {
@@ -29,4 +30,5 @@ public class TestASTBuilder extends LanguageBaseVisitor
         Iterator++;
         return visitChildren(ctx);
     }
+    */
 }
