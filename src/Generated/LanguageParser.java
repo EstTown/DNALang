@@ -260,6 +260,8 @@ public class LanguageParser extends Parser {
 		}
 	}
 	public static class DeclareVariableContext extends DeclarationContext {
+		public Token type;
+		public ArraytypeContext arrtype;
 		public IdentifierContext identifier() {
 			return getRuleContext(IdentifierContext.class,0);
 		}
@@ -283,6 +285,8 @@ public class LanguageParser extends Parser {
 		}
 	}
 	public static class DclAssignContext extends DeclarationContext {
+		public Token type;
+		public ArraytypeContext arrtype;
 		public AssignmentContext assignment() {
 			return getRuleContext(AssignmentContext.class,0);
 		}
@@ -323,13 +327,13 @@ public class LanguageParser extends Parser {
 				case 1:
 					{
 					setState(55);
-					match(TYPE);
+					((DclAssignContext)_localctx).type = match(TYPE);
 					}
 					break;
 				case 2:
 					{
 					setState(56);
-					arraytype();
+					((DclAssignContext)_localctx).arrtype = arraytype();
 					}
 					break;
 				}
@@ -347,13 +351,13 @@ public class LanguageParser extends Parser {
 				case 1:
 					{
 					setState(60);
-					match(TYPE);
+					((DeclareVariableContext)_localctx).type = match(TYPE);
 					}
 					break;
 				case 2:
 					{
 					setState(61);
-					arraytype();
+					((DeclareVariableContext)_localctx).arrtype = arraytype();
 					}
 					break;
 				}

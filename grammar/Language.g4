@@ -9,8 +9,8 @@ declarations
 	;
 
 declaration
-	: (TYPE | arraytype) assignment     #dclAssign
-	| (TYPE | arraytype) identifier     #declareVariable
+	: (type=TYPE | arrtype=arraytype) assignment     #dclAssign
+	| (type=TYPE | arrtype=arraytype) identifier     #declareVariable
 	//| assignment                      #assign //this is moved to statement
 	;
 

@@ -2,6 +2,7 @@ package AST;
 
 import ASTNodes.*;
 import ASTNodes.CommandNodes.*;
+import ASTNodes.DeclareVarNodes.DeclareVarNode;
 import Generated.*;
 import ASTNodes.ExpressionNodes.*;
 import ASTNodes.TerminalNodes.*;
@@ -16,9 +17,21 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         BaseNode ast = new ProgNode();
 
         int children = ctx.getChildCount();
-        for (int i = 0; i < children; i++)
+        int i;
+
+        for(i = 0; i < children; i++)
         {
-            ast.AddChild(visitStatements(ctx.statements(i)));
+            if(ctx.declarations(i) != null)
+            {
+                ast.AddChild(visitDeclarations(ctx.declarations(i)));
+            }
+        }
+        for (i = 0; i < children; i++)
+        {
+            if(ctx.statements(i) != null)
+            {
+                ast.AddChild(visitStatements(ctx.statements(i)));
+            }
         }
 
         return ast;
@@ -206,13 +219,20 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     @Override
     public BaseNode visitDclAssign(LanguageParser.DclAssignContext ctx)
     {
-        return super.visitDclAssign(ctx);
+        DeclareVarNode node = new DeclareVarNode();
+
+
+        return new NullNode();
     }
 
     @Override
     public BaseNode visitDeclareVariable(LanguageParser.DeclareVariableContext ctx)
     {
-        return super.visitDeclareVariable(ctx);
+        DeclareVarNode node = new DeclareVarNode();
+
+        node.content = ctx.type;
+
+        return node;
     }
 
     @Override
@@ -308,7 +328,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
             }
         }
 
-        return node;
+        return new NullNode();
     }
 
     @Override
@@ -320,7 +340,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
 
     @Override
     public BaseNode visitWhile(LanguageParser.WhileContext ctx) {
-        return super.visitWhile(ctx);
+        return new NullNode();
     }
 
     @Override
