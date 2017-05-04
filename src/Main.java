@@ -20,9 +20,8 @@ public class Main
 {
     public static void main(String[] args)
     {
-        ParseTester2 parseTester2 = new ParseTester2();
-        parseTester2.ParseSpecificInput2(6);
-
+        ParseTester parseTester = new ParseTester();
+        parseTester.ParseSpecificInput(6);
 
         ParseTreeGUI ptg = new ParseTreeGUI();
         ptg.Show(6); //specify input file by giving an integer

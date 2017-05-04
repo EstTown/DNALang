@@ -83,7 +83,12 @@ public class ParseTester
 
             BaseNode ast;
             ast = astBuilder.visitProg(cst);
-            //ast.PrintTree();
+            ast.PrintTree();
+
+            /*
+            PrettyPrinter prettyPrinter = new PrettyPrinter();
+            ast.Accept(prettyPrinter);
+            */
         }
         catch (IOException parser)
         {

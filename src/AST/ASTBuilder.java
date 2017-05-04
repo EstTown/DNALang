@@ -14,9 +14,11 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     {
         //order?
         BaseNode ast = new ProgNode();
+        ast.AddChild(visitDeclarations(ctx.declarations(0)));
         ast.AddChild(visitStatements(ctx.statements(0)));
         return ast;
     }
+
 
     @Override
     public BaseNode visitStatements(LanguageParser.StatementsContext ctx)
@@ -28,6 +30,24 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     public BaseNode visitStatement(LanguageParser.StatementContext ctx)
     {
         return visit(ctx.expression());
+    }
+
+    @Override
+    public BaseNode visitUnaryExp(LanguageParser.UnaryExpContext ctx)
+    {
+        BaseNode node;
+        switch(ctx.op.getType())
+        {
+            case LanguageLexer.NOT:
+                node = new NotNode();
+                break;
+            default:
+                node = new NullNode();
+                break;
+        }
+        node.AddChild(visit(ctx.expression()));
+
+        return node;
     }
 
     @Override
@@ -87,8 +107,81 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     {
         IntegerLiteralNode node = new IntegerLiteralNode();
 
-        node.setValue(Integer.parseInt(ctx.getText()));
+        node.setValue(ctx.getText());
 
         return node;
+    }
+
+    @Override
+    public BaseNode visitDnaExp(LanguageParser.DnaExpContext ctx)
+    {
+        DNALiteralNode node = new DNALiteralNode();
+        node.spelling = ctx.getText();
+
+        return node;
+    }
+
+    @Override
+    public BaseNode visitRnaExp(LanguageParser.RnaExpContext ctx)
+    {
+        RNALiteratalNode node = new RNALiteratalNode();
+        node.spelling = ctx.getText();
+
+        return node;
+    }
+
+    @Override
+    public BaseNode visitCodonExp(LanguageParser.CodonExpContext ctx)
+    {
+        CodonLiteralNode node = new CodonLiteralNode();
+        node.spelling = ctx.getText();
+
+        return node;
+    }
+
+    @Override
+    public BaseNode visitProteinExp(LanguageParser.ProteinExpContext ctx)
+    {
+        AminoLiteralNode node = new AminoLiteralNode();
+        node.spelling = ctx.getText();
+
+        return node;
+    }
+
+    @Override
+    public BaseNode visitBoolExp(LanguageParser.BoolExpContext ctx)
+    {
+        BoolLiteralNode node = new BoolLiteralNode();
+        node.spelling = ctx.getText();
+
+        return node;
+    }
+
+    @Override
+    public BaseNode visitVariableExp(LanguageParser.VariableExpContext ctx)
+    {
+        IdentifierNode node = new IdentifierNode();
+        node.spelling = ctx.getText();
+
+        return node;
+    }
+
+    @Override
+    public BaseNode visitDeclarations(LanguageParser.DeclarationsContext ctx)
+    {
+        return visitDeclaration(ctx.declaration());
+    }
+
+    @Override
+    public BaseNode visitDeclaration(LanguageParser.DeclarationContext ctx)
+    {
+        return super.visitDeclaration(ctx);
+
+    }
+
+    @Override
+    public BaseNode visitAssignment(LanguageParser.AssignmentContext ctx)
+    {
+        return super.visitAssignment(ctx);
     }
 }
