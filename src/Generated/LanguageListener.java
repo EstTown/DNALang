@@ -188,16 +188,6 @@ public interface LanguageListener extends ParseTreeListener {
 	 */
 	void exitFor(LanguageParser.ForContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LanguageParser#functioncall}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunctioncall(LanguageParser.FunctioncallContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link LanguageParser#functioncall}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunctioncall(LanguageParser.FunctioncallContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link LanguageParser#functions}.
 	 * @param ctx the parse tree
 	 */
@@ -373,6 +363,16 @@ public interface LanguageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitProteinExp(LanguageParser.ProteinExpContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LanguageParser#functioncall}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctioncall(LanguageParser.FunctioncallContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LanguageParser#functioncall}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctioncall(LanguageParser.FunctioncallContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code break}
 	 * labeled alternative in {@link LanguageParser#jump}.

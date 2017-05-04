@@ -124,8 +124,14 @@ expression
     ;
 
 functioncall
-	: identifier '(' (identifier | expression) (',' (identifier | expression))* ')'
+	: funcname=identifier '(' (expression) (',' (expression))* ')'
 	;
+/*
+functioncall
+	: funcname=identifier '(' (identifier | expression) (',' (identifier | expression))* ')'
+	;
+	//expression can already be rewritten as identifier, so why even have identifier?
+*/
 /*
 term
 	: functioncall

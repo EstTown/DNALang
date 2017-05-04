@@ -28,5 +28,4 @@ public class PrettyPrinter extends Visitor
 
         //plusNode.getLeftmostchild().getRightsibling().Accept(this); //this does not work
     }
-
 }

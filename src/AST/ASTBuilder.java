@@ -7,7 +7,6 @@ import ASTNodes.ExpressionNodes.*;
 import ASTNodes.TerminalNodes.*;
 
 
-
 public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
 {
     @Override
@@ -21,7 +20,6 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         {
             ast.AddChild(visitStatements(ctx.statements(i)));
         }
-
 
         return ast;
     }
@@ -310,16 +308,12 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
             }
         }
 
-
-
         return node;
     }
 
     @Override
     public BaseNode visitFor(LanguageParser.ForContext ctx)
     {
-
-
 
         return new NullNode();
     }
@@ -332,9 +326,35 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     @Override
     public BaseNode visitFunctioncallExp(LanguageParser.FunctioncallExpContext ctx)
     {
+        return visit(ctx.functioncall());
+    }
 
-        int a;
+    @Override
+    public BaseNode visitFunctioncall(LanguageParser.FunctioncallContext ctx)
+    {
+        CallCommandNode node = new CallCommandNode();
+        node.AddChild(visit(ctx.funcname));
 
-        return new NullNode();
+        int children = ctx.getChildCount();
+        int i;
+
+        for(i = 0; i < children; i++)
+        {
+            if(ctx.expression(i) != null)
+            {
+                node.AddChild(visit(ctx.expression(i)));
+            }
+        }
+        return node;
+    }
+
+    @Override
+    public BaseNode visitBreak(LanguageParser.BreakContext ctx)
+    {
+        BreakCommandNode node = new BreakCommandNode();
+
+
+
+        return node;
     }
 }
