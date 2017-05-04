@@ -15,7 +15,7 @@ public class PrettyPrinter extends Visitor
     public void Visit(ProgNode progNode)
     {
         progNode.getLeftmostchild().Accept(this); //this visits child node. Dunno how work
-		//getNext(progNode.getLeftmostchild());
+		getNext(progNode.getLeftmostchild());
 
 		//progNode.getLeftmostchild().getRightsibling().Accept(this);
 		//progNode.getLeftmostchild().getRightsibling().getRightsibling().Accept(this);
