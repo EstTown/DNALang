@@ -73,7 +73,7 @@ function
 
 
 assignment
-	: left=identifier op='=' right=expression ';'
+	: left=identifier op='=' right=expression
 	;
 
 
@@ -300,12 +300,12 @@ LTEQ    : '<=';
 GTEQ    : '>=';
 UNDERSCORE : '_' ;
 NOT    : '!' ;
-AND     : '&' ;
+AND     : '&&' ;
 SUB     : '-' ;
 EQUAL   : '=' ;
 EQEQ	: '==';
 NOTEQ   : '!=';
-OR      : '|' ;
+OR      : '||' ;
 DIV     : '/' ;
 ADD     : '+' ;
 MUL     : '*' ;
