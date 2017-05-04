@@ -233,4 +233,10 @@ public abstract class Visitor<BaseNode> implements ASTVisitor<BaseNode>
     {
 
     }
+
+    @Override
+    public void Visit(IfElseCommandNode ifElseCommandNode)
+    {
+
+    }
 }

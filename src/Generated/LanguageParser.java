@@ -734,6 +734,7 @@ public class LanguageParser extends Parser {
 		}
 	}
 	public static class IfContext extends SelectionContext {
+		public ExpressionContext predicate;
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
@@ -765,6 +766,7 @@ public class LanguageParser extends Parser {
 		}
 	}
 	public static class IfelseContext extends SelectionContext {
+		public ExpressionContext predicate;
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
@@ -813,7 +815,7 @@ public class LanguageParser extends Parser {
 				setState(89);
 				match(LPAREN);
 				setState(90);
-				expression(0);
+				((IfContext)_localctx).predicate = expression(0);
 				setState(91);
 				match(RPAREN);
 				setState(92);
@@ -859,7 +861,7 @@ public class LanguageParser extends Parser {
 				setState(108);
 				match(LPAREN);
 				setState(109);
-				expression(0);
+				((IfelseContext)_localctx).predicate = expression(0);
 				setState(110);
 				match(RPAREN);
 				setState(111);
@@ -1107,17 +1109,6 @@ public class LanguageParser extends Parser {
 	}
 
 	public static class FunctioncallContext extends ParserRuleContext {
-		public FunctioncallContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_functioncall; }
-	 
-		public FunctioncallContext() { }
-		public void copyFrom(FunctioncallContext ctx) {
-			super.copyFrom(ctx);
-		}
-	}
-	public static class FuncCallContext extends FunctioncallContext {
 		public List<IdentifierContext> identifier() {
 			return getRuleContexts(IdentifierContext.class);
 		}
@@ -1130,18 +1121,21 @@ public class LanguageParser extends Parser {
 		public ExpressionContext expression(int i) {
 			return getRuleContext(ExpressionContext.class,i);
 		}
-		public FuncCallContext(FunctioncallContext ctx) { copyFrom(ctx); }
+		public FunctioncallContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_functioncall; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterFuncCall(this);
+			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterFunctioncall(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitFuncCall(this);
+			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitFunctioncall(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitFuncCall(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitFunctioncall(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1151,7 +1145,6 @@ public class LanguageParser extends Parser {
 		enterRule(_localctx, 20, RULE_functioncall);
 		int _la;
 		try {
-			_localctx = new FuncCallContext(_localctx);
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(175);
@@ -1772,22 +1765,22 @@ public class LanguageParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
-	public static class FunctionallExpContext extends ExpressionContext {
+	public static class FunctioncallExpContext extends ExpressionContext {
 		public FunctioncallContext functioncall() {
 			return getRuleContext(FunctioncallContext.class,0);
 		}
-		public FunctionallExpContext(ExpressionContext ctx) { copyFrom(ctx); }
+		public FunctioncallExpContext(ExpressionContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterFunctionallExp(this);
+			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).enterFunctioncallExp(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitFunctionallExp(this);
+			if ( listener instanceof LanguageListener ) ((LanguageListener)listener).exitFunctioncallExp(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitFunctionallExp(this);
+			if ( visitor instanceof LanguageVisitor ) return ((LanguageVisitor<? extends T>)visitor).visitFunctioncallExp(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -1872,7 +1865,7 @@ public class LanguageParser extends Parser {
 				break;
 			case 3:
 				{
-				_localctx = new FunctionallExpContext(_localctx);
+				_localctx = new FunctioncallExpContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
 				setState(271);
@@ -2192,6 +2185,7 @@ public class LanguageParser extends Parser {
 		}
 	}
 	public static class PrintContext extends PrintstatementContext {
+		public IdentifierContext left;
 		public IdentifierContext identifier() {
 			return getRuleContext(IdentifierContext.class,0);
 		}
@@ -2223,7 +2217,7 @@ public class LanguageParser extends Parser {
 			setState(313);
 			match(LPAREN);
 			setState(314);
-			identifier();
+			((PrintContext)_localctx).left = identifier();
 			setState(315);
 			match(RPAREN);
 			setState(316);

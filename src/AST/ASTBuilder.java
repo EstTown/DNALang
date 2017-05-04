@@ -1,7 +1,7 @@
 package AST;
 
 import ASTNodes.*;
-import ASTNodes.CommandNodes.AssignCommandNode;
+import ASTNodes.CommandNodes.*;
 import Generated.*;
 import ASTNodes.ExpressionNodes.*;
 import ASTNodes.TerminalNodes.*;
@@ -17,16 +17,12 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         BaseNode ast = new ProgNode();
 
         int children = ctx.getChildCount();
-        System.out.println(children);
         for (int i = 0; i < children; i++)
         {
             ast.AddChild(visitStatements(ctx.statements(i)));
         }
 
-        /*
-        ast.AddChild(visitStatements(ctx.statements(0)));
-        ast.AddChild(visitStatements(ctx.statements(1)));
-        */
+
         return ast;
     }
 
@@ -47,7 +43,6 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     {
         return visit(ctx.expression());
     }
-
 
     @Override
     public BaseNode visitUnaryExp(LanguageParser.UnaryExpContext ctx)
@@ -229,5 +224,115 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         node.spelling = ctx.getText();
 
         return node;
+    }
+
+    @Override
+    public BaseNode visitCompoundstmt(LanguageParser.CompoundstmtContext ctx)
+    {
+        return visit(ctx.compoundstatement());
+    }
+
+    /*
+    @Override
+    public BaseNode visitCompoundstatement(LanguageParser.CompoundstatementContext ctx)
+    {
+        return null;
+    }
+    */
+
+    @Override
+    public BaseNode visitPrintstmt(LanguageParser.PrintstmtContext ctx)
+    {
+        return visit(ctx.printstatement());
+    }
+
+    @Override
+    public BaseNode visitPrint(LanguageParser.PrintContext ctx)
+    {
+        PrintCommandNode node = new PrintCommandNode();
+        node.AddChild(visit(ctx.left));
+
+        return node;
+    }
+
+    @Override
+    public BaseNode visitIf(LanguageParser.IfContext ctx)
+    {
+        IfCommandNode node = new IfCommandNode();
+
+        node.AddChild(visit(ctx.predicate));
+
+        int children = ctx.getChildCount();
+        int i;
+
+        for(i = 0; i < children; i++)
+        {
+            LanguageParser.DeclarationsContext childContext = ctx.declarations(i);
+            if(childContext != null)
+            {
+                node.AddChild(visitDeclarations(ctx.declarations(i)));
+            }
+        }
+        for (i = 0; i < children; i++)
+        {
+            LanguageParser.StatementsContext childContext = ctx.statements(i);
+            if(childContext != null)
+            {
+                node.AddChild(visitStatements(ctx.statements(i)));
+            }
+        }
+
+        return node;
+    }
+
+    @Override
+    public BaseNode visitIfelse(LanguageParser.IfelseContext ctx)
+    {
+        IfElseCommandNode node = new IfElseCommandNode();
+        node.AddChild(visit(ctx.predicate));
+
+        int children = ctx.getChildCount();
+        int i;
+        for(i = 0; i < children; i++)
+        {
+            LanguageParser.DeclarationsContext childContext = ctx.declarations(i);
+            if(childContext != null)
+            {
+                node.AddChild(visit(ctx.declarations(i)));
+            }
+        }
+        for (i = 0; i < children; i++)
+        {
+            LanguageParser.StatementsContext childContext = ctx.statements(i);
+            if(childContext != null)
+            {
+                node.AddChild(visit(ctx.statements(i)));
+            }
+        }
+
+
+
+        return node;
+    }
+
+    @Override
+    public BaseNode visitFor(LanguageParser.ForContext ctx)
+    {
+
+
+
+        return new NullNode();
+    }
+
+    @Override
+    public BaseNode visitWhile(LanguageParser.WhileContext ctx) {
+        return super.visitWhile(ctx);
+    }
+
+    @Override
+    public BaseNode visitFunctioncallExp(LanguageParser.FunctioncallExpContext ctx)
+    {
+
+        return new NullNode();
     }
 }

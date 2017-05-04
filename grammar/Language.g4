@@ -49,8 +49,8 @@ compoundstatement
 	;
 
 selection
-	: 'if' '(' expression ')'  '{' declarations* statements* '}'                                            #if
-	| 'if' '(' expression ')'  '{' declarations* statements* '}' 'else' '{' declarations* statements* '}'   #ifelse
+	: 'if' '(' predicate=expression ')'  '{' declarations* statements* '}'                                          #if
+	| 'if' '(' predicate=expression ')'  '{' declarations* statements* '}' 'else' '{' declarations* statements* '}' #ifelse
 	;
 
 iteration
@@ -58,9 +58,6 @@ iteration
 	| 'for' '(' assignment ';' expression ';' expression ')' '{' statements* '}'    #for
 	;
 
-functioncall
-	: identifier '(' (identifier | expression) (',' (identifier | expression))* ')' #funcCall
-	;
 
 functions
 	: function
@@ -116,7 +113,7 @@ expression
     | left=expression op=(EQEQ|NOTEQ) right=expression      #binaryExp
     | left=expression op=AND  right=expression              #binaryExp
     | left=expression op=OR right=expression                #binaryExp
-    | functioncall                               #functionallExp
+    | functioncall                               #functioncallExp
     | identifier                                 #variableExp
     | INT                                        #numberExp
     | BOOL                                       #boolExp
@@ -126,6 +123,9 @@ expression
     | PROTEIN                                    #proteinExp
     ;
 
+functioncall
+	: identifier '(' (identifier | expression) (',' (identifier | expression))* ')'
+	;
 /*
 term
 	: functioncall
@@ -145,7 +145,7 @@ jump
 	;
 
 printstatement
-	: 'Print' '(' identifier ')' ';'   #print
+	: 'Print' '(' left=identifier ')' ';'   #print
 	;
 
 
