@@ -31,7 +31,7 @@ public abstract class BaseNode implements NodeInterface
         return RecNextRightSibling(this, nodeToBeAdded);
     }
     public BaseNode AddChild(BaseNode nodeToBeAdded){
-            return RecAddChild(this, nodeToBeAdded);
+            return RecAddChild(this.leftmostchild, nodeToBeAdded);
     }
     public BaseNode MakeFamily(BaseNode parent, BaseNode... children){
     	//Add children to parent
@@ -60,9 +60,9 @@ public abstract class BaseNode implements NodeInterface
     public void PrintTree(){
         if(this != null)
         {
-            System.out.println(this.getClass().getSimpleName());
+            System.out.println(this.getClass().getSimpleName() + "		" + System.identityHashCode(this));
             System.out.println("____________________________________________________________________");
-            recPrinter(this.leftmostchild);
+            recPrinter(this.getLeftmostchild());
             System.out.println("____________________________________________________________________");
         }
     }
@@ -113,20 +113,20 @@ public abstract class BaseNode implements NodeInterface
 		}
 		return this.leftmostchild;
 	}
-    private BaseNode RecAddChild(BaseNode parent, BaseNode nodeToBeAdded){
+    private BaseNode RecAddChild(BaseNode node, BaseNode nodeToBeAdded){
         //If this is node has no children, just add it
         if (this.leftmostchild == null){
             this.leftmostchild = nodeToBeAdded;
             this.leftmostchild.parent = this;
             return this.leftmostchild;
         }
-        else if (parent.leftmostchild.rightsibling == null){
-            parent.leftmostchild.rightsibling = nodeToBeAdded;
-            parent.leftmostchild.rightsibling.leftmostsibling = this.leftmostsibling;
-            parent.leftmostchild.rightsibling.parent = this;
-            return parent.leftmostchild.rightsibling;
+        else if (node.rightsibling == null){
+            node.rightsibling = nodeToBeAdded;
+            node.rightsibling.leftmostsibling = this.leftmostsibling;
+            node.rightsibling.parent = this;
+            return node.rightsibling;
         }
-        else return RecNextRightSibling(parent.leftmostchild.rightsibling, nodeToBeAdded);
+        else return RecAddChild(node.rightsibling, nodeToBeAdded);
     }
     private BaseNode RecNextRightSibling(BaseNode node, BaseNode nodeToBeAdded){
         if (node == null){

@@ -16,7 +16,6 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         //order?
         BaseNode ast = new ProgNode();
 
-
         int children = ctx.getChildCount();
         System.out.println(children);
         for (int i = 0; i < children; i++)
@@ -204,8 +203,10 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
                 node = new NullNode();
                 break;
         }
+
         node.AddChild(visit(ctx.left));
         node.AddChild(visit(ctx.right));
+
         return node;
     }
 
