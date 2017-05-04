@@ -39,8 +39,8 @@ public class LanguageParser extends Parser {
 		null, "'if'", "'else'", "'while'", "'for'", "'void'", "'break'", "'return'", 
 		"'Print'", null, null, null, null, null, null, null, null, null, null, 
 		null, null, null, "'{'", "'('", "'['", "'}'", "')'", "']'", "','", "':'", 
-		"';'", "'<'", "'>'", "'<='", "'>='", "'_'", "'!'", "'&'", "'-'", "'='", 
-		"'=='", "'!='", "'|'", "'/'", "'+'", "'*'", "'%'"
+		"';'", "'<'", "'>'", "'<='", "'>='", "'_'", "'!'", "'&&'", "'-'", "'='", 
+		"'=='", "'!='", "'||'", "'/'", "'+'", "'*'", "'%'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
 		null, null, null, null, null, null, null, null, null, "TYPE", "BOOL", 
