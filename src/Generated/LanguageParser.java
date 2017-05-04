@@ -1,4 +1,4 @@
-// Generated from E:/Stuff/Dropbox/ProgrammingProjects/JavaProjects/DNALang/grammar\Language.g4 by ANTLR 4.7
+// Generated from C:/Stuff/Dropbox/ProgrammingProjects/JavaProjects/DNALang/grammar\Language.g4 by ANTLR 4.7
 package Generated;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -1501,6 +1501,7 @@ public class LanguageParser extends Parser {
 	}
 
 	public static class AssignmentContext extends ParserRuleContext {
+		public Token op;
 		public IdentifierContext identifier() {
 			return getRuleContext(IdentifierContext.class,0);
 		}
@@ -1535,7 +1536,7 @@ public class LanguageParser extends Parser {
 			setState(262);
 			identifier();
 			setState(263);
-			match(EQUAL);
+			((AssignmentContext)_localctx).op = match(EQUAL);
 			setState(264);
 			expression(0);
 			}
@@ -1639,10 +1640,11 @@ public class LanguageParser extends Parser {
 		}
 	}
 	public static class UnaryExpContext extends ExpressionContext {
-		public TerminalNode NOT() { return getToken(LanguageParser.NOT, 0); }
+		public Token op;
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
 		}
+		public TerminalNode NOT() { return getToken(LanguageParser.NOT, 0); }
 		public UnaryExpContext(ExpressionContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -1821,7 +1823,7 @@ public class LanguageParser extends Parser {
 				_ctx = _localctx;
 				_prevctx = _localctx;
 				setState(271);
-				match(NOT);
+				((UnaryExpContext)_localctx).op = match(NOT);
 				setState(272);
 				expression(15);
 				}
@@ -2007,7 +2009,7 @@ public class LanguageParser extends Parser {
 						setState(295);
 						if (!(precpred(_ctx, 10))) throw new FailedPredicateException(this, "precpred(_ctx, 10)");
 						setState(296);
-						match(AND);
+						((BinaryExpContext)_localctx).op = match(AND);
 						setState(297);
 						((BinaryExpContext)_localctx).right = expression(11);
 						}
@@ -2020,7 +2022,7 @@ public class LanguageParser extends Parser {
 						setState(298);
 						if (!(precpred(_ctx, 9))) throw new FailedPredicateException(this, "precpred(_ctx, 9)");
 						setState(299);
-						match(OR);
+						((BinaryExpContext)_localctx).op = match(OR);
 						setState(300);
 						((BinaryExpContext)_localctx).right = expression(10);
 						}

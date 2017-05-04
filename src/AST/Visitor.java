@@ -9,6 +9,15 @@ import ASTNodes.*;
 import ASTNodes.TerminalNodes.*;
 import Interfaces.ASTVisitor;
 
+/*
+In general, it seems that it's best to let each visitor (prettyprinter, typechecker etc.)
+decide how to traverse the AST instead of having code in each node for that purpose,
+although it does seem like it would make sense to have it in each node, because
+we probably want to traverse in the same way, which would mean copying some code.
+On the other hand it seems more natural to encapsulate this concern in each visitor,
+because they might want to traverse differently <- not sure about that.
+*/
+
 
 public abstract class Visitor<BaseNode> implements ASTVisitor<BaseNode>
 {
@@ -191,6 +200,36 @@ public abstract class Visitor<BaseNode> implements ASTVisitor<BaseNode>
 
     @Override
     public void Visit(GreaterOrEqualNode greaterOrEqualNode)
+    {
+
+    }
+
+    @Override
+    public void Visit(DNALiteralNode dnaLiteralNode)
+    {
+
+    }
+
+    @Override
+    public void Visit(AminoLiteralNode aminoLiteralNode)
+    {
+
+    }
+
+    @Override
+    public void Visit(CodonLiteralNode codonLiteralNode)
+    {
+
+    }
+
+    @Override
+    public void Visit(RNALiteratalNode rnaLiteratalNode)
+    {
+
+    }
+
+    @Override
+    public void Visit(BoolLiteralNode boolLiteralNode)
     {
 
     }

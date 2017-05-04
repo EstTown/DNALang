@@ -1,11 +1,12 @@
 package ASTNodes;
 
+import AST.Visitor;
 import Interfaces.ASTVisitor;
 import Interfaces.NodeInterface;
 
 import java.util.ArrayList;
 
-public abstract class BaseNode extends Object implements NodeInterface
+public abstract class BaseNode implements NodeInterface
 {
     private BaseNode parent;
     private BaseNode leftmostsibling;
@@ -119,4 +120,5 @@ public abstract class BaseNode extends Object implements NodeInterface
             return RecNextRightSibling(node.rightsibling, nodeToBeAdded);
         }
     }
+
 }

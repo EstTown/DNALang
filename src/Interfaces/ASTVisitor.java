@@ -44,10 +44,15 @@ public interface ASTVisitor<T>
     void Visit(OrNode orNode);
     void Visit(PlusNode plusNode);
 
+    void Visit(AminoLiteralNode aminoLiteralNode);
+    void Visit(BoolLiteralNode boolLiteralNode);
+    void Visit(CodonLiteralNode codonLiteralNode);
+    void Visit(DNALiteralNode dnaLiteralNode);
     void Visit(IdentifierNode identifierNode);
     void Visit(IntegerLiteralNode integerLiteralNode);
     void Visit(NullNode nullNode);
     void Visit(OperatorNode operatorNode);
+    void Visit(RNALiteratalNode rnaLiteratalNode);
 
     void Visit(ProgNode progNode);
 }
