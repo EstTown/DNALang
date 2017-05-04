@@ -117,13 +117,6 @@ public interface LanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFor(LanguageParser.ForContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code funcCall}
-	 * labeled alternative in {@link LanguageParser#functioncall}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFuncCall(LanguageParser.FuncCallContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link LanguageParser#functions}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -206,12 +199,12 @@ public interface LanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitRnaExp(LanguageParser.RnaExpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code functionallExp}
+	 * Visit a parse tree produced by the {@code functioncallExp}
 	 * labeled alternative in {@link LanguageParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunctionallExp(LanguageParser.FunctionallExpContext ctx);
+	T visitFunctioncallExp(LanguageParser.FunctioncallExpContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code codonExp}
 	 * labeled alternative in {@link LanguageParser#expression}.
@@ -226,6 +219,12 @@ public interface LanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitProteinExp(LanguageParser.ProteinExpContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LanguageParser#functioncall}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunctioncall(LanguageParser.FunctioncallContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code break}
 	 * labeled alternative in {@link LanguageParser#jump}.

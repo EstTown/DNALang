@@ -20,6 +20,7 @@ public interface ASTVisitor<T>
     void Visit(CallCommandNode callCommandNode);
     void Visit(ForCommandNode forCommandNode);
     void Visit(IfCommandNode ifCommandNode);
+    void Visit(IfElseCommandNode ifElseCommandNode);
     void Visit(PrintCommandNode printCommandNode);
     void Visit(ReturnCommandNode returnCommandNode);
     void Visit(SequentialCommandNode sequentialCommandNode);

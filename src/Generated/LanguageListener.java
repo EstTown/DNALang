@@ -188,18 +188,6 @@ public interface LanguageListener extends ParseTreeListener {
 	 */
 	void exitFor(LanguageParser.ForContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code funcCall}
-	 * labeled alternative in {@link LanguageParser#functioncall}.
-	 * @param ctx the parse tree
-	 */
-	void enterFuncCall(LanguageParser.FuncCallContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code funcCall}
-	 * labeled alternative in {@link LanguageParser#functioncall}.
-	 * @param ctx the parse tree
-	 */
-	void exitFuncCall(LanguageParser.FuncCallContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link LanguageParser#functions}.
 	 * @param ctx the parse tree
 	 */
@@ -340,17 +328,17 @@ public interface LanguageListener extends ParseTreeListener {
 	 */
 	void exitRnaExp(LanguageParser.RnaExpContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code functionallExp}
+	 * Enter a parse tree produced by the {@code functioncallExp}
 	 * labeled alternative in {@link LanguageParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void enterFunctionallExp(LanguageParser.FunctionallExpContext ctx);
+	void enterFunctioncallExp(LanguageParser.FunctioncallExpContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code functionallExp}
+	 * Exit a parse tree produced by the {@code functioncallExp}
 	 * labeled alternative in {@link LanguageParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void exitFunctionallExp(LanguageParser.FunctionallExpContext ctx);
+	void exitFunctioncallExp(LanguageParser.FunctioncallExpContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code codonExp}
 	 * labeled alternative in {@link LanguageParser#expression}.
@@ -375,6 +363,16 @@ public interface LanguageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitProteinExp(LanguageParser.ProteinExpContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LanguageParser#functioncall}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctioncall(LanguageParser.FunctioncallContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LanguageParser#functioncall}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctioncall(LanguageParser.FunctioncallContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code break}
 	 * labeled alternative in {@link LanguageParser#jump}.
