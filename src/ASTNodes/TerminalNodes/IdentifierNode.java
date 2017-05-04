@@ -5,7 +5,7 @@ import AST.Visitor;
 public class IdentifierNode extends TerminalNode
 {
     public IdentifierNode(String spelling){
-        this.spelling = spelling;
+        this.content = spelling;
     }
     public IdentifierNode(){}
 

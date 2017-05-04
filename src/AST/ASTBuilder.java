@@ -119,7 +119,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     {
         IntegerLiteralNode node = new IntegerLiteralNode();
 
-        node.setValue(ctx.getText());
+        node.content = ctx.getText();
 
         return node;
     }
@@ -128,7 +128,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     public BaseNode visitDnaExp(LanguageParser.DnaExpContext ctx)
     {
         DNALiteralNode node = new DNALiteralNode();
-        node.spelling = ctx.getText();
+        node.content = ctx.getText();
 
         return node;
     }
@@ -137,7 +137,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     public BaseNode visitRnaExp(LanguageParser.RnaExpContext ctx)
     {
         RNALiteratalNode node = new RNALiteratalNode();
-        node.spelling = ctx.getText();
+        node.content = ctx.getText();
 
         return node;
     }
@@ -146,7 +146,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     public BaseNode visitCodonExp(LanguageParser.CodonExpContext ctx)
     {
         CodonLiteralNode node = new CodonLiteralNode();
-        node.spelling = ctx.getText();
+        node.content = ctx.getText();
 
         return node;
     }
@@ -155,7 +155,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     public BaseNode visitProteinExp(LanguageParser.ProteinExpContext ctx)
     {
         AminoLiteralNode node = new AminoLiteralNode();
-        node.spelling = ctx.getText();
+        node.content = ctx.getText();
 
         return node;
     }
@@ -164,7 +164,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     public BaseNode visitBoolExp(LanguageParser.BoolExpContext ctx)
     {
         BoolLiteralNode node = new BoolLiteralNode();
-        node.spelling = ctx.getText();
+        node.content = ctx.getText();
 
         return node;
     }
@@ -173,7 +173,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     public BaseNode visitVariableExp(LanguageParser.VariableExpContext ctx)
     {
         IdentifierNode node = new IdentifierNode();
-        node.spelling = ctx.getText();
+        node.content = ctx.getText();
 
         return node;
     }
@@ -221,7 +221,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     public BaseNode visitIdentifier(LanguageParser.IdentifierContext ctx)
     {
         IdentifierNode node = new IdentifierNode();
-        node.spelling = ctx.getText();
+        node.content = ctx.getText();
 
         return node;
     }
