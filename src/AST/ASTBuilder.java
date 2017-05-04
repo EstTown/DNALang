@@ -333,6 +333,8 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     public BaseNode visitFunctioncallExp(LanguageParser.FunctioncallExpContext ctx)
     {
 
+        int a;
+
         return new NullNode();
     }
 }
