@@ -17,15 +17,15 @@ public class PrettyPrinter extends Visitor
     public void Visit(ProgNode progNode)
     {
         progNode.getLeftmostchild().Accept(this); //this visits child node. Dunno how work
-        System.out.println("We are at a prognode/root");
-
+        //System.out.println("We are at a prognode/root");
     }
 
     @Override
     public void Visit(PlusNode plusNode)
     {
+		System.out.println(plusNode.getLeftmostchild().content + " + " + plusNode.getLeftmostchild().getRightsibling().content);
         plusNode.getLeftmostchild().Accept(this);
-        System.out.println("+");
+
         //plusNode.getLeftmostchild().getRightsibling().Accept(this); //this does not work
     }
 

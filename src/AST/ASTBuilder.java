@@ -124,7 +124,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     {
         IntegerLiteralNode node = new IntegerLiteralNode();
 
-        node.setValue(ctx.getText());
+        node.content = ctx.getText();
 
         return node;
     }
