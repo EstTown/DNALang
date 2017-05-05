@@ -26,5 +26,8 @@ public class Main
         ParseTreeGUI ptg = new ParseTreeGUI();
         ptg.Show(10); //specify input file by giving an integer
 
+        int a; //this was because I could't push
+
+
     }
 }
