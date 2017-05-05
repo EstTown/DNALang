@@ -9,8 +9,8 @@ declarations
 	;
 
 declaration
-	: (type=TYPE | arrtype=arraytype) assignment     #dclAssign
-	| (type=TYPE | arrtype=arraytype) identifier     #declareVariable
+	: (type=TYPE | arrtype=arraytype) assignment  #dclAssign
+	| (type=TYPE | arrtype=arraytype) identifier  #declareVariable
 	//| assignment                      #assign //this is moved to statement
 	;
 
@@ -34,9 +34,13 @@ statement
 	| printstatement        //#printstmt
 	;
 */
+//So I need a block. According to abstract syntax, a block can be declarations and statements
+block
+    : declarations* statements*
+    ;
 
 statement
-	: assignment            #assign
+	: assignment ';'        #assign
 	| compoundstatement     #compoundstmt
 	| expression ';'        #expr
 	| printstatement        #printstmt
@@ -48,29 +52,51 @@ compoundstatement
 	| jump
 	;
 
+/*
 selection
 	: 'if' '(' predicate=expression ')'  '{' declarations* statements* '}'                                          #if
 	| 'if' '(' predicate=expression ')'  '{' declarations* statements* '}' 'else' '{' declarations* statements* '}' #ifelse
 	;
+*/
+//rewriting selection with blocks
+selection
+	: 'if' '(' predicate=expression ')'  '{' block '}'                                          #if
+	| 'if' '(' predicate=expression ')'  '{' block '}' 'else' '{' block '}'                     #ifelse
+	;
 
+/*
 iteration
-	: 'while' '(' expression ')' '{' statements* '}'                                #while
-	| 'for' '(' assignment ';' expression ';' expression ')' '{' statements* '}'    #for
+	: 'while' '(' predicate=expression ')' '{'declarations* statements* '}'                                                    #while
+	| 'for' '(' iterator=assignment ';' predicate=expression ';' increment=assignment ')' '{' declarations* statements* '}'    #for
+	;
+*/
+//rewriting iteration with blocks
+iteration
+	: 'while' '(' predicate=expression ')' '{' block '}'                                                    #while
+	| 'for' '(' iterator=assignment ';' predicate=expression ';' increment=assignment ')' '{' block '}'     #for
 	;
 
 
 functions
-	: function
+	: functiondeclaration
 	;
 
+/*
 function
-	: TYPE identifier '(' (TYPE identifier)* ')' '{' declarations* statements* '}' compoundstatement*   #func
-	| 'void' identifier '(' (TYPE identifier)* ')' '{' declarations* statements* '}' compoundstatement* #voidfunc
+	: TYPE identifier '(' TYPE identifier (',' TYPE identifier)* ')' '{' declarations* statements* jump'}'
+	| 'void' identifier '(' TYPE identifier (','TYPE identifier)* ')' '{' declarations* statements* '}'
 	;
+*/
+//rewriting function
+functiondeclaration
+	: TYPE funcname=identifier '(' declaration (',' declaration)* ')' '{' declarations* statements* jump'}'
+	| 'void' funcname=identifier '(' declaration (',' declaration)* ')' '{' declarations* statements* '}'
+	;
+
 
 
 assignment
-	: left=identifier op='=' right=expression ';'
+	: left=identifier op='=' right=expression //';' cannot have semi-colon here, because it ruins for loops
 	;
 
 

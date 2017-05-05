@@ -1,4 +1,4 @@
-int a;
+int a = 7;
 bool b;
 a = 5;
 2+5;

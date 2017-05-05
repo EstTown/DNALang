@@ -55,6 +55,12 @@ public interface LanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStatements(LanguageParser.StatementsContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link LanguageParser#block}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBlock(LanguageParser.BlockContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code assign}
 	 * labeled alternative in {@link LanguageParser#statement}.
 	 * @param ctx the parse tree
@@ -123,19 +129,11 @@ public interface LanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFunctions(LanguageParser.FunctionsContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code func}
-	 * labeled alternative in {@link LanguageParser#function}.
+	 * Visit a parse tree produced by {@link LanguageParser#functiondeclaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunc(LanguageParser.FuncContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code voidfunc}
-	 * labeled alternative in {@link LanguageParser#function}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitVoidfunc(LanguageParser.VoidfuncContext ctx);
+	T visitFunctiondeclaration(LanguageParser.FunctiondeclarationContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LanguageParser#assignment}.
 	 * @param ctx the parse tree

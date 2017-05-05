@@ -1,7 +1,9 @@
 package AST;
 
 import ASTNodes.*;
+import ASTNodes.BlockNodes.BlockNode;
 import ASTNodes.CommandNodes.*;
+import ASTNodes.DeclareFunctionNodes.DeclareFunctionNode;
 import ASTNodes.DeclareVarNodes.DeclareVarNode;
 import Generated.*;
 import ASTNodes.ExpressionNodes.*;
@@ -31,6 +33,13 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
             if(ctx.statements(i) != null)
             {
                 ast.AddChild(visitStatements(ctx.statements(i)));
+            }
+        }
+        for(i = 0; i < children; i++)
+        {
+            if(ctx.functions(i) != null)
+            {
+                ast.AddChild(visit(ctx.functions(i)));
             }
         }
 
@@ -221,8 +230,11 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     {
         DeclareVarNode node = new DeclareVarNode();
 
+        node.content = ctx.TYPE();
 
-        return new NullNode();
+        node.AddChild(visit(ctx.assignment()));
+
+        return node;
     }
 
     @Override
@@ -230,7 +242,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     {
         DeclareVarNode node = new DeclareVarNode();
 
-        node.content = ctx.type;
+        node.content = ctx.TYPE();
 
         return node;
     }
@@ -277,29 +289,8 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     public BaseNode visitIf(LanguageParser.IfContext ctx)
     {
         IfCommandNode node = new IfCommandNode();
-
         node.AddChild(visit(ctx.predicate));
-
-        int children = ctx.getChildCount();
-        int i;
-
-        for(i = 0; i < children; i++)
-        {
-            LanguageParser.DeclarationsContext childContext = ctx.declarations(i);
-            if(childContext != null)
-            {
-                node.AddChild(visitDeclarations(ctx.declarations(i)));
-            }
-        }
-        for (i = 0; i < children; i++)
-        {
-            LanguageParser.StatementsContext childContext = ctx.statements(i);
-            if(childContext != null)
-            {
-                node.AddChild(visitStatements(ctx.statements(i)));
-            }
-        }
-
+        node.AddChild(visit(ctx.block()));
         return node;
     }
 
@@ -308,39 +299,34 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     {
         IfElseCommandNode node = new IfElseCommandNode();
         node.AddChild(visit(ctx.predicate));
-
-        int children = ctx.getChildCount();
-        int i;
-        for(i = 0; i < children; i++)
-        {
-            LanguageParser.DeclarationsContext childContext = ctx.declarations(i);
-            if(childContext != null)
-            {
-                node.AddChild(visit(ctx.declarations(i)));
-            }
-        }
-        for (i = 0; i < children; i++)
-        {
-            LanguageParser.StatementsContext childContext = ctx.statements(i);
-            if(childContext != null)
-            {
-                node.AddChild(visit(ctx.statements(i)));
-            }
-        }
-
-        return new NullNode();
+        node.AddChild(visit(ctx.block(0)));
+        node.AddChild(visit(ctx.block(1)));
+        return node;
     }
 
     @Override
     public BaseNode visitFor(LanguageParser.ForContext ctx)
     {
+        ForCommandNode node = new ForCommandNode();
+        node.AddChild(visit(ctx.iterator));
+        node.AddChild(visit(ctx.predicate));
+        node.AddChild(visit(ctx.increment));
+        node.AddChild(visit(ctx.block()));
 
-        return new NullNode();
+        return node;
     }
 
+
     @Override
-    public BaseNode visitWhile(LanguageParser.WhileContext ctx) {
-        return new NullNode();
+    public BaseNode visitWhile(LanguageParser.WhileContext ctx)
+    {
+        WhileCommandNode node = new WhileCommandNode();
+
+        node.AddChild(visit(ctx.predicate));
+
+        node.AddChild(visit(ctx.block()));
+
+        return node;
     }
 
     @Override
@@ -371,16 +357,87 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     @Override
     public BaseNode visitBreak(LanguageParser.BreakContext ctx)
     {
-        BreakCommandNode node = new BreakCommandNode();
-
-        return node;
+        return new BlockNode();
     }
 
     @Override
     public BaseNode visitReturn(LanguageParser.ReturnContext ctx)
     {
         ReturnCommandNode node = new ReturnCommandNode();
+        node.AddChild(visit(ctx.expression()));
 
+        return node;
+    }
+
+    @Override
+    public BaseNode visitFunctions(LanguageParser.FunctionsContext ctx)
+    {
+        return visit(ctx.functiondeclaration());
+    }
+
+    @Override
+    public BaseNode visitFunctiondeclaration(LanguageParser.FunctiondeclarationContext ctx)
+    {
+        DeclareFunctionNode node = new DeclareFunctionNode();
+
+        node.content = ctx.TYPE();
+
+        node.AddChild(visit(ctx.funcname));
+
+        //get formal parameters
+        int children = ctx.getChildCount();
+        int i;
+        for(i = 0; i < children; i++)
+        {
+            if(ctx.declaration(i) != null)
+            {
+                node.AddChild(visit(ctx.declaration(i)));
+            }
+        }
+
+        //get declarations and statements
+        for(i = 0; i < children; i++)
+        {
+            if(ctx.declarations(i) != null)
+            {
+                node.AddChild(visit(ctx.declarations(i)));
+            }
+        }
+
+        for(i = 0; i < children; i++)
+        {
+            if(ctx.statements(i) != null)
+            {
+                node.AddChild(visit(ctx.statements(i)));
+            }
+        }
+        node.AddChild(visit(ctx.jump()));
+
+        return node;
+    }
+
+    @Override
+    public BaseNode visitBlock(LanguageParser.BlockContext ctx)
+    {
+        BlockNode node = new BlockNode();
+
+        int children = ctx.getChildCount();
+        int i;
+
+        for(i = 0; i < children; i++)
+        {
+            if(ctx.declarations(i) != null)
+            {
+                node.AddChild(visit(ctx.declarations(i)));
+            }
+        }
+        for(i = 0; i < children; i++)
+        {
+            if(ctx.statements(i) != null)
+            {
+                node.AddChild(visit(ctx.statements(i)));
+            }
+        }
         return node;
     }
 }

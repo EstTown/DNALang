@@ -100,6 +100,18 @@ public class LanguageBaseListener implements LanguageListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterBlock(LanguageParser.BlockContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBlock(LanguageParser.BlockContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterAssign(LanguageParser.AssignContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -220,25 +232,13 @@ public class LanguageBaseListener implements LanguageListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFunc(LanguageParser.FuncContext ctx) { }
+	@Override public void enterFunctiondeclaration(LanguageParser.FunctiondeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFunc(LanguageParser.FuncContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterVoidfunc(LanguageParser.VoidfuncContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitVoidfunc(LanguageParser.VoidfuncContext ctx) { }
+	@Override public void exitFunctiondeclaration(LanguageParser.FunctiondeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

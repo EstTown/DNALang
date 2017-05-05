@@ -21,10 +21,10 @@ public class Main
     public static void main(String[] args)
     {
         ParseTester parseTester = new ParseTester();
-        parseTester.ParseSpecificInput(9);
+        parseTester.ParseSpecificInput(10);
 
         ParseTreeGUI ptg = new ParseTreeGUI();
-        ptg.Show(9); //specify input file by giving an integer
+        ptg.Show(10); //specify input file by giving an integer
 
     }
 }
