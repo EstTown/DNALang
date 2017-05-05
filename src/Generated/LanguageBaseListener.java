@@ -1,4 +1,4 @@
-// Generated from /Users/frederik/Desktop/P4Project/grammar/Language.g4 by ANTLR 4.7
+// Generated from C:/Stuff/Dropbox/ProgrammingProjects/JavaProjects/DNALang/grammar\Language.g4 by ANTLR 4.7
 package Generated;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -287,6 +287,18 @@ public class LanguageBaseListener implements LanguageListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitBinaryExp(LanguageParser.BinaryExpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterConvertExp(LanguageParser.ConvertExpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitConvertExp(LanguageParser.ConvertExpContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

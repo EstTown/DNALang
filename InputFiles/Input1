@@ -9,9 +9,6 @@ minDnasekvens = minDnaSekvens - minDnaDelSekvens + mitCodon + CGGGCTAA;
 if (minDnaSekvens == mitCodon){
     protein proteinSekvens = minDnaSekvens;
 }
-
 else{
     variabel = variabel + variabel;
 }
-
-

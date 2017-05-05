@@ -32,6 +32,7 @@ public interface ASTVisitor<T>
 
     void Visit(AndNode andNode);
     void Visit(ComparisonNode comparisonNode);
+    void Visit(ConvertNode convertNode);
     void Visit(DivNode divNode);
     void Visit(GreaterOrEqualNode greaterOrEqualNode);
     void Visit(GreaterThanNode greaterThanNode);

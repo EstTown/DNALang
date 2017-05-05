@@ -1,4 +1,4 @@
-// Generated from /Users/frederik/Desktop/P4Project/grammar/Language.g4 by ANTLR 4.7
+// Generated from C:/Stuff/Dropbox/ProgrammingProjects/JavaProjects/DNALang/grammar\Language.g4 by ANTLR 4.7
 package Generated;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -263,6 +263,18 @@ public interface LanguageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitBinaryExp(LanguageParser.BinaryExpContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code convertExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterConvertExp(LanguageParser.ConvertExpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code convertExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitConvertExp(LanguageParser.ConvertExpContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code unaryExp}
 	 * labeled alternative in {@link LanguageParser#expression}.

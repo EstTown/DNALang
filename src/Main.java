@@ -22,9 +22,12 @@ public class Main
     {
         int number = 13;
         ParseTester parseTester = new ParseTester();
-        parseTester.ParseAllInputs(number);
+        //parseTester.ParseAllInputs(number);
 
-        //parseTester.ParseSpecificInput(10);
+        //input 5 gives nullpointerexception
+
+        parseTester.ParseSpecificInput(13);
+
 
         /*
         ParseTreeGUI ptg = new ParseTreeGUI();

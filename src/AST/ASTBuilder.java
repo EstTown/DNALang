@@ -19,8 +19,6 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         BaseNode ast = new ProgNode();
 
         int children = ctx.getChildCount();
-		//System.out.println(ctx.getChild(0).getClass().getSimpleName());
-		//System.out.println(children);
 
 		int funcCounter = 0;
 		int declCounter = 0;
@@ -28,51 +26,23 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
 
 		for(int i = 0; i < children; i++)
 		{
-			//System.out.println(ctx.getChild(i).getClass().getSimpleName());
-			//System.out.println("run");
 			if (ctx.getChild(i) != null) {
 				if (ctx.getChild(i).getClass().getSimpleName().equals("DeclarationsContext")) {
-					//System.out.println("added DeclarationsContext");
 					ast.AddChild(visitDeclarations(ctx.declarations(declCounter)));
 					declCounter++;
 				}
 
 				if (ctx.getChild(i).getClass().getSimpleName().equals("StatementsContext")) {
-					//System.out.println("added StatementsContext");
 					ast.AddChild(visitStatements(ctx.statements(stmtCounter)));
 					stmtCounter++;
 				}
 
 				if (ctx.getChild(i).getClass().getSimpleName().equals("FunctionsContext")) {
-					//System.out.println("added FunctionsContext");
 					ast.AddChild(visitFunctions(ctx.functions(funcCounter)));
 					funcCounter++;
 				}
 			}
 		}
-/*
-        for(i = 0; i < children; i++)
-        {
-            if(ctx.declarations(i) != null)
-            {
-                ast.AddChild(visitDeclarations(ctx.declarations(i)));
-            }
-        }
-        for (i = 0; i < children; i++)
-        {
-            if(ctx.statements(i) != null)
-            {
-                ast.AddChild(visitStatements(ctx.statements(i)));
-            }
-        }
-        for(i = 0; i < children; i++)
-        {
-            if(ctx.functions(i) != null)
-            {
-                ast.AddChild(visit(ctx.functions(i)));
-            }
-        }
-*/
         return ast;
     }
 
@@ -464,20 +434,23 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
 		for(int i = 0; i < children; i++)
 		{
 			if (ctx.getChild(i) != null) {
-				if (ctx.getChild(i).getClass().getSimpleName().equals("DeclarationsContext")) {
-					System.out.println("added DeclarationsContext");
+				if (ctx.getChild(i).getClass().getSimpleName().equals("DeclarationsContext"))
+				{
 					node.AddChild(visitDeclarations(ctx.declarations(declCounter)));
 					declCounter++;
 				}
 
 				if (ctx.getChild(i).getClass().getSimpleName().equals("StatementsContext")) {
-					System.out.println("added StatementsContext");
 					node.AddChild(visitStatements(ctx.statements(stmtCounter)));
 					stmtCounter++;
 				}
 			}
 		}
-
         return node;
+    }
+
+    @Override
+    public BaseNode visitParensExp(LanguageParser.ParensExpContext ctx) {
+        return visit(ctx.expression());
     }
 }

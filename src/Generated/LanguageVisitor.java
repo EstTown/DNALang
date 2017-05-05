@@ -1,4 +1,4 @@
-// Generated from /Users/frederik/Desktop/P4Project/grammar/Language.g4 by ANTLR 4.7
+// Generated from C:/Stuff/Dropbox/ProgrammingProjects/JavaProjects/DNALang/grammar\Language.g4 by ANTLR 4.7
 package Generated;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -161,6 +161,13 @@ public interface LanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitBinaryExp(LanguageParser.BinaryExpContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code convertExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConvertExp(LanguageParser.ConvertExpContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code unaryExp}
 	 * labeled alternative in {@link LanguageParser#expression}.

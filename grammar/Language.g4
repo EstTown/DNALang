@@ -126,7 +126,7 @@ expression
     | PROTEIN                                    //#proteinExp
     ;
     */
-
+/*
 expression
     : LPAREN expression RPAREN                              #parensExp
     | <assoc=right> op=NOT expression                       #unaryExp    //I think this one is now right associative, not sure how to check if correct
@@ -145,6 +145,31 @@ expression
     | CODON                                      #codonExp
     | PROTEIN                                    #proteinExp
     ;
+*/
+
+//Adding more stuff to expressions
+expression
+    : LPAREN expression RPAREN                              #parensExp
+    | left=expression 'as' TYPE                             #convertExp  //this is a conversion of whatever the value of the expression is, to some type
+    | <assoc=right> op=NOT expression                       #unaryExp    //I think this one is now right associative, not sure how to check if correct
+    | left=expression op=(MUL|DIV|MOD) right=expression     #binaryExp
+    | left=expression op=(ADD|SUB) right=expression         #binaryExp
+    | left=expression op=(LT|GT|LTEQ|GTEQ) right=expression #binaryExp
+    | left=expression op=(EQEQ|NOTEQ) right=expression      #binaryExp
+    | left=expression op=AND  right=expression              #binaryExp
+    | left=expression op=OR right=expression                #binaryExp
+    | functioncall                               #functioncallExp
+    | identifier                                 #variableExp
+    | INT                                        #numberExp
+    | BOOL                                       #boolExp
+    | DNA                                        #dnaExp
+    | RNA                                        #rnaExp
+    | CODON                                      #codonExp
+    | PROTEIN                                    #proteinExp
+    ;
+
+
+
 
 functioncall
 	: funcname=identifier '(' (expression) (',' (expression))* ')'

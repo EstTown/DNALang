@@ -24,7 +24,6 @@ public abstract class Visitor<BaseNode> implements ASTVisitor<BaseNode>
     @Override
     public BaseNode Visit(BlockNode blockNode){return null;}
 
-
     @Override
     public void Visit(AssignCommandNode assignCommandNode)
     {
@@ -236,6 +235,12 @@ public abstract class Visitor<BaseNode> implements ASTVisitor<BaseNode>
 
     @Override
     public void Visit(IfElseCommandNode ifElseCommandNode)
+    {
+
+    }
+
+    @Override
+    public void Visit(ConvertNode convertNode)
     {
 
     }
