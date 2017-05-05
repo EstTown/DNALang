@@ -40,10 +40,15 @@ public class PrettyPrinter extends Visitor
 			return getNextRightSibling(node.getRightsibling());
 	}
 
+	//region Block Nodes
+
+	//endregion
+
 	//region DeclareFunction Nodes
 	@Override
 	public void Visit(DeclareFunctionNode declareFunctionNode)
 	{
+		/*
 		//Return type
 		declareFunctionNode.getLeftmostchild().Accept(this);
 		System.out.print(" ");
@@ -58,6 +63,7 @@ public class PrettyPrinter extends Visitor
 		//....
 		//....
 		System.out.print("\n } \n");
+		*/
 	}
 	//endregion
 
@@ -69,10 +75,15 @@ public class PrettyPrinter extends Visitor
     	varNode.getLeftmostchild().Accept(this);
 		//Identifier
 		varNode.getLeftmostchild().getRightsibling().Accept(this);
-    	System.out.print(" = ");
-    	//Righthand expression
-		varNode.getLeftmostchild().Accept(this);
+
+		//If we assign stuff, as we declare
+		if (varNode.getLeftmostchild() != null) {
+			System.out.print(" = ");
+			varNode.getLeftmostchild().Accept(this);
+		}
+
 		System.out.print("; \n");
+
 	}
 	//endregion
 
@@ -150,8 +161,7 @@ Redundant... apparently... CallCommandNode takes care of this instead...
 			System.out.print(" ");
 			returnCommandNode.getLeftmostchild().Accept(this);
 		}
-		else
-			System.out.print("; \n");
+		System.out.print("; \n");
 	}
 
 	@Override

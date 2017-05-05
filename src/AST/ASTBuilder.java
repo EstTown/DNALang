@@ -20,7 +20,40 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
 
         int children = ctx.getChildCount();
         int i;
+		//System.out.println(ctx.getChild(0).getClass().getSimpleName());
+		System.out.println(children);
 
+		int funcCounter = 0;
+		int declCounter = 0;
+		int stmtCounter = 0;
+
+		for(i = 0; i < children; i++)
+		{
+			//System.out.println(ctx.getChild(i).getClass().getSimpleName());
+			System.out.println("run");
+			if (ctx.getChild(i) != null) {
+				if (ctx.getChild(i).getClass().getSimpleName().equals("DeclarationsContext")) {
+					{
+						System.out.println("added DeclarationsContext");
+						ast.AddChild(visitDeclarations(ctx.declarations(declCounter)));
+						declCounter++;
+					}
+				}
+
+				if (ctx.getChild(i).getClass().getSimpleName().equals("StatementsContext")) {
+						System.out.println("added StatementsContext");
+						ast.AddChild(visitStatements(ctx.statements(stmtCounter)));
+						stmtCounter++;
+				}
+
+				if (ctx.getChild(i).getClass().getSimpleName().equals("FunctionsContext")) {
+						System.out.println("added FunctionsContext");
+						ast.AddChild(visitFunctions(ctx.functions(funcCounter)));
+						funcCounter++;
+				}
+			}
+		}
+/*
         for(i = 0; i < children; i++)
         {
             if(ctx.declarations(i) != null)
@@ -42,7 +75,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
                 ast.AddChild(visit(ctx.functions(i)));
             }
         }
-
+*/
         return ast;
     }
 
@@ -339,6 +372,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     public BaseNode visitFunctioncall(LanguageParser.FunctioncallContext ctx)
     {
         CallCommandNode node = new CallCommandNode();
+        node.AddChild(visit(ctx.identifier()));
         node.AddChild(visit(ctx.funcname));
 
         int children = ctx.getChildCount();
@@ -357,17 +391,19 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     @Override
     public BaseNode visitBreak(LanguageParser.BreakContext ctx)
     {
-        return new BlockNode();
+        return new BreakCommandNode();
     }
 
     @Override
     public BaseNode visitReturn(LanguageParser.ReturnContext ctx)
     {
         ReturnCommandNode node = new ReturnCommandNode();
+
         node.AddChild(visit(ctx.expression()));
 
         return node;
     }
+
 
     @Override
     public BaseNode visitFunctions(LanguageParser.FunctionsContext ctx)
