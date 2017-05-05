@@ -453,4 +453,12 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     public BaseNode visitParensExp(LanguageParser.ParensExpContext ctx) {
         return visit(ctx.expression());
     }
+
+    @Override
+    public BaseNode visitConvertExp(LanguageParser.ConvertExpContext ctx) {
+        ConvertNode node = new ConvertNode();
+        node.content = ctx.TYPE();
+        node.AddChild(visit(ctx.left));
+        return node;
+    }
 }

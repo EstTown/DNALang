@@ -26,7 +26,7 @@ public class Main
 
         //input 5 gives nullpointerexception
 
-        parseTester.ParseSpecificInput(13);
+        parseTester.ParseSpecificInput(2);
 
 
         /*
