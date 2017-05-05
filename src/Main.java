@@ -20,8 +20,9 @@ public class Main
 {
     public static void main(String[] args)
     {
+        int number = 13;
         ParseTester parseTester = new ParseTester();
-        parseTester.ParseAllInputs(13);
+        parseTester.ParseAllInputs(number);
 
         //parseTester.ParseSpecificInput(10);
 
