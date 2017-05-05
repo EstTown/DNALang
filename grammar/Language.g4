@@ -5,12 +5,12 @@ prog
 	;
 
 declarations
-	: declaration ';'
+	: declaration //';'
 	;
 
 declaration
-	: (type=TYPE | arrtype=arraytype) assignment     #dclAssign
-	| (type=TYPE | arrtype=arraytype) identifier     #declareVariable
+	: (type=TYPE | arrtype=arraytype) assignment ';'    #dclAssign
+	| (type=TYPE | arrtype=arraytype) identifier ';'    #declareVariable
 	//| assignment                      #assign //this is moved to statement
 	;
 
@@ -70,7 +70,7 @@ function
 
 
 assignment
-	: left=identifier op='=' right=expression ';'
+	: left=identifier op='=' right=expression
 	;
 
 

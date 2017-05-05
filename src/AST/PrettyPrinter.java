@@ -155,12 +155,6 @@ Redundant... apparently... CallCommandNode takes care of this instead...
 	}
 
 	@Override
-	public void Visit(SequentialCommandNode sequentialCommandNode)
-	{
-
-	}
-
-	@Override
 	public void Visit(WhileCommandNode whileCommandNode)
 	{
 		System.out.print("while (");
