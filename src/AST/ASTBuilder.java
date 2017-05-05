@@ -19,8 +19,38 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         BaseNode ast = new ProgNode();
 
         int children = ctx.getChildCount();
-        int i;
+		//System.out.println(ctx.getChild(0).getClass().getSimpleName());
+		//System.out.println(children);
 
+		int funcCounter = 0;
+		int declCounter = 0;
+		int stmtCounter = 0;
+
+		for(int i = 0; i < children; i++)
+		{
+			//System.out.println(ctx.getChild(i).getClass().getSimpleName());
+			//System.out.println("run");
+			if (ctx.getChild(i) != null) {
+				if (ctx.getChild(i).getClass().getSimpleName().equals("DeclarationsContext")) {
+					//System.out.println("added DeclarationsContext");
+					ast.AddChild(visitDeclarations(ctx.declarations(declCounter)));
+					declCounter++;
+				}
+
+				if (ctx.getChild(i).getClass().getSimpleName().equals("StatementsContext")) {
+					//System.out.println("added StatementsContext");
+					ast.AddChild(visitStatements(ctx.statements(stmtCounter)));
+					stmtCounter++;
+				}
+
+				if (ctx.getChild(i).getClass().getSimpleName().equals("FunctionsContext")) {
+					//System.out.println("added FunctionsContext");
+					ast.AddChild(visitFunctions(ctx.functions(funcCounter)));
+					funcCounter++;
+				}
+			}
+		}
+/*
         for(i = 0; i < children; i++)
         {
             if(ctx.declarations(i) != null)
@@ -42,7 +72,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
                 ast.AddChild(visit(ctx.functions(i)));
             }
         }
-
+*/
         return ast;
     }
 
@@ -340,6 +370,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     public BaseNode visitFunctioncall(LanguageParser.FunctioncallContext ctx)
     {
         CallCommandNode node = new CallCommandNode();
+        node.AddChild(visit(ctx.identifier()));
         node.AddChild(visit(ctx.funcname));
 
         int children = ctx.getChildCount();
@@ -370,6 +401,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
 
         return node;
     }
+
 
     @Override
     public BaseNode visitFunctions(LanguageParser.FunctionsContext ctx)
@@ -408,22 +440,44 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         BlockNode node = new BlockNode();
 
         int children = ctx.getChildCount();
-        int i;
-
-        for(i = 0; i < children; i++)
+        //int i;
+		//region old
+        for(int i = 0; i < children; i++)
         {
             if(ctx.declarations(i) != null)
             {
                 node.AddChild(visit(ctx.declarations(i)));
             }
         }
-        for(i = 0; i < children; i++)
+        for(int i = 0; i < children; i++)
         {
             if(ctx.statements(i) != null)
             {
                 node.AddChild(visit(ctx.statements(i)));
             }
         }
+		//endregion
+
+		int declCounter = 0;
+		int stmtCounter = 0;
+
+		for(int i = 0; i < children; i++)
+		{
+			if (ctx.getChild(i) != null) {
+				if (ctx.getChild(i).getClass().getSimpleName().equals("DeclarationsContext")) {
+					System.out.println("added DeclarationsContext");
+					node.AddChild(visitDeclarations(ctx.declarations(declCounter)));
+					declCounter++;
+				}
+
+				if (ctx.getChild(i).getClass().getSimpleName().equals("StatementsContext")) {
+					System.out.println("added StatementsContext");
+					node.AddChild(visitStatements(ctx.statements(stmtCounter)));
+					stmtCounter++;
+				}
+			}
+		}
+
         return node;
     }
 }

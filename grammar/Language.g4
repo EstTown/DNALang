@@ -1,7 +1,7 @@
 grammar Language;
 
 prog
-	: declarations* statements* functions*
+	: (declarations | statements | functions)*
 	;
 
 declarations
