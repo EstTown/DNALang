@@ -381,6 +381,10 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     {
         ReturnCommandNode node = new ReturnCommandNode();
 
+        if (ctx.getChildCount() > 0){
+        	node.AddChild(visit(ctx.getChild(1)));
+		}
+
         return node;
     }
 }

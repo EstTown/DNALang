@@ -31,6 +31,15 @@ public class PrettyPrinter extends Visitor
 		}
 	}
 
+	private BaseNode getNextRightSibling(BaseNode node)
+	{
+		if (node.getRightsibling() != null) {
+			return node.getRightsibling();
+		}
+		else
+			return getNextRightSibling(node.getRightsibling());
+	}
+
 	//region DeclareFunction Nodes
 	@Override
 	public void Visit(DeclareFunctionNode declareFunctionNode)
@@ -137,9 +146,12 @@ Redundant... apparently... CallCommandNode takes care of this instead...
 	public void Visit(ReturnCommandNode returnCommandNode)
 	{
 		System.out.print("return");
-		if (returnCommandNode.getLeftmostchild() != null)
+		if (returnCommandNode.getLeftmostchild() != null) {
+			System.out.print(" ");
 			returnCommandNode.getLeftmostchild().Accept(this);
-		System.out.print("; \n");
+		}
+		else
+			System.out.print("; \n");
 	}
 
 	@Override
