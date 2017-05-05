@@ -55,7 +55,7 @@ selection
 
 iteration
 	: 'while' '(' expression ')' '{' statements* '}'                                #while
-	| 'for' '(' assignment ';' expression ';' expression ')' '{' statements* '}'    #for
+	| 'for' '(' assignment /*';'*/ expression ';' expression ')' '{' statements* '}'    #for
 	;
 
 

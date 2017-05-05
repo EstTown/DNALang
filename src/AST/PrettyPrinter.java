@@ -36,11 +36,19 @@ public class PrettyPrinter extends Visitor
 	public void Visit(DeclareFunctionNode declareFunctionNode)
 	{
 		//Return type
-
+		declareFunctionNode.getLeftmostchild().Accept(this);
+		System.out.print(" ");
 		//Identifier
-
+		declareFunctionNode.getLeftmostchild().getRightsibling().Accept(this);
+		System.out.print("(");
 		//Func params...
-
+		//....
+		//....
+		System.out.print(") \n { \n");
+		//block
+		//....
+		//....
+		System.out.print("\n } \n");
 	}
 	//endregion
 
@@ -80,31 +88,58 @@ public class PrettyPrinter extends Visitor
 	@Override
 	public void Visit(CallCommandNode callCommandNode)
 	{
-
+		callCommandNode.getLeftmostchild().Accept(this);
+		System.out.print("(");
+		callCommandNode.getLeftmostchild().getRightsibling().Accept(this);
+		System.out.print("); \n");
 	}
 
 	@Override
 	public void Visit(ForCommandNode forCommandNode)
 	{
-
+		System.out.print("for (");
+		forCommandNode.getLeftmostchild().Accept(this);
+		System.out.print("; ");
+		forCommandNode.getLeftmostchild().getRightsibling().Accept(this);
+		System.out.print("; ");
+		forCommandNode.getLeftmostchild().getRightsibling().getRightsibling().Accept(this);
+		System.out.print(")");
+		System.out.println("\n { \n");
+		forCommandNode.getLeftmostchild().getRightsibling().getRightsibling().getRightsibling().Accept(this);
+		System.out.println("\n } \n");
 	}
 
 	@Override
 	public void Visit(IfCommandNode ifCommandNode)
 	{
 
+		System.out.print("if (");
+		//bool expression
+		ifCommandNode.getLeftmostchild().Accept(this);
+		System.out.print(") \n");
+		//then
+		System.out.print("{ \n");
+		if (ifCommandNode.getLeftmostchild().getRightsibling() != null)
+			ifCommandNode.getLeftmostchild().getRightsibling().Accept(this);
+		System.out.print("} \n");
 	}
-
+/*
+Redundant... apparently... CallCommandNode takes care of this instead...
 	@Override
 	public void Visit(PrintCommandNode printCommandNode)
 	{
-
+		System.out.print("print(");
+		printCommandNode.getLeftmostchild().Accept(this);
+		System.out.print("); \n");
 	}
-
+*/
 	@Override
 	public void Visit(ReturnCommandNode returnCommandNode)
 	{
-
+		System.out.print("return");
+		if (returnCommandNode.getLeftmostchild() != null)
+			returnCommandNode.getLeftmostchild().Accept(this);
+		System.out.print("; \n");
 	}
 
 	@Override
@@ -116,7 +151,12 @@ public class PrettyPrinter extends Visitor
 	@Override
 	public void Visit(WhileCommandNode whileCommandNode)
 	{
-
+		System.out.print("while (");
+		whileCommandNode.getLeftmostchild().Accept(this);
+		System.out.print(") \n");
+		System.out.print("{ \n");
+		whileCommandNode.getLeftmostchild().getRightsibling().Accept(this);
+		System.out.print("} \n");
 	}
 	//endregion
 
@@ -168,37 +208,49 @@ public class PrettyPrinter extends Visitor
 	@Override
 	public void Visit(AndNode andNode)
 	{
-
+		andNode.getLeftmostchild().Accept(this);
+		System.out.print(" && ");
+		andNode.getLeftmostchild().getRightsibling().Accept(this);
 	}
 
 	@Override
 	public void Visit(ComparisonNode comparisonNode)
 	{
-
+		comparisonNode.getLeftmostchild().Accept(this);
+		System.out.print(" == ");
+		comparisonNode.getLeftmostchild().getRightsibling().Accept(this);
 	}
 
 	@Override
 	public void Visit(GreaterOrEqualNode greaterOrEqualNode)
 	{
-
+		greaterOrEqualNode.getLeftmostchild().Accept(this);
+		System.out.print(" >= ");
+		greaterOrEqualNode.getLeftmostchild().getRightsibling().Accept(this);
 	}
 
 	@Override
 	public void Visit(GreaterThanNode greaterThanNode)
 	{
-
+		greaterThanNode.getLeftmostchild().Accept(this);
+		System.out.print(" > ");
+		greaterThanNode.getLeftmostchild().getRightsibling().Accept(this);
 	}
 
 	@Override
 	public void Visit(LessOrEqualNode lessOrEqualNode)
 	{
-
+		lessOrEqualNode.getLeftmostchild().Accept(this);
+		System.out.print(" <= ");
+		lessOrEqualNode.getLeftmostchild().getRightsibling().Accept(this);
 	}
 
 	@Override
 	public void Visit(LessThanNode lessThanNode)
 	{
-
+		lessThanNode.getLeftmostchild().Accept(this);
+		System.out.print(" < ");
+		lessThanNode.getLeftmostchild().getRightsibling().Accept(this);
 	}
 
 	@Override
@@ -207,7 +259,7 @@ public class PrettyPrinter extends Visitor
 		modNode.getLeftmostchild().Accept(this);
 		System.out.print(" % ");
 		modNode.getLeftmostchild().getRightsibling().Accept(this);
-		System.out.print(" ");
+		System.out.print(";\n");
 	}
 
 	@Override
@@ -216,7 +268,7 @@ public class PrettyPrinter extends Visitor
 		notEqualNode.getLeftmostchild().Accept(this);
 		System.out.print(" != ");
 		notEqualNode.getLeftmostchild().getRightsibling().Accept(this);
-		System.out.print(" ");
+		System.out.print(";\n");
 	}
 
 	@Override
@@ -225,7 +277,7 @@ public class PrettyPrinter extends Visitor
 		orNode.getLeftmostchild().Accept(this);
 		System.out.print(" && ");
 		orNode.getLeftmostchild().getRightsibling().Accept(this);
-		System.out.printf(" ");
+		System.out.print(";\n");
 	}
 
 	@Override
@@ -234,7 +286,7 @@ public class PrettyPrinter extends Visitor
 		plusNode.getLeftmostchild().Accept(this);
 		System.out.print(" + ");
 		plusNode.getLeftmostchild().getRightsibling().Accept(this);
-		System.out.print(" ");
+		System.out.print(";\n");
 	}
 
 	@Override
@@ -243,7 +295,7 @@ public class PrettyPrinter extends Visitor
 		minusNode.getLeftmostchild().Accept(this);
 		System.out.print(" - ");
 		minusNode.getLeftmostchild().getRightsibling().Accept(this);
-		System.out.print(" ");
+		System.out.print(";\n");
 	}
 
 	@Override
@@ -252,7 +304,7 @@ public class PrettyPrinter extends Visitor
 		multNode.getLeftmostchild().Accept(this);
 		System.out.print(" * ");
 		multNode.getLeftmostchild().getRightsibling().Accept(this);
-		System.out.print(" ");
+		System.out.print(";\n");
 	}
 
 	@Override
@@ -261,7 +313,7 @@ public class PrettyPrinter extends Visitor
 		divNode.getLeftmostchild().Accept(this);
 		System.out.print(" / ");
 		divNode.getLeftmostchild().getRightsibling().Accept(this);
-		System.out.print(" ");
+		System.out.print(";\n");
 	}
 	//endregion
 
