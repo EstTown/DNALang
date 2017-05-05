@@ -243,6 +243,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         DeclareVarNode node = new DeclareVarNode();
 
         node.content = ctx.TYPE();
+        node.AddChild(visit(ctx.identifier()));
 
         return node;
     }

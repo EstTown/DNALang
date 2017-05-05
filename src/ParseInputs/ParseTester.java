@@ -47,10 +47,10 @@ public class ParseTester
 
                 LanguageParser parser = new LanguageParser(tokens);
 
+                System.out.println("Program " + Integer.toString(iterator));
                 //stackoverflow guide, uses "parser.compileUnit();", but that one is the same as "parser.prog();" in our case
                 ParseTree tree = parser.prog();
 
-                System.out.println("Program " + Integer.toString(iterator));
                 iterator++;
 
             }
@@ -81,11 +81,11 @@ public class ParseTester
 
             ASTBuilder astBuilder = new ASTBuilder();
             LanguageParser.ProgContext cst = parser.prog();
-            /*
+
             BaseNode ast;
             ast = astBuilder.visitProg(cst);
             ast.PrintTree();
-            */
+
             /*
             PrettyPrinter pretty = new PrettyPrinter();
             pretty.Visit((ProgNode) ast);
