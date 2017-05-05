@@ -20,7 +20,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
 
         int children = ctx.getChildCount();
 		//System.out.println(ctx.getChild(0).getClass().getSimpleName());
-		System.out.println(children);
+		//System.out.println(children);
 
 		int funcCounter = 0;
 		int declCounter = 0;
@@ -29,22 +29,22 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
 		for(int i = 0; i < children; i++)
 		{
 			//System.out.println(ctx.getChild(i).getClass().getSimpleName());
-			System.out.println("run");
+			//System.out.println("run");
 			if (ctx.getChild(i) != null) {
 				if (ctx.getChild(i).getClass().getSimpleName().equals("DeclarationsContext")) {
-					System.out.println("added DeclarationsContext");
+					//System.out.println("added DeclarationsContext");
 					ast.AddChild(visitDeclarations(ctx.declarations(declCounter)));
 					declCounter++;
 				}
 
 				if (ctx.getChild(i).getClass().getSimpleName().equals("StatementsContext")) {
-					System.out.println("added StatementsContext");
+					//System.out.println("added StatementsContext");
 					ast.AddChild(visitStatements(ctx.statements(stmtCounter)));
 					stmtCounter++;
 				}
 
 				if (ctx.getChild(i).getClass().getSimpleName().equals("FunctionsContext")) {
-					System.out.println("added FunctionsContext");
+					//System.out.println("added FunctionsContext");
 					ast.AddChild(visitFunctions(ctx.functions(funcCounter)));
 					funcCounter++;
 				}
@@ -441,14 +441,14 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         int children = ctx.getChildCount();
         //int i;
 		//region old
-        for(i = 0; i < children; i++)
+        for(int i = 0; i < children; i++)
         {
             if(ctx.declarations(i) != null)
             {
                 node.AddChild(visit(ctx.declarations(i)));
             }
         }
-        for(i = 0; i < children; i++)
+        for(int i = 0; i < children; i++)
         {
             if(ctx.statements(i) != null)
             {
