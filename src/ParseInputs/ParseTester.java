@@ -2,6 +2,7 @@ package ParseInputs;
 import AST.*;
 import ASTNodes.BaseNode;
 import ASTNodes.ProgNode;
+import ASTNodes.TerminalNodes.IntegerLiteralNode;
 import Generated.*;
 
 import java.io.*;
@@ -30,6 +31,7 @@ public class ParseTester
                 break;
             }
         }
+        iterator = 1;
         for(String item : allInputs)
         {
             try
@@ -48,10 +50,9 @@ public class ParseTester
                 //stackoverflow guide, uses "parser.compileUnit();", but that one is the same as "parser.prog();" in our case
                 ParseTree tree = parser.prog();
 
-                //tree.accept(new ASTBuilder());
+                System.out.println("Program " + Integer.toString(iterator));
+                iterator++;
 
-                System.out.println(tree.toStringTree(parser)); //print tree as text
-                System.out.println(); // extra line
             }
             catch (Exception parser)
             {
@@ -80,11 +81,11 @@ public class ParseTester
 
             ASTBuilder astBuilder = new ASTBuilder();
             LanguageParser.ProgContext cst = parser.prog();
-
+            /*
             BaseNode ast;
             ast = astBuilder.visitProg(cst);
             ast.PrintTree();
-
+            */
             /*
             PrettyPrinter pretty = new PrettyPrinter();
             pretty.Visit((ProgNode) ast);

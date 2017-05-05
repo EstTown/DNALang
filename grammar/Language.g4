@@ -89,16 +89,13 @@ function
 */
 //rewriting function
 functiondeclaration
-	: TYPE funcname=identifier '(' declaration (',' declaration)* ')' '{' declarations* statements* jump'}'
-	| 'void' funcname=identifier '(' declaration (',' declaration)* ')' '{' declarations* statements* '}'
+	: TYPE funcname=identifier '(' declaration (',' declaration)* ')' '{' block jump'}'
+	| 'void' funcname=identifier '(' declaration (',' declaration)* ')' '{' block '}'
 	;
-
-
 
 assignment
 	: left=identifier op='=' right=expression //';' cannot have semi-colon here, because it ruins for loops
 	;
-
 
 /*
 expression

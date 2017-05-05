@@ -2,20 +2,16 @@ dna minDnaSekvens = ATGCCATTGGGTGTTGCCAGTTTGAAAGCGTGGCTAA;
 
 dna minDnaDelSekvens = CATT;
 
-codon mitCodon = ACG;
+codon mitCodon = (A,C,G);
 
 minDnasekvens = minDnaSekvens - minDnaDelSekvens + mitCodon + CGGGCTAA;
-
-int variabel = 0;
 
 if (minDnaSekvens == mitCodon){
     protein proteinSekvens = minDnaSekvens;
 }
+
 else{
     variabel = variabel + variabel;
 }
 
-int thisisfunction(int value){
-    return 42;
-}
 
