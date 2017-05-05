@@ -1,0 +1,7 @@
+int variabel = 0;
+
+bool b = false;
+
+bool c = true;
+
+int d = variabel - b + c;

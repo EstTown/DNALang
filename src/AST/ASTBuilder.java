@@ -430,23 +430,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
                 node.AddChild(visit(ctx.declaration(i)));
             }
         }
-
-        //get declarations and statements
-        for(i = 0; i < children; i++)
-        {
-            if(ctx.declarations(i) != null)
-            {
-                node.AddChild(visit(ctx.declarations(i)));
-            }
-        }
-
-        for(i = 0; i < children; i++)
-        {
-            if(ctx.statements(i) != null)
-            {
-                node.AddChild(visit(ctx.statements(i)));
-            }
-        }
+        node.AddChild(visit(ctx.block()));
         node.AddChild(visit(ctx.jump()));
 
         return node;
