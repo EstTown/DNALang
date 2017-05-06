@@ -1,4 +1,4 @@
-// Generated from C:/Stuff/Dropbox/ProgrammingProjects/JavaProjects/DNALang/grammar\Language.g4 by ANTLR 4.7
+// Generated from E:/Stuff/Dropbox/ProgrammingProjects/JavaProjects/DNALang/grammar\Language.g4 by ANTLR 4.7
 package Generated;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -240,18 +240,6 @@ public interface LanguageListener extends ParseTreeListener {
 	 */
 	void exitParensExp(LanguageParser.ParensExpContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code numberExp}
-	 * labeled alternative in {@link LanguageParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterNumberExp(LanguageParser.NumberExpContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code numberExp}
-	 * labeled alternative in {@link LanguageParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitNumberExp(LanguageParser.NumberExpContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code binaryExp}
 	 * labeled alternative in {@link LanguageParser#expression}.
 	 * @param ctx the parse tree
@@ -263,6 +251,18 @@ public interface LanguageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitBinaryExp(LanguageParser.BinaryExpContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code numberExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterNumberExp(LanguageParser.NumberExpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code numberExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitNumberExp(LanguageParser.NumberExpContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code convertExp}
 	 * labeled alternative in {@link LanguageParser#expression}.
@@ -372,15 +372,29 @@ public interface LanguageListener extends ParseTreeListener {
 	 */
 	void exitProteinExp(LanguageParser.ProteinExpContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link LanguageParser#functioncall}.
+	 * Enter a parse tree produced by the {@code complementary}
+	 * labeled alternative in {@link LanguageParser#functioncall}.
 	 * @param ctx the parse tree
 	 */
-	void enterFunctioncall(LanguageParser.FunctioncallContext ctx);
+	void enterComplementary(LanguageParser.ComplementaryContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link LanguageParser#functioncall}.
+	 * Exit a parse tree produced by the {@code complementary}
+	 * labeled alternative in {@link LanguageParser#functioncall}.
 	 * @param ctx the parse tree
 	 */
-	void exitFunctioncall(LanguageParser.FunctioncallContext ctx);
+	void exitComplementary(LanguageParser.ComplementaryContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code funccall}
+	 * labeled alternative in {@link LanguageParser#functioncall}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunccall(LanguageParser.FunccallContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code funccall}
+	 * labeled alternative in {@link LanguageParser#functioncall}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunccall(LanguageParser.FunccallContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code break}
 	 * labeled alternative in {@link LanguageParser#jump}.

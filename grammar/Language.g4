@@ -152,6 +152,8 @@ expression
     : LPAREN expression RPAREN                              #parensExp
     | left=expression 'as' TYPE                             #convertExp  //this is a conversion of whatever the value of the expression is, to some type
     | <assoc=right> op=NOT expression                       #unaryExp    //I think this one is now right associative, not sure how to check if correct
+    | left=expression op=CONTAINS right=expression          #binaryExp
+    |  (op=(POSITION|COUNT) left=expression 'in' right=expression | op=REMOVE  left=expression 'from' right=expression) #binaryExp
     | left=expression op=(MUL|DIV|MOD) right=expression     #binaryExp
     | left=expression op=(ADD|SUB) right=expression         #binaryExp
     | left=expression op=(LT|GT|LTEQ|GTEQ) right=expression #binaryExp
@@ -169,10 +171,9 @@ expression
     ;
 
 
-
-
 functioncall
-	: funcname=identifier '(' (expression) (',' (expression))* ')'
+	: op=(COMPLEMENTARY|REVERSE|LENGTH)  '(' expression ')'        #complementary
+	|funcname=identifier '(' (expression) (',' (expression))* ')'  #funccall
 	;
 /*
 functioncall
@@ -364,3 +365,11 @@ DIV     : '/' ;
 ADD     : '+' ;
 MUL     : '*' ;
 MOD		: '%' ;
+CONTAINS: 'contains:';
+COMPLEMENTARY    : 'comp:';
+REVERSE          : 'rev:';
+LENGTH           : 'len:';
+POSITION         : 'position of ';
+COUNT            : 'count ';
+REMOVE           : 'remove ';
+//you might wonder; why is there a ':' in these tokens? Because otherwise it doesn't work..

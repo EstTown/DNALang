@@ -1,4 +1,4 @@
-// Generated from C:/Stuff/Dropbox/ProgrammingProjects/JavaProjects/DNALang/grammar\Language.g4 by ANTLR 4.7
+// Generated from E:/Stuff/Dropbox/ProgrammingProjects/JavaProjects/DNALang/grammar\Language.g4 by ANTLR 4.7
 package Generated;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -148,19 +148,19 @@ public interface LanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitParensExp(LanguageParser.ParensExpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code numberExp}
-	 * labeled alternative in {@link LanguageParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNumberExp(LanguageParser.NumberExpContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code binaryExp}
 	 * labeled alternative in {@link LanguageParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitBinaryExp(LanguageParser.BinaryExpContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code numberExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNumberExp(LanguageParser.NumberExpContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code convertExp}
 	 * labeled alternative in {@link LanguageParser#expression}.
@@ -225,11 +225,19 @@ public interface LanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitProteinExp(LanguageParser.ProteinExpContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link LanguageParser#functioncall}.
+	 * Visit a parse tree produced by the {@code complementary}
+	 * labeled alternative in {@link LanguageParser#functioncall}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFunctioncall(LanguageParser.FunctioncallContext ctx);
+	T visitComplementary(LanguageParser.ComplementaryContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code funccall}
+	 * labeled alternative in {@link LanguageParser#functioncall}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFunccall(LanguageParser.FunccallContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code break}
 	 * labeled alternative in {@link LanguageParser#jump}.

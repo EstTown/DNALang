@@ -22,7 +22,10 @@ because they might want to traverse differently <- not sure about that.
 public abstract class Visitor<BaseNode> implements ASTVisitor<BaseNode>
 {
     @Override
-    public BaseNode Visit(BlockNode blockNode){return null;}
+    public void Visit(BlockNode blockNode)
+    {
+
+    }
 
     @Override
     public void Visit(AssignCommandNode assignCommandNode)
@@ -242,6 +245,41 @@ public abstract class Visitor<BaseNode> implements ASTVisitor<BaseNode>
     @Override
     public void Visit(ConvertNode convertNode)
     {
+
+    }
+
+    @Override
+    public void Visit(ComplementaryNode complementaryNode) {
+
+    }
+
+    @Override
+    public void Visit(LengthNode lengthNode) {
+
+    }
+
+    @Override
+    public void Visit(ReverseNode reverseNode) {
+
+    }
+
+    @Override
+    public void Visit(ContainsNode containsNode) {
+
+    }
+
+    @Override
+    public void Visit(CountNode countNode) {
+
+    }
+
+    @Override
+    public void Visit(PositionNode positionNode) {
+
+    }
+
+    @Override
+    public void Visit(RemoveNode removeNode) {
 
     }
 }

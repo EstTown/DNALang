@@ -20,18 +20,16 @@ public class Main
 {
     public static void main(String[] args)
     {
-        int number = 13;
+        int number = 18;
         ParseTester parseTester = new ParseTester();
-        //parseTester.ParseAllInputs(number);
+        parseTester.ParseAllInputs(number);
 
-        //input 5 gives nullpointerexception
 
-        parseTester.ParseSpecificInput(2);
-
+        //parseTester.ParseSpecificInput(number);
 
         /*
         ParseTreeGUI ptg = new ParseTreeGUI();
-        ptg.Show(10); //specify input file by giving an integer
+        ptg.Show(number); //specify input file by giving an integer
         */
     }
 }

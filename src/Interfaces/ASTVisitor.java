@@ -13,7 +13,7 @@ import ASTNodes.TerminalNodes.*;
 public interface ASTVisitor<T>
 {
     //needs a visit method for each type of node
-    T Visit(BlockNode blockNode);
+    void Visit(BlockNode blockNode);
 
     void Visit(AssignCommandNode assignCommandNode);
     void Visit(BreakCommandNode breakCommandNode);
@@ -32,10 +32,14 @@ public interface ASTVisitor<T>
 
     void Visit(AndNode andNode);
     void Visit(ComparisonNode comparisonNode);
+    void Visit(ComplementaryNode complementaryNode);
+    void Visit(ContainsNode containsNode);
     void Visit(ConvertNode convertNode);
+    void Visit(CountNode countNode);
     void Visit(DivNode divNode);
     void Visit(GreaterOrEqualNode greaterOrEqualNode);
     void Visit(GreaterThanNode greaterThanNode);
+    void Visit(LengthNode lengthNode);
     void Visit(LessOrEqualNode lessOrEqualNode);
     void Visit(LessThanNode lessThanNode);
     void Visit(MinusNode minusNode);
@@ -45,6 +49,9 @@ public interface ASTVisitor<T>
     void Visit(NotNode notNode);
     void Visit(OrNode orNode);
     void Visit(PlusNode plusNode);
+    void Visit(PositionNode positionNode);
+    void Visit(RemoveNode removeNode);
+    void Visit(ReverseNode reverseNode);
 
     void Visit(AminoLiteralNode aminoLiteralNode);
     void Visit(BoolLiteralNode boolLiteralNode);

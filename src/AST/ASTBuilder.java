@@ -124,6 +124,18 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
             case LanguageLexer.NOTEQ:
                 node = new NotEqualNode();
                 break;
+            case LanguageLexer.CONTAINS:
+                node = new ContainsNode();
+                break;
+            case LanguageLexer.POSITION:
+                node = new PositionNode();
+                break;
+            case LanguageLexer.COUNT:
+                node = new CountNode();
+                break;
+            case LanguageLexer.REMOVE:
+                node = new RemoveNode();
+                break;
             default:
                 node = new NullNode();
                 break;
@@ -337,7 +349,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     }
 
     @Override
-    public BaseNode visitFunctioncall(LanguageParser.FunctioncallContext ctx)
+    public BaseNode visitFunccall(LanguageParser.FunccallContext ctx)
     {
         CallCommandNode node = new CallCommandNode();
         node.AddChild(visit(ctx.identifier()));
@@ -355,6 +367,32 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         }
         return node;
     }
+
+    @Override
+    public BaseNode visitComplementary(LanguageParser.ComplementaryContext ctx)
+    {
+        BaseNode node;
+
+        switch(ctx.op.getType())
+        {
+            case LanguageLexer.COMPLEMENTARY:
+                node = new ComplementaryNode();
+                break;
+            case LanguageLexer.REVERSE:
+                node = new ReverseNode();
+                break;
+            case LanguageLexer.LENGTH:
+                node = new LengthNode();
+                break;
+            default:
+                node = new NullNode();
+                break;
+        }
+        node.AddChild(visit(ctx.expression()));
+
+        return node;
+    }
+
 
     @Override
     public BaseNode visitBreak(LanguageParser.BreakContext ctx)
