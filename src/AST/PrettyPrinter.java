@@ -441,4 +441,8 @@ public class PrettyPrinter extends Visitor
 	//endregion
 
 
+	@Override
+	public void Visit(BaseNode baseNode) {
+
+	}
 }

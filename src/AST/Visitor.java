@@ -9,6 +9,8 @@ import ASTNodes.*;
 import ASTNodes.TerminalNodes.*;
 import Interfaces.ASTVisitor;
 
+import java.util.ArrayList;
+
 /*
 In general, it seems that it's best to let each visitor (prettyprinter, typechecker etc.)
 decide how to traverse the AST instead of having code in each node for that purpose,
@@ -19,8 +21,36 @@ because they might want to traverse differently <- not sure about that.
 */
 
 
-public abstract class Visitor<BaseNode> implements ASTVisitor<BaseNode>
+public abstract class Visitor implements ASTVisitor
 {
+    public void visitChildren(BaseNode node)
+    {
+        ArrayList<BaseNode> list = new ArrayList<BaseNode>();
+
+        //get all children of node and put into list
+        BaseNode next = node.getLeftmostchild();
+        while(true)
+        {
+            list.add(next);
+            if(next.getRightsibling() == null)
+            {
+                break;
+            }
+            else
+            {
+                next = next.getRightsibling();
+            }
+        }
+
+        //visit all children
+        for(BaseNode item : list)
+        {
+            item.Accept(this);
+        }
+    }
+
+
+
     @Override
     public void Visit(BlockNode blockNode)
     {
@@ -285,7 +315,8 @@ public abstract class Visitor<BaseNode> implements ASTVisitor<BaseNode>
     }
 
     @Override
-    public void Visit(RemoveNode removeNode) {
+    public void Visit(RemoveNode removeNode)
+    {
 
     }
 }

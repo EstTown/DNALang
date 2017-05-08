@@ -4,7 +4,7 @@ import AST.Visitor;
 import Interfaces.ASTVisitor;
 import Interfaces.NodeInterface;
 
-public abstract class BaseNode implements NodeInterface
+public class BaseNode implements NodeInterface
 {
     private BaseNode parent;
     private BaseNode leftmostsibling;
@@ -138,5 +138,11 @@ public abstract class BaseNode implements NodeInterface
         else {
             return RecNextRightSibling(node.rightsibling, nodeToBeAdded);
         }
+    }
+
+    @Override
+    public void Accept(Visitor nodevisitor)
+    {
+        nodevisitor.Visit(this);
     }
 }
