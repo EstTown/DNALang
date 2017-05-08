@@ -20,12 +20,12 @@ public class Main
 {
     public static void main(String[] args)
     {
-        int number = 18;
+        int number = 12;
         ParseTester parseTester = new ParseTester();
-        parseTester.ParseAllInputs(number);
+        //parseTester.ParseAllInputs(number);
 
 
-        //parseTester.ParseSpecificInput(number);
+        parseTester.ParseSpecificInput(number);
 
         /*
         ParseTreeGUI ptg = new ParseTreeGUI();

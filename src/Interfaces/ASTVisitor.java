@@ -1,5 +1,6 @@
 package Interfaces;
 
+import ASTNodes.BaseNode;
 import ASTNodes.BlockNodes.*;
 import ASTNodes.CommandNodes.*;
 import ASTNodes.DeclareFunctionNodes.*;
@@ -63,5 +64,6 @@ public interface ASTVisitor<T>
     void Visit(OperatorNode operatorNode);
     void Visit(RNALiteratalNode rnaLiteratalNode);
 
+    void Visit(BaseNode baseNode);
     void Visit(ProgNode progNode);
 }

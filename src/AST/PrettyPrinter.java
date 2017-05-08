@@ -334,4 +334,8 @@ Redundant... apparently... CallCommandNode takes care of this instead...
 	//endregion
 
 
+	@Override
+	public void Visit(BaseNode baseNode) {
+
+	}
 }
