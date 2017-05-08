@@ -189,6 +189,12 @@ public abstract class Visitor<BaseNode> implements ASTVisitor<BaseNode>
     }
 
     @Override
+    public void Visit(EqualNode EqualNode)
+    {
+
+    }
+
+    @Override
     public void Visit(GreaterThanNode greaterThanNode)
     {
 

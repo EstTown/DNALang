@@ -41,6 +41,24 @@ public class PrettyPrinter extends Visitor
 	}
 
 	//region Block Nodes
+	@Override
+	public void Visit(BlockNode blockNode)
+	{
+		System.out.print("{\n");
+		blockNode.getLeftmostchild().Accept(this);
+		blockNodeHelper(blockNode.getLeftmostchild());
+		//getNext(blockNode);
+		System.out.print("\n}");
+	}
+
+	private void blockNodeHelper(BaseNode node)
+	{
+		if (node.getRightsibling()!= null)
+		{
+			node.getRightsibling().Accept(this);
+			blockNodeHelper(node.getRightsibling());
+		}
+	}
 
 	//endregion
 
@@ -48,22 +66,18 @@ public class PrettyPrinter extends Visitor
 	@Override
 	public void Visit(DeclareFunctionNode declareFunctionNode)
 	{
-		/*
 		//Return type
-		declareFunctionNode.getLeftmostchild().Accept(this);
+		System.out.print(declareFunctionNode.content);
 		System.out.print(" ");
 		//Identifier
-		declareFunctionNode.getLeftmostchild().getRightsibling().Accept(this);
+		declareFunctionNode.getLeftmostchild().Accept(this);
 		System.out.print("(");
-		//Func params...
-		//....
-		//....
-		System.out.print(") \n { \n");
-		//block
-		//....
-		//....
-		System.out.print("\n } \n");
-		*/
+		declareFunctionNode.getLeftmostchild().getRightsibling().Accept(this);
+
+		//declareFunctionNode.getLeftmostchild().getRightsibling()
+		getNext(declareFunctionNode.getLeftmostchild().getRightsibling());
+
+		//There's an error somewhere, 'cause the return stm is printed outside the block
 	}
 	//endregion
 
@@ -72,18 +86,17 @@ public class PrettyPrinter extends Visitor
 	public void Visit(DeclareVarNode varNode)
 	{
 		//Type
-    	varNode.getLeftmostchild().Accept(this);
-		//Identifier
-		varNode.getLeftmostchild().getRightsibling().Accept(this);
-
-		//If we assign stuff, as we declare
-		if (varNode.getLeftmostchild() != null) {
-			System.out.print(" = ");
-			varNode.getLeftmostchild().Accept(this);
+		System.out.print(varNode.content + " ");
+		//Assignment
+		varNode.getLeftmostchild().Accept(this);
+		if (varNode.getParent().getClass().getSimpleName().equals("BlockNode")){
+			System.out.println();
 		}
-
-		System.out.print("; \n");
-
+		else if (varNode.getParent().getClass().getSimpleName().equals("DeclareFunctionNode")){
+			System.out.print(", ");
+		}
+		else
+			System.out.println();
 	}
 	//endregion
 
@@ -96,7 +109,12 @@ public class PrettyPrinter extends Visitor
 		System.out.print(" = ");
 		//Right hand expression
 		assignCommandNode.getLeftmostchild().getRightsibling().Accept(this);
-		System.out.print("; ");
+
+		if (assignCommandNode.getParent().getClass().getSimpleName().equals("ForCommandNode")){
+			System.out.print("; ");
+		}
+		else
+			System.out.print(";\n");
 	}
 
 	@Override
@@ -119,32 +137,42 @@ public class PrettyPrinter extends Visitor
 	{
 		System.out.print("for (");
 		forCommandNode.getLeftmostchild().Accept(this);
-		System.out.print("; ");
 		forCommandNode.getLeftmostchild().getRightsibling().Accept(this);
 		System.out.print("; ");
 		forCommandNode.getLeftmostchild().getRightsibling().getRightsibling().Accept(this);
 		System.out.print(")");
-		System.out.println("\n { \n");
 		forCommandNode.getLeftmostchild().getRightsibling().getRightsibling().getRightsibling().Accept(this);
-		System.out.println("\n } \n");
 	}
 
 	@Override
 	public void Visit(IfCommandNode ifCommandNode)
 	{
-
+		System.out.println();
 		System.out.print("if (");
 		//bool expression
 		ifCommandNode.getLeftmostchild().Accept(this);
-		System.out.print(") \n");
-		//then
-		System.out.print("{ \n");
+		System.out.print(")");
+
+		//block
 		if (ifCommandNode.getLeftmostchild().getRightsibling() != null)
 			ifCommandNode.getLeftmostchild().getRightsibling().Accept(this);
-		System.out.print("} \n");
 	}
-/*
-Redundant... apparently... CallCommandNode takes care of this instead...
+
+	@Override
+	public void Visit(IfElseCommandNode ifElseCommandNode)
+	{
+		System.out.println();
+		System.out.print("if (");
+		//bool expression
+		ifElseCommandNode.getLeftmostchild().Accept(this);
+		System.out.print(") \n");
+		//block1
+		getNext(ifElseCommandNode.getLeftmostchild().getRightsibling());
+		System.out.print("\nelse\n");
+		//block2
+		ifElseCommandNode.getLeftmostchild().getRightsibling().Accept(this);
+	}
+
 	@Override
 	public void Visit(PrintCommandNode printCommandNode)
 	{
@@ -152,7 +180,7 @@ Redundant... apparently... CallCommandNode takes care of this instead...
 		printCommandNode.getLeftmostchild().Accept(this);
 		System.out.print("); \n");
 	}
-*/
+
 	@Override
 	public void Visit(ReturnCommandNode returnCommandNode)
 	{
@@ -167,12 +195,10 @@ Redundant... apparently... CallCommandNode takes care of this instead...
 	@Override
 	public void Visit(WhileCommandNode whileCommandNode)
 	{
+		System.out.println();
 		System.out.print("while (");
 		whileCommandNode.getLeftmostchild().Accept(this);
-		System.out.print(") \n");
-		System.out.print("{ \n");
 		whileCommandNode.getLeftmostchild().getRightsibling().Accept(this);
-		System.out.print("} \n");
 	}
 	//endregion
 
@@ -198,7 +224,7 @@ Redundant... apparently... CallCommandNode takes care of this instead...
 	@Override
 	public void Visit(DNALiteralNode dnaLiteralNode)
 	{
-		System.out.println(dnaLiteralNode.content);
+		System.out.print(dnaLiteralNode.content);
 	}
 
 	@Override
@@ -216,7 +242,7 @@ Redundant... apparently... CallCommandNode takes care of this instead...
 	@Override
 	public void Visit(RNALiteratalNode rnaLiteratalNode)
 	{
-		System.out.println(rnaLiteratalNode.content);
+		System.out.print(rnaLiteratalNode.content);
 	}
 	//endregion
 
@@ -228,6 +254,7 @@ Redundant... apparently... CallCommandNode takes care of this instead...
 		System.out.print(" && ");
 		andNode.getLeftmostchild().getRightsibling().Accept(this);
 	}
+
 
 	@Override
 	public void Visit(ComparisonNode comparisonNode)
@@ -279,58 +306,138 @@ Redundant... apparently... CallCommandNode takes care of this instead...
 	}
 
 	@Override
+	public void Visit(NotNode notNode){
+		System.out.print("!");
+		notNode.getLeftmostchild().Accept(this);
+	}
+
+	@Override
 	public void Visit(NotEqualNode notEqualNode)
 	{
 		notEqualNode.getLeftmostchild().Accept(this);
 		System.out.print(" != ");
 		notEqualNode.getLeftmostchild().getRightsibling().Accept(this);
-		System.out.print(";\n");
+	}
+
+	@Override
+	public void Visit(EqualNode equalNode)
+	{
+		equalNode.getLeftmostchild().Accept(this);
+		System.out.print(" == ");
+		equalNode.getLeftmostchild().getRightsibling().Accept(this);
 	}
 
 	@Override
 	public void Visit(OrNode orNode)
 	{
 		orNode.getLeftmostchild().Accept(this);
-		System.out.print(" && ");
-		orNode.getLeftmostchild().getRightsibling().Accept(this);
-		System.out.print(";\n");
+		System.out.print(" || ");
+		getNextRightSibling(orNode.getLeftmostchild()).Accept(this);
 	}
 
 	@Override
 	public void Visit(PlusNode plusNode)
 	{
+		System.out.print("(");
 		plusNode.getLeftmostchild().Accept(this);
 		System.out.print(" + ");
-		plusNode.getLeftmostchild().getRightsibling().Accept(this);
-		System.out.print(";\n");
+		//plusNode.getLeftmostchild().getRightsibling().Accept(this);
+		getNextRightSibling(plusNode.getLeftmostchild()).Accept(this);
+		//System.out.print(";\n");
+		System.out.print(")");
 	}
 
 	@Override
 	public void Visit(MinusNode minusNode)
 	{
+		System.out.print("(");
 		minusNode.getLeftmostchild().Accept(this);
 		System.out.print(" - ");
-		minusNode.getLeftmostchild().getRightsibling().Accept(this);
-		System.out.print(";\n");
+		getNextRightSibling(minusNode.getLeftmostchild()).Accept(this);
+		System.out.print(")");
 	}
 
 	@Override
 	public void Visit(MultNode multNode)
 	{
+		System.out.print("(");
 		multNode.getLeftmostchild().Accept(this);
 		System.out.print(" * ");
-		multNode.getLeftmostchild().getRightsibling().Accept(this);
-		System.out.print(";\n");
+		getNextRightSibling(multNode.getLeftmostchild()).Accept(this);
+		System.out.print(")");
 	}
 
 	@Override
 	public void Visit(DivNode divNode)
 	{
+		System.out.print("(");
 		divNode.getLeftmostchild().Accept(this);
 		System.out.print(" / ");
-		divNode.getLeftmostchild().getRightsibling().Accept(this);
+		getNextRightSibling(divNode.getLeftmostchild()).Accept(this);
+		System.out.print(")");
+	}
+
+	@Override
+	public void Visit(ComplementaryNode complementaryNode){
+		System.out.print("comp: ");
+		complementaryNode.getLeftmostchild().Accept(this);
+	}
+
+	@Override
+	public void Visit(ReverseNode reverseNode){
+		System.out.print("rev: ");
+		reverseNode.getLeftmostchild().Accept(this);
+	}
+
+	@Override
+	public void Visit(LengthNode lengthNode){
+		System.out.print("len: ");
+		lengthNode.getLeftmostchild().Accept(this);
+	}
+
+	@Override
+	public void Visit(ContainsNode containsNode){
+		containsNode.getLeftmostchild().Accept(this);
+		System.out.print(" contains: ");
+		containsNode.getLeftmostchild().getRightsibling().Accept(this);
+	}
+
+	@Override
+	public void Visit(CountNode countNode){
+		System.out.print("count ");
+		countNode.getLeftmostchild().Accept(this);
+		System.out.print(" in ");
+		countNode.getLeftmostchild().getRightsibling().Accept(this);
 		System.out.print(";\n");
 	}
+
+	@Override
+	public void Visit(PositionNode positionNode){
+		System.out.print("position of ");
+		positionNode.getLeftmostchild().Accept(this);
+		System.out.print(" in ");
+		positionNode.getLeftmostchild().getRightsibling().Accept(this);
+		System.out.print(";\n");
+	}
+
+	@Override
+	public void Visit(RemoveNode removeNode){
+		System.out.print("remove ");
+		removeNode.getLeftmostchild().Accept(this);
+		System.out.print(" from ");
+		removeNode.getLeftmostchild().getRightsibling().Accept(this);
+		System.out.print(";\n");
+	}
+
+	@Override
+	public void Visit(ConvertNode convertNode){
+		convertNode.getLeftmostchild().Accept(this);
+		System.out.print(" as ");
+		System.out.print(convertNode.content);
+
+	}
+
+
 	//endregion
 
 

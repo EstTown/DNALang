@@ -2,11 +2,16 @@ int a = 5;
 int b = 7;
 
 if(a < b){
-    if(a > b){
-        break;
-    }
-    else{a = 5;}
+    a = 5;
+    a = 6;
 }
-else{break;}
+else{
+    b = 10;
+    b = 11;
+}
 
-while(a < 100){ a = a + 1; }
+
+while(a < 100){
+ a = a + 1;
+ a = 2+2; }
+}

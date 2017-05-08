@@ -46,6 +46,7 @@ public interface ASTVisitor<T>
     void Visit(ModNode modNode);
     void Visit(MultNode multNode);
     void Visit(NotEqualNode notEqualNode);
+    void Visit(EqualNode EqualNode);
     void Visit(NotNode notNode);
     void Visit(OrNode orNode);
     void Visit(PlusNode plusNode);

@@ -121,6 +121,9 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
             case LanguageLexer.OR:
                 node = new OrNode();
                 break;
+			case LanguageLexer.EQEQ:
+				node = new EqualNode();
+				break;
             case LanguageLexer.NOTEQ:
                 node = new NotEqualNode();
                 break;
@@ -311,9 +314,9 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     public BaseNode visitIfelse(LanguageParser.IfelseContext ctx)
     {
         IfElseCommandNode node = new IfElseCommandNode();
-        node.AddChild(visit(ctx.predicate));
-        node.AddChild(visit(ctx.block(0)));
+		node.AddChild(visit(ctx.predicate));
         node.AddChild(visit(ctx.block(1)));
+		node.AddChild(visit(ctx.block(0)));
         return node;
     }
 
@@ -429,7 +432,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         //get formal parameters
         int children = ctx.getChildCount();
         int i;
-        for(i = 0; i < children; i++)
+        for(i = 0; i < children ; i++)
         {
             if(ctx.declaration(i) != null)
             {
@@ -437,7 +440,9 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
             }
         }
         node.AddChild(visit(ctx.block()));
+        //System.out.println(ctx.block().getText());
         node.AddChild(visit(ctx.jump()));
+        //System.out.println(ctx.jump().getText());
 
         return node;
     }
@@ -450,6 +455,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         int children = ctx.getChildCount();
         //int i;
 		//region old
+/*
         for(int i = 0; i < children; i++)
         {
             if(ctx.declarations(i) != null)
@@ -464,6 +470,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
                 node.AddChild(visit(ctx.statements(i)));
             }
         }
+        */
 		//endregion
 
 		int declCounter = 0;

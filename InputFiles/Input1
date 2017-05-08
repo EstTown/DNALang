@@ -6,9 +6,20 @@ codon mitCodon = (A,C,G);
 
 minDnasekvens = minDnaSekvens - minDnaDelSekvens + mitCodon + CGGGCTAA;
 
-if (minDnaSekvens == mitCodon){
+if(minDnaSekvens == mitCodon){
     protein proteinSekvens = minDnaSekvens;
 }
 else{
     variabel = variabel + variabel;
+}
+
+if(a < b){
+    a = 5;
+    a = 6;
+    a = 18;
+    a = 99;
+    a = 87;
+}
+else{
+    b = 10;
 }
