@@ -1,7 +1,10 @@
-int bob = 2213;
 
-int thisisfunction(int value){
-    return 42;
+
+int thisisfunction(int value, int value2, int value3){
+    int b = 43;
+    int c = 33 + b;
+    int a = 3251;
+    return c;
 }
 
 
