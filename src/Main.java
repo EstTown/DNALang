@@ -6,6 +6,7 @@ import ASTNodes.BaseNode;
 import ASTNodes.CommandNodes.AssignCommandNode;
 import ASTNodes.ExpressionNodes.AndNode;
 import ASTNodes.ProgNode;
+import ASTNodes.TerminalNodes.BoolLiteralNode;
 import ASTNodes.TerminalNodes.IdentifierNode;
 import Generated.LanguageLexer;
 import Generated.LanguageParser;
@@ -23,7 +24,6 @@ public class Main
         int number = 12;
         ParseTester parseTester = new ParseTester();
         //parseTester.ParseAllInputs(number);
-
 
         parseTester.ParseSpecificInput(number);
 
