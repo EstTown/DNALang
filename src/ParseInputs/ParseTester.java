@@ -93,12 +93,14 @@ public class ParseTester
             ast.Accept(pretty);
 
 
-            /*
-            ProgNode.errorList.add(new Error("this is error"));
+
+            //ProgNode.errorList.add(new Error("this is error"));
+			/*
 			for (Error error : ProgNode.errorList){
 				System.out.println(error.getMessage());
 			}
 			*/
+
 
         }
         catch (IOException parser)

@@ -4,6 +4,9 @@ import AST.Visitor;
 import Interfaces.ASTVisitor;
 import Interfaces.NodeInterface;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class BaseNode implements NodeInterface
 {
