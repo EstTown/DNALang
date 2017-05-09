@@ -1,6 +1,7 @@
 package ParseInputs;
 import AST.*;
 import ASTNodes.BaseNode;
+import ASTNodes.Error;
 import ASTNodes.ProgNode;
 import ASTNodes.TerminalNodes.IntegerLiteralNode;
 import Generated.*;
@@ -91,6 +92,12 @@ public class ParseTester
 
             PrettyPrinter pretty = new PrettyPrinter();
             pretty.Visit((ProgNode) ast);
+
+
+            ProgNode.errorList.add(new Error("this is error"));
+			for (Error error : ProgNode.errorList){
+				System.out.println(error.getMessage());
+			}
 
         }
         catch (IOException parser)

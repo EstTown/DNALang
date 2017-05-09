@@ -3,7 +3,9 @@ package ASTNodes;
 import AST.Visitor;
 import Interfaces.ASTVisitor;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Stack;
 
 public class ProgNode extends BaseNode
@@ -15,6 +17,7 @@ public class ProgNode extends BaseNode
     }
 
 	public static Stack<Hashtable<String, BaseNode>> symbolTable;
+    public static List<Error> errorList = new ArrayList<>();
 
 	public static BaseNode RetrieveSymbol(String name){
 		Stack<Hashtable<String, BaseNode>> tmp = new Stack<>();
@@ -43,5 +46,6 @@ public class ProgNode extends BaseNode
 		symbolTable.add(new Hashtable<String, BaseNode>());
 		return symbolTable.peek();
 	}
+
 
 }
