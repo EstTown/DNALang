@@ -4,6 +4,9 @@ import AST.Visitor;
 import Interfaces.ASTVisitor;
 import Interfaces.NodeInterface;
 
+import java.util.Hashtable;
+import java.util.Stack;
+
 public class BaseNode implements NodeInterface
 {
     private BaseNode parent;
@@ -12,7 +15,9 @@ public class BaseNode implements NodeInterface
     private BaseNode leftmostchild;
     public Object content;
 
+    public static Stack<Hashtable<String, BaseNode>> symbolTable;
 
+    //region Node methods
     ///////Public methods///////
     public BaseNode getParent(){
         return this.parent;
@@ -66,7 +71,6 @@ public class BaseNode implements NodeInterface
             System.out.println("____________________________________________________________________");
         }
     }
-
 
     ///////Private methods///////
     private void recPrinter(BaseNode node){
@@ -139,6 +143,37 @@ public class BaseNode implements NodeInterface
             return RecNextRightSibling(node.rightsibling, nodeToBeAdded);
         }
     }
+	//endregion
+
+	public static BaseNode RetrieveSymbol(String name){
+		Stack<Hashtable<String, BaseNode>> tmp = new Stack<>();
+		tmp.addAll(symbolTable);
+
+		//Look through every layer of the stack
+		while(!tmp.empty()){
+			if (tmp.peek().get(name).equals(name)){
+				return tmp.peek().get(name);
+			}
+			else{
+				tmp.pop();
+			}
+		}
+
+		return null;
+	}
+
+	public static void EnterSymbol(String name, BaseNode type){
+		if (symbolTable.peek().get(name) == null){
+			symbolTable.peek().put(name, type);
+		}
+	}
+
+	public static Hashtable NewScope(){
+		symbolTable.add(new Hashtable<String, BaseNode>());
+		return symbolTable.peek();
+	}
+
+	//endregion
 
     @Override
     public void Accept(Visitor nodevisitor)
