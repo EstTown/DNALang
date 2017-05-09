@@ -33,7 +33,6 @@ public class ProgNode extends BaseNode
 				tmp.pop();
 			}
 		}
-
 		return null;
 	}
 
@@ -50,4 +49,9 @@ public class ProgNode extends BaseNode
 	{
 		symbolTable.pop();
 	}
+	public static boolean DeclaredLocally(String name)
+    {
+        if(symbolTable.peek().get(name) != null){return true;}
+        else{return false;}
+    }
 }
