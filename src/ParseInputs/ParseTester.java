@@ -98,12 +98,10 @@ public class ParseTester
             ast.Accept(tableFiller);
             */
 
-
             ProgNode.errorList.add(new Error("this is error"));
 			for (Error error : ProgNode.errorList){
-				System.out.println(error.getMessage());
+				//System.out.println(error.getMessage());
 			}
-
         }
         catch (IOException parser)
         {
