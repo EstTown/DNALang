@@ -80,6 +80,9 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         }
         node.AddChild(visit(ctx.expression()));
 
+		node.line = ctx.getStart().getLine();
+		node.pos = ctx.getStart().getCharPositionInLine();
+
         return node;
     }
 
@@ -144,6 +147,9 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
                 node = new NullNode();
                 break;
         }
+		node.line = ctx.getStart().getLine();
+		node.pos = ctx.getStart().getCharPositionInLine();
+
         node.AddChild(visit(ctx.left));
         node.AddChild(visit(ctx.right));
 
@@ -155,6 +161,8 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     {
         IntegerLiteralNode node = new IntegerLiteralNode();
 
+		node.line = ctx.getStart().getLine();
+		node.pos = ctx.getStart().getCharPositionInLine();
         node.content = ctx.getText();
 
         return node;
@@ -164,6 +172,9 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     public BaseNode visitDnaExp(LanguageParser.DnaExpContext ctx)
     {
         DNALiteralNode node = new DNALiteralNode();
+
+		node.line = ctx.getStart().getLine();
+		node.pos = ctx.getStart().getCharPositionInLine();
         node.content = ctx.getText();
 
         return node;
@@ -173,6 +184,9 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     public BaseNode visitRnaExp(LanguageParser.RnaExpContext ctx)
     {
         RNALiteratalNode node = new RNALiteratalNode();
+
+		node.line = ctx.getStart().getLine();
+		node.pos = ctx.getStart().getCharPositionInLine();
         node.content = ctx.getText();
 
         return node;
@@ -182,6 +196,9 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     public BaseNode visitCodonExp(LanguageParser.CodonExpContext ctx)
     {
         CodonLiteralNode node = new CodonLiteralNode();
+
+		node.line = ctx.getStart().getLine();
+		node.pos = ctx.getStart().getCharPositionInLine();
         node.content = ctx.getText();
 
         return node;
@@ -191,6 +208,9 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     public BaseNode visitProteinExp(LanguageParser.ProteinExpContext ctx)
     {
         AminoLiteralNode node = new AminoLiteralNode();
+
+		node.line = ctx.getStart().getLine();
+		node.pos = ctx.getStart().getCharPositionInLine();
         node.content = ctx.getText();
 
         return node;
@@ -200,6 +220,9 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     public BaseNode visitBoolExp(LanguageParser.BoolExpContext ctx)
     {
         BoolLiteralNode node = new BoolLiteralNode();
+
+		node.line = ctx.getStart().getLine();
+		node.pos = ctx.getStart().getCharPositionInLine();
         node.content = ctx.getText();
 
         return node;
@@ -209,6 +232,9 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     public BaseNode visitVariableExp(LanguageParser.VariableExpContext ctx)
     {
         IdentifierNode node = new IdentifierNode();
+
+		node.line = ctx.getStart().getLine();
+		node.pos = ctx.getStart().getCharPositionInLine();
         node.content = ctx.getText();
 
         return node;
@@ -234,8 +260,10 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
                 node = new NullNode();
                 break;
         }
+        node.line = ctx.getStart().getLine();
+        node.pos = ctx.getStart().getCharPositionInLine();
 
-        node.AddChild(visit(ctx.left));
+		node.AddChild(visit(ctx.left));
         node.AddChild(visit(ctx.right));
 
         return node;
@@ -246,6 +274,9 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     {
         DeclareVarNode node = new DeclareVarNode();
 
+		node.line = ctx.getStart().getLine();
+		node.pos = ctx.getStart().getCharPositionInLine();
+        node.content = ctx.TYPE();
         if(ctx.TYPE() != null)
         {
             node.content = ctx.TYPE();
@@ -272,6 +303,10 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         {
             node.AddChild(visit(ctx.arrtype));
         }
+
+		node.line = ctx.getStart().getLine();
+		node.pos = ctx.getStart().getCharPositionInLine();
+        node.content = ctx.TYPE();
         node.AddChild(visit(ctx.identifier()));
 
         return node;
@@ -290,6 +325,8 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     {
         IdentifierNode node = new IdentifierNode();
         node.content = ctx.getText();
+		node.line = ctx.getStart().getLine();
+		node.pos = ctx.getStart().getCharPositionInLine();
 
         return node;
     }
@@ -319,6 +356,8 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     {
         PrintCommandNode node = new PrintCommandNode();
         node.AddChild(visit(ctx.left));
+		node.line = ctx.getStart().getLine();
+		node.pos = ctx.getStart().getCharPositionInLine();
 
         return node;
     }
@@ -329,6 +368,8 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         IfCommandNode node = new IfCommandNode();
         node.AddChild(visit(ctx.predicate));
         node.AddChild(visit(ctx.block()));
+		node.line = ctx.getStart().getLine();
+		node.pos = ctx.getStart().getCharPositionInLine();
         return node;
     }
 
@@ -339,6 +380,8 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
 		node.AddChild(visit(ctx.predicate));
         node.AddChild(visit(ctx.block(1)));
 		node.AddChild(visit(ctx.block(0)));
+		node.line = ctx.getStart().getLine();
+		node.pos = ctx.getStart().getCharPositionInLine();
         return node;
     }
 
@@ -350,6 +393,8 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         node.AddChild(visit(ctx.predicate));
         node.AddChild(visit(ctx.increment));
         node.AddChild(visit(ctx.block()));
+		node.line = ctx.getStart().getLine();
+		node.pos = ctx.getStart().getCharPositionInLine();
 
         return node;
     }
@@ -363,6 +408,9 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         node.AddChild(visit(ctx.predicate));
 
         node.AddChild(visit(ctx.block()));
+
+		node.line = ctx.getStart().getLine();
+		node.pos = ctx.getStart().getCharPositionInLine();
 
         return node;
     }
@@ -390,6 +438,10 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
                 node.AddChild(visit(ctx.expression(i)));
             }
         }
+
+		node.line = ctx.getStart().getLine();
+		node.pos = ctx.getStart().getCharPositionInLine();
+
         return node;
     }
 
@@ -415,6 +467,9 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         }
         node.AddChild(visit(ctx.expression()));
 
+		node.line = ctx.getStart().getLine();
+		node.pos = ctx.getStart().getCharPositionInLine();
+
         return node;
     }
 
@@ -431,6 +486,8 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         ReturnCommandNode node = new ReturnCommandNode();
 
         node.AddChild(visit(ctx.expression()));
+		node.line = ctx.getStart().getLine();
+		node.pos = ctx.getStart().getCharPositionInLine();
 
         return node;
     }
@@ -463,6 +520,9 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         }
         node.AddChild(visit(ctx.block()));
 
+		node.line = ctx.getStart().getLine();
+		node.pos = ctx.getStart().getCharPositionInLine();
+
         return node;
     }
 
@@ -472,6 +532,24 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         BlockNode node = new BlockNode();
 
         int children = ctx.getChildCount();
+        //int i;
+		//region old
+/*
+        for(int i = 0; i < children; i++)
+        {
+            if(ctx.declarations(i) != null)
+            {
+                node.AddChild(visit(ctx.declarations(i)));
+            }
+        }
+        for(int i = 0; i < children; i++)
+        {
+            if(ctx.statements(i) != null)
+            {
+                node.AddChild(visit(ctx.statements(i)));
+            }
+        }
+        */
 		//endregion
 
 		int declCounter = 0;
@@ -492,6 +570,10 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
 				}
 			}
 		}
+
+		node.line = ctx.getStart().getLine();
+		node.pos = ctx.getStart().getCharPositionInLine();
+
         return node;
     }
 
@@ -505,7 +587,8 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         ConvertNode node = new ConvertNode();
         node.content = ctx.TYPE();
         node.AddChild(visit(ctx.left));
+		node.line = ctx.getStart().getLine();
+		node.pos = ctx.getStart().getCharPositionInLine();
         return node;
     }
-
 }

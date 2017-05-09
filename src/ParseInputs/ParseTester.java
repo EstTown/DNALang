@@ -8,7 +8,6 @@ import Generated.*;
 
 import java.io.*;
 
-import SemanticAnalysis.SymbolTableFiller;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -95,15 +94,16 @@ public class ParseTester
             ast.Accept(pretty);
             */
 
-            /*
-            SymbolTableFiller tableFiller = new SymbolTableFiller();
-            ast.Accept(tableFiller);
-            */
 
-            ProgNode.errorList.add(new Error("this is error"));
+
+            //ProgNode.errorList.add(new Error("this is error"));
+			/*
 			for (Error error : ProgNode.errorList){
-				//System.out.println(error.getMessage());
+				System.out.println(error.getMessage());
 			}
+			*/
+
+
         }
         catch (IOException parser)
         {

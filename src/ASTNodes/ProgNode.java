@@ -3,11 +3,9 @@ package ASTNodes;
 import AST.Visitor;
 import Interfaces.ASTVisitor;
 import com.sun.org.apache.xerces.internal.util.SymbolTable;
+import ASTNodes.BlockNodes.*;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class ProgNode extends BaseNode
 {
@@ -17,11 +15,11 @@ public class ProgNode extends BaseNode
         nodevisitor.Visit(this);
     }
 
-	public static Stack<Hashtable<String, BaseNode>> symbolTable = new Stack<Hashtable<String, BaseNode>>();
+	public static Stack<Hashtable<String, Object>> symbolTable = new Stack<Hashtable<String, Object>>();
     public static List<Error> errorList = new ArrayList<>();
 
-	public static BaseNode RetrieveSymbol(String name){
-		Stack<Hashtable<String, BaseNode>> tmp = new Stack<>();
+	public static Object RetrieveSymbol(String name){
+		Stack<Hashtable<String, Object>> tmp = new Stack<>();
 		tmp.addAll(symbolTable);
 
 		//Look through every layer of the stack
@@ -36,23 +34,56 @@ public class ProgNode extends BaseNode
 		return null;
 	}
 
-	public static void EnterSymbol(String name, BaseNode type){
+	public static void EnterSymbol(String name, Object type){
 		if (!symbolTable.peek().containsKey(name)){
 			symbolTable.peek().put(name, type);
 		}
 	}
 
 	public static void OpenScope(){
-		symbolTable.add(new Hashtable<String, BaseNode>());
+		symbolTable.add(new Hashtable<String, Object>());
 	}
-	public static void CloseScope()
-	{
+
+	public static void CloseScope(){
 		symbolTable.pop();
 	}
-	public static boolean DeclaredLocally(String name)
-    {
+
+	public static boolean DeclaredLocally(String name){
         if(symbolTable.peek().get(name) != null){return true;}
         else{return false;}
     }
+
+    public static void ProcessNode(BaseNode node){
+		if (node.getClass().getSimpleName().equals("BlockNode"))
+			ProgNode.OpenScope();
+
+		if (node.getClass().getSimpleName().equals("DeclarationNode"))
+			ProgNode.EnterSymbol(node.content.toString(), node.getClass());
+
+		if (node.getClass().getSimpleName().equals("IdentifierNode")) {
+			if (RetrieveSymbol(node.content.toString()) == null) {
+				//Error
+				errorList.add(new Error("Undeclared symbol.", node.line, node.pos));
+			}
+		}
+
+		ArrayList<BaseNode> list = new ArrayList<BaseNode>();
+		BaseNode next = node.getLeftmostchild();
+		while(true){
+			list.add(next);
+			if(next.getRightsibling() == null)
+				break;
+			else
+				next = next.getRightsibling();
+		}
+		Collections.reverse(list);
+		for(BaseNode item : list)
+		{
+			ProgNode.ProcessNode(item);
+		}
+
+		if (node.getClass().getSimpleName().equals("BlockNode"))
+			ProgNode.CloseScope();
+	}
 
 }
