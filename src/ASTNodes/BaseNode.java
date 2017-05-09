@@ -4,8 +4,6 @@ import AST.Visitor;
 import Interfaces.ASTVisitor;
 import Interfaces.NodeInterface;
 
-import java.util.Hashtable;
-import java.util.Stack;
 
 public class BaseNode implements NodeInterface
 {
@@ -14,8 +12,6 @@ public class BaseNode implements NodeInterface
     private BaseNode rightsibling;
     private BaseNode leftmostchild;
     public Object content;
-
-    public static Stack<Hashtable<String, BaseNode>> symbolTable;
 
     //region Node methods
     ///////Public methods///////
@@ -143,36 +139,6 @@ public class BaseNode implements NodeInterface
             return RecNextRightSibling(node.rightsibling, nodeToBeAdded);
         }
     }
-	//endregion
-
-	public static BaseNode RetrieveSymbol(String name){
-		Stack<Hashtable<String, BaseNode>> tmp = new Stack<>();
-		tmp.addAll(symbolTable);
-
-		//Look through every layer of the stack
-		while(!tmp.empty()){
-			if (tmp.peek().containsKey(name)){
-				return tmp.peek().get(name);
-			}
-			else{
-				tmp.pop();
-			}
-		}
-
-		return null;
-	}
-
-	public static void EnterSymbol(String name, BaseNode type){
-		if (!symbolTable.peek().containsKey(name)){
-			symbolTable.peek().put(name, type);
-		}
-	}
-
-	public static Hashtable NewScope(){
-		symbolTable.add(new Hashtable<String, BaseNode>());
-		return symbolTable.peek();
-	}
-
 	//endregion
 
     @Override
