@@ -494,9 +494,6 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
             }
         }
         node.AddChild(visit(ctx.block()));
-        //System.out.println(ctx.block().getText());
-        node.AddChild(visit(ctx.jump()));
-        //System.out.println(ctx.jump().getText());
 
 		node.line = ctx.getStart().getLine();
 		node.pos = ctx.getStart().getCharPositionInLine();

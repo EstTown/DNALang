@@ -2,6 +2,7 @@ package ASTNodes;
 
 import AST.Visitor;
 import Interfaces.ASTVisitor;
+import com.sun.org.apache.xerces.internal.util.SymbolTable;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -16,7 +17,7 @@ public class ProgNode extends BaseNode
         nodevisitor.Visit(this);
     }
 
-	public static Stack<Hashtable<String, BaseNode>> symbolTable;
+	public static Stack<Hashtable<String, BaseNode>> symbolTable = new Stack<Hashtable<String, BaseNode>>();
     public static List<Error> errorList = new ArrayList<>();
 
 	public static BaseNode RetrieveSymbol(String name){
@@ -32,7 +33,6 @@ public class ProgNode extends BaseNode
 				tmp.pop();
 			}
 		}
-
 		return null;
 	}
 
@@ -42,10 +42,16 @@ public class ProgNode extends BaseNode
 		}
 	}
 
-	public static Hashtable NewScope(){
+	public static void OpenScope(){
 		symbolTable.add(new Hashtable<String, BaseNode>());
-		return symbolTable.peek();
 	}
-
-
+	public static void CloseScope()
+	{
+		symbolTable.pop();
+	}
+	public static boolean DeclaredLocally(String name)
+    {
+        if(symbolTable.peek().get(name) != null){return true;}
+        else{return false;}
+    }
 }

@@ -87,18 +87,19 @@ public class ParseTester
 
             BaseNode ast;
             ast = astBuilder.visitProg(cst);
-            ast.PrintTree();
-
+            //ast.PrintTree();
 
             PrettyPrinter pretty = new PrettyPrinter();
-            pretty.Visit((ProgNode) ast);
+            ast.Accept(pretty);
 
-/*			Testing our error message output
-            ProgNode.errorList.add(new Error("Invalid assignment.", 2, 46));
+
+            /*
+            ProgNode.errorList.add(new Error("this is error"));
 			for (Error error : ProgNode.errorList){
 				System.out.println(error.getMessage());
 			}
-*/
+			*/
+
         }
         catch (IOException parser)
         {
