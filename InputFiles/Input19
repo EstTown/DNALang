@@ -1,0 +1,5 @@
+rna rna1 = AUGGCUUAUUAG;
+
+protein protein1 = "A";
+
+int int1 = position of protein1 as rna in rna1;

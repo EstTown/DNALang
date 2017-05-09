@@ -1,2 +1,2 @@
-int add(int b, bool c){ d = 5; return e;}
-
+int[50] array;
+bool[25] array2;

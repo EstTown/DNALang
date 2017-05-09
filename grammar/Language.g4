@@ -15,7 +15,7 @@ declaration
 	;
 
 arraytype
-	: TYPE '[' ']'
+	: TYPE '['expression']'
 	;
 
 identifier

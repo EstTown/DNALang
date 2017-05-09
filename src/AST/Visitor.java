@@ -3,6 +3,7 @@ package AST;
 import ASTNodes.BlockNodes.BlockNode;
 import ASTNodes.CommandNodes.*;
 import ASTNodes.DeclareFunctionNodes.DeclareFunctionNode;
+import ASTNodes.DeclareVarNodes.DeclareArrayNode;
 import ASTNodes.DeclareVarNodes.DeclareVarNode;
 import ASTNodes.ExpressionNodes.*;
 import ASTNodes.*;
@@ -10,6 +11,7 @@ import ASTNodes.TerminalNodes.*;
 import Interfaces.ASTVisitor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /*
 In general, it seems that it's best to let each visitor (prettyprinter, typechecker etc.)
@@ -41,7 +43,7 @@ public abstract class Visitor implements ASTVisitor
                 next = next.getRightsibling();
             }
         }
-
+        Collections.reverse(list);
         //visit all children
         for(BaseNode item : list)
         {
@@ -325,8 +327,8 @@ public abstract class Visitor implements ASTVisitor
     }
 
     @Override
-    public void Visit(BaseNode node)
-    {
-        visitChildren(node);
-    }
+    public void Visit(BaseNode node) { visitChildren(node);    }
+
+    @Override
+    public void Visit(DeclareArrayNode node) {visitChildren(node); }
 }

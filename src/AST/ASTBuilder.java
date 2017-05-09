@@ -4,6 +4,7 @@ import ASTNodes.*;
 import ASTNodes.BlockNodes.BlockNode;
 import ASTNodes.CommandNodes.*;
 import ASTNodes.DeclareFunctionNodes.DeclareFunctionNode;
+import ASTNodes.DeclareVarNodes.DeclareArrayNode;
 import ASTNodes.DeclareVarNodes.DeclareVarNode;
 import Generated.*;
 import ASTNodes.ExpressionNodes.*;
@@ -245,7 +246,14 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     {
         DeclareVarNode node = new DeclareVarNode();
 
-        node.content = ctx.TYPE();
+        if(ctx.TYPE() != null)
+        {
+            node.content = ctx.TYPE();
+        }
+        else
+        {
+            node.AddChild(visit(ctx.arrtype));
+        }
 
         node.AddChild(visit(ctx.assignment()));
 
@@ -256,10 +264,24 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     public BaseNode visitDeclareVariable(LanguageParser.DeclareVariableContext ctx)
     {
         DeclareVarNode node = new DeclareVarNode();
-
-        node.content = ctx.TYPE();
+        if(ctx.TYPE() != null)
+        {
+            node.content = ctx.TYPE();
+        }
+        else
+        {
+            node.AddChild(visit(ctx.arrtype));
+        }
         node.AddChild(visit(ctx.identifier()));
 
+        return node;
+    }
+
+    @Override
+    public BaseNode visitArraytype(LanguageParser.ArraytypeContext ctx)
+    {
+        DeclareArrayNode node = new DeclareArrayNode();
+        node.content = ctx.TYPE();
         return node;
     }
 
@@ -450,24 +472,6 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         BlockNode node = new BlockNode();
 
         int children = ctx.getChildCount();
-        //int i;
-		//region old
-/*
-        for(int i = 0; i < children; i++)
-        {
-            if(ctx.declarations(i) != null)
-            {
-                node.AddChild(visit(ctx.declarations(i)));
-            }
-        }
-        for(int i = 0; i < children; i++)
-        {
-            if(ctx.statements(i) != null)
-            {
-                node.AddChild(visit(ctx.statements(i)));
-            }
-        }
-        */
 		//endregion
 
 		int declCounter = 0;
@@ -503,4 +507,5 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         node.AddChild(visit(ctx.left));
         return node;
     }
+
 }

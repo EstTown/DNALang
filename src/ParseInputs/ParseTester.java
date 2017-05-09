@@ -88,10 +88,12 @@ public class ParseTester
 
             BaseNode ast;
             ast = astBuilder.visitProg(cst);
-            //ast.PrintTree();
+            ast.PrintTree();
 
+            /*
             PrettyPrinter pretty = new PrettyPrinter();
             ast.Accept(pretty);
+            */
 
             /*
             SymbolTableFiller tableFiller = new SymbolTableFiller();

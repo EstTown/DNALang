@@ -54,4 +54,5 @@ public class ProgNode extends BaseNode
         if(symbolTable.peek().get(name) != null){return true;}
         else{return false;}
     }
+
 }

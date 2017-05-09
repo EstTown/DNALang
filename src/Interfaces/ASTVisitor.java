@@ -29,6 +29,7 @@ public interface ASTVisitor<T>
 
     void Visit(DeclareFunctionNode declareFunctionNode);
 
+    void Visit(DeclareArrayNode declareArrayNode);
     void Visit(DeclareVarNode declareVarNode);
 
     void Visit(AndNode andNode);
