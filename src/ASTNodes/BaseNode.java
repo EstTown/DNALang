@@ -151,7 +151,7 @@ public class BaseNode implements NodeInterface
 
 		//Look through every layer of the stack
 		while(!tmp.empty()){
-			if (tmp.peek().get(name).equals(name)){
+			if (tmp.peek().containsKey(name)){
 				return tmp.peek().get(name);
 			}
 			else{
@@ -163,7 +163,7 @@ public class BaseNode implements NodeInterface
 	}
 
 	public static void EnterSymbol(String name, BaseNode type){
-		if (symbolTable.peek().get(name) == null){
+		if (!symbolTable.peek().containsKey(name)){
 			symbolTable.peek().put(name, type);
 		}
 	}
