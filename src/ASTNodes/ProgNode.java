@@ -53,7 +53,9 @@ public class ProgNode extends BaseNode
         else{return false;}
     }
 
-    public static void ProcessNode(BaseNode node){
+    public static void ProcessNode(BaseNode node)
+	{
+		/*
 		if (node.getClass().getSimpleName().equals("BlockNode"))
 			ProgNode.OpenScope();
 
@@ -66,8 +68,23 @@ public class ProgNode extends BaseNode
 				errorList.add(new Error("Undeclared symbol.", node.line, node.pos));
 			}
 		}
-
+		*/
+		switch(node.getClass().getSimpleName())
+		{
+			case "BlockNode":
+				ProgNode.OpenScope();
+				break;
+			case "DeclarationNode":
+				ProgNode.EnterSymbol(node.content.toString(), node.getClass());
+				break;
+			case "IdentifierNode":
+				if(RetrieveSymbol(node.content.toString()) == null)
+				{
+					errorList.add(new Error("Undeclared symbol..", node.line, node.pos));
+				}
+		}
 		ArrayList<BaseNode> list = new ArrayList<BaseNode>();
+
 		BaseNode next = node.getLeftmostchild();
 		while(true){
 			list.add(next);
@@ -85,5 +102,4 @@ public class ProgNode extends BaseNode
 		if (node.getClass().getSimpleName().equals("BlockNode"))
 			ProgNode.CloseScope();
 	}
-
 }
