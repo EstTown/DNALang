@@ -89,7 +89,7 @@ function
 */
 //rewriting function
 functiondeclaration
-	: TYPE funcname=identifier '(' declaration (',' declaration)* ')' '{' block jump'}'
+	: TYPE funcname=identifier '(' declaration (',' declaration)* ')' '{' block '}'
 	| 'void' funcname=identifier '(' declaration (',' declaration)* ')' '{' block '}'
 	;
 

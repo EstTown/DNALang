@@ -49,279 +49,284 @@ public abstract class Visitor implements ASTVisitor
         }
     }
 
-
-
-
-
-
-
-
     @Override
-    public void Visit(BlockNode blockNode)
+    public void Visit(BlockNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(AssignCommandNode assignCommandNode)
+    public void Visit(AssignCommandNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(BreakCommandNode breakCommandNode)
+    public void Visit(BreakCommandNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(CallCommandNode callCommandNode)
+    public void Visit(CallCommandNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(ForCommandNode forCommandNode)
+    public void Visit(ForCommandNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(IfCommandNode ifCommandNode)
+    public void Visit(IfCommandNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(PrintCommandNode printCommandNode)
+    public void Visit(PrintCommandNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(ReturnCommandNode returnCommandNode)
+    public void Visit(ReturnCommandNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(SequentialCommandNode sequentialCommandNode)
+    public void Visit(SequentialCommandNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(WhileCommandNode whileCommandNode)
+    public void Visit(WhileCommandNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(DeclareFunctionNode declareFunctionNode)
+    public void Visit(DeclareFunctionNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(DeclareVarNode declareVarNode)
+    public void Visit(DeclareVarNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(AndNode andNode)
+    public void Visit(AndNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(ComparisonNode comparisonNode)
+    public void Visit(ComparisonNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(DivNode divNode)
+    public void Visit(DivNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(LessThanNode lessThanNode)
+    public void Visit(LessThanNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(MinusNode minusNode)
+    public void Visit(MinusNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(MultNode multNode)
+    public void Visit(MultNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(NotNode notNode)
+    public void Visit(NotNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(OrNode orNode)
+    public void Visit(OrNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(PlusNode plusNode)
+    public void Visit(PlusNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(IdentifierNode identifierNode)
+    public void Visit(IdentifierNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(IntegerLiteralNode integerLiteralNode)
+    public void Visit(IntegerLiteralNode node)
     {
-
+        visitChildren(node);
     }
     @Override
-    public void Visit(NullNode nullNode)
+    public void Visit(NullNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(OperatorNode operatorNode)
+    public void Visit(OperatorNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(ProgNode progNode)
+    public void Visit(ProgNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(ModNode modNode)
+    public void Visit(ModNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(NotEqualNode notEqualNode)
+    public void Visit(NotEqualNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(EqualNode EqualNode)
+    public void Visit(EqualNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(GreaterThanNode greaterThanNode)
+    public void Visit(GreaterThanNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(LessOrEqualNode lessOrEqualNode)
+    public void Visit(LessOrEqualNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(GreaterOrEqualNode greaterOrEqualNode)
+    public void Visit(GreaterOrEqualNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(DNALiteralNode dnaLiteralNode)
+    public void Visit(DNALiteralNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(AminoLiteralNode aminoLiteralNode)
+    public void Visit(AminoLiteralNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(CodonLiteralNode codonLiteralNode)
+    public void Visit(CodonLiteralNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(RNALiteratalNode rnaLiteratalNode)
+    public void Visit(RNALiteratalNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(BoolLiteralNode boolLiteralNode)
+    public void Visit(BoolLiteralNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(IfElseCommandNode ifElseCommandNode)
+    public void Visit(IfElseCommandNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(ConvertNode convertNode)
+    public void Visit(ConvertNode node)
     {
-
+        visitChildren(node);
     }
 
     @Override
-    public void Visit(ComplementaryNode complementaryNode) {
-
-    }
-
-    @Override
-    public void Visit(LengthNode lengthNode) {
-
-    }
-
-    @Override
-    public void Visit(ReverseNode reverseNode) {
-
-    }
-
-    @Override
-    public void Visit(ContainsNode containsNode) {
-
-    }
-
-    @Override
-    public void Visit(CountNode countNode) {
-
-    }
-
-    @Override
-    public void Visit(PositionNode positionNode) {
-
-    }
-
-    @Override
-    public void Visit(RemoveNode removeNode)
+    public void Visit(ComplementaryNode node)
     {
+        visitChildren(node);
+    }
 
+    @Override
+    public void Visit(LengthNode node)
+    {
+        visitChildren(node);
+    }
+
+    @Override
+    public void Visit(ReverseNode node)
+    {
+        visitChildren(node);
+    }
+
+    @Override
+    public void Visit(ContainsNode node)
+    {
+        visitChildren(node);
+    }
+
+    @Override
+    public void Visit(CountNode node)
+    {
+        visitChildren(node);
+    }
+
+    @Override
+    public void Visit(PositionNode node)
+    {
+        visitChildren(node);
+    }
+
+    @Override
+    public void Visit(RemoveNode node)
+    {
+        visitChildren(node);
+    }
+
+    @Override
+    public void Visit(BaseNode node)
+    {
+        visitChildren(node);
     }
 }
