@@ -15,6 +15,7 @@ public class BaseNode implements NodeInterface
     private BaseNode rightsibling;
     private BaseNode leftmostchild;
     public Object content;
+    public String spelling;
 	public int line;
 	public int pos;
 

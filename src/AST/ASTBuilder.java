@@ -10,6 +10,9 @@ import Generated.*;
 import ASTNodes.ExpressionNodes.*;
 import ASTNodes.TerminalNodes.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
 {
@@ -263,7 +266,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         node.line = ctx.getStart().getLine();
         node.pos = ctx.getStart().getCharPositionInLine();
 
-		node.AddChild(visit(ctx.left));
+        node.spelling = visit(ctx.left).content.toString();
         node.AddChild(visit(ctx.right));
 
         return node;
@@ -274,20 +277,22 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     {
         DeclareVarNode node = new DeclareVarNode();
 
-		node.line = ctx.getStart().getLine();
-		node.pos = ctx.getStart().getCharPositionInLine();
         node.content = ctx.TYPE();
         if(ctx.TYPE() != null)
         {
             node.content = ctx.TYPE();
+            node.AddChild(visit(ctx.assignment()));
+            node.spelling=node.getLeftmostchild().spelling;
         }
         else
         {
             node.AddChild(visit(ctx.arrtype));
+            node.AddChild(visit(ctx.assignment()));
+            node.spelling=node.getLeftmostchild().getRightsibling().spelling; //should be correct child
         }
 
-        node.AddChild(visit(ctx.assignment()));
-
+        node.line = ctx.getStart().getLine();
+        node.pos = ctx.getStart().getCharPositionInLine();
         return node;
     }
 
@@ -303,12 +308,15 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         {
             node.AddChild(visit(ctx.arrtype));
         }
+        /*
+        node.AddChild(visit(ctx.identifier()));     //we don't want to add the identifier as a child
+        node.spelling = node.getLeftmostchild().content.toString();
+        */
 
-		node.line = ctx.getStart().getLine();
-		node.pos = ctx.getStart().getCharPositionInLine();
-        node.content = ctx.TYPE();
-        node.AddChild(visit(ctx.identifier()));
+        node.spelling = visit(ctx.identifier()).content.toString();
 
+        node.line = ctx.getStart().getLine();
+        node.pos = ctx.getStart().getCharPositionInLine();
         return node;
     }
 
@@ -317,6 +325,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     {
         DeclareArrayNode node = new DeclareArrayNode();
         node.content = ctx.TYPE();
+        node.AddChild(visit(ctx.expression()));
         return node;
     }
 
@@ -503,25 +512,41 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     public BaseNode visitFunctiondeclaration(LanguageParser.FunctiondeclarationContext ctx)
     {
         DeclareFunctionNode node = new DeclareFunctionNode();
-
-        node.content = ctx.TYPE();
-
-        node.AddChild(visit(ctx.funcname));
+        node.content = ctx.TYPE().toString(); //type of this function
 
         //get formal parameters
         int children = ctx.getChildCount();
         int i;
+        ArrayList<BaseNode> list = new ArrayList<>();
+        BaseNode temp;
         for(i = 0; i < children ; i++)
         {
             if(ctx.declaration(i) != null)
             {
-                node.AddChild(visit(ctx.declaration(i)));
+                temp = visit(ctx.declaration(i));
+                node.AddChild(temp);
+                list.add(temp);
             }
         }
-        node.AddChild(visit(ctx.block()));
 
+        /*add formal parameters to the declarefunctionnode, so that we don't have to look at this nodes children,
+        to find the formal parameters, when we want to put that information into the symbol table */
+
+
+        for(BaseNode item : list)
+        {
+            node.AddParameters(item.content.toString(), item.getLeftmostchild().content.toString());
+        }
+
+        BaseNode temp2 = visit(ctx.funcname);
+        node.AddChild(temp2);
+        node.functionName = temp2.content.toString();
+
+        node.AddChild(visit(ctx.block()));
 		node.line = ctx.getStart().getLine();
 		node.pos = ctx.getStart().getCharPositionInLine();
+
+		//find return types??
 
         return node;
     }
@@ -532,25 +557,6 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         BlockNode node = new BlockNode();
 
         int children = ctx.getChildCount();
-        //int i;
-		//region old
-/*
-        for(int i = 0; i < children; i++)
-        {
-            if(ctx.declarations(i) != null)
-            {
-                node.AddChild(visit(ctx.declarations(i)));
-            }
-        }
-        for(int i = 0; i < children; i++)
-        {
-            if(ctx.statements(i) != null)
-            {
-                node.AddChild(visit(ctx.statements(i)));
-            }
-        }
-        */
-		//endregion
 
 		int declCounter = 0;
 		int stmtCounter = 0;

@@ -1,2 +1,3 @@
 int add(int b, bool c){ d = 5; return e;}
+bool sub(int c, int b, dna e){t = ATG; return 7;}
 

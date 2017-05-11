@@ -21,7 +21,7 @@ public class Main
 {
     public static void main(String[] args)
     {
-        int number = 17;
+        int number = 20;
         ParseTester parseTester = new ParseTester();
         //parseTester.ParseAllInputs(number);
 

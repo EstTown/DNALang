@@ -1,6 +1,8 @@
 package ASTNodes;
 
 import AST.Visitor;
+import ASTNodes.DeclareVarNodes.DeclareVarNode;
+import ASTNodes.TerminalNodes.IdentifierNode;
 import Interfaces.ASTVisitor;
 import com.sun.org.apache.xerces.internal.util.SymbolTable;
 import ASTNodes.BlockNodes.*;
@@ -15,11 +17,11 @@ public class ProgNode extends BaseNode
         nodevisitor.Visit(this);
     }
 
-	public static Stack<Hashtable<String, Object>> symbolTable = new Stack<Hashtable<String, Object>>();
+	public static Stack<Hashtable<String, BaseNode>> symbolTable = new Stack<Hashtable<String, BaseNode>>();
     public static List<Error> errorList = new ArrayList<>();
 
-	public static Object RetrieveSymbol(String name){
-		Stack<Hashtable<String, Object>> tmp = new Stack<>();
+	public static BaseNode RetrieveSymbol(String name){
+		Stack<Hashtable<String, BaseNode>> tmp = new Stack<Hashtable<String, BaseNode>>();
 		tmp.addAll(symbolTable);
 
 		//Look through every layer of the stack
@@ -34,72 +36,86 @@ public class ProgNode extends BaseNode
 		return null;
 	}
 
-	public static void EnterSymbol(String name, Object type){
-		if (!symbolTable.peek().containsKey(name)){
-			symbolTable.peek().put(name, type);
+	public static void EnterSymbol(String name, BaseNode node){
+		if (!symbolTable.peek().containsKey(name))
+		{
+			symbolTable.peek().put(name, node);
+		}
+		else
+		{
+			//do error
 		}
 	}
 
-	public static void OpenScope(){
-		symbolTable.add(new Hashtable<String, Object>());
+	public static void OpenScope()
+    {
+		symbolTable.add(new Hashtable<String, BaseNode>());
 	}
 
-	public static void CloseScope(){
+	public static void CloseScope()
+    {
 		symbolTable.pop();
 	}
 
-	public static boolean DeclaredLocally(String name){
+	public static boolean DeclaredLocally(String name)
+    {
         if(symbolTable.peek().get(name) != null){return true;}
         else{return false;}
     }
 
+
+
+    //this method is supposed to build the symbol table
     public static void ProcessNode(BaseNode node)
 	{
-		/*
-		if (node.getClass().getSimpleName().equals("BlockNode"))
-			ProgNode.OpenScope();
-
-		if (node.getClass().getSimpleName().equals("DeclarationNode"))
-			ProgNode.EnterSymbol(node.content.toString(), node.getClass());
-
-		if (node.getClass().getSimpleName().equals("IdentifierNode")) {
-			if (RetrieveSymbol(node.content.toString()) == null) {
-				//Error
-				errorList.add(new Error("Undeclared symbol.", node.line, node.pos));
-			}
-		}
-		*/
 		switch(node.getClass().getSimpleName())
 		{
 			case "BlockNode":
-				ProgNode.OpenScope();
+                ProgNode.OpenScope();
 				break;
-			case "DeclarationNode":
-				ProgNode.EnterSymbol(node.content.toString(), node.getClass());
+			case "DeclareVarNode":
+                if (ProgNode.RetrieveSymbol(node.spelling) == null)
+                {
+                    ProgNode.EnterSymbol(node.spelling.toString(), node);
+                }
+                else
+                {
+                    errorList.add(new Error("Identifier \""+node.spelling+"\""+"already used", node.line, node.pos));
+                }
 				break;
 			case "IdentifierNode":
-				if(RetrieveSymbol(node.content.toString()) == null)
+			    BaseNode temp = ProgNode.RetrieveSymbol(node.content.toString());
+                if(temp ==  null)
 				{
 					errorList.add(new Error("Undeclared symbol..", node.line, node.pos));
-				}
+                }
 		}
+
 		ArrayList<BaseNode> list = new ArrayList<BaseNode>();
 
-		BaseNode next = node.getLeftmostchild();
-		while(true){
-			list.add(next);
-			if(next.getRightsibling() == null)
-				break;
-			else
-				next = next.getRightsibling();
-		}
-		Collections.reverse(list);
-		for(BaseNode item : list)
-		{
-			ProgNode.ProcessNode(item);
-		}
+		if(node.getLeftmostchild() != null) {
+			BaseNode next = node.getLeftmostchild();
+			while (true) {
+				list.add(next);
+				if (next.getRightsibling() == null)
+					break;
+				else
+					next = next.getRightsibling();
+			}
+			//Collections.reverse(list); //by removing this, it fixed an issue, but why?
+			for (BaseNode item : list) {
+				ProgNode.ProcessNode(item);
+			}
 
-		if (node.getClass().getSimpleName().equals("BlockNode"))
-			ProgNode.CloseScope();
+			if (node.getClass().getSimpleName().equals("BlockNode"))
+			{
+			    //typecheck here?
+                ProgNode.CloseScope();
+            }
+		}
+		else
+		{
+			//do nothing
+		}
 	}
 }

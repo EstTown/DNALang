@@ -1,13 +1,17 @@
 package ParseInputs;
 import AST.*;
 import ASTNodes.BaseNode;
+import ASTNodes.DeclareVarNodes.DeclareVarNode;
 import ASTNodes.Error;
 import ASTNodes.ProgNode;
+import ASTNodes.TerminalNodes.IdentifierNode;
 import ASTNodes.TerminalNodes.IntegerLiteralNode;
 import Generated.*;
 
 import java.io.*;
 
+import SemanticAnalysis.FunctionTableFiller;
+import SemanticAnalysis.TypeChecker;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -50,9 +54,14 @@ public class ParseTester
 
                 System.out.println("Program " + Integer.toString(iterator));
                 //stackoverflow guide, uses "parser.compileUnit();", but that one is the same as "parser.prog();" in our case
-                ParseTree tree = parser.prog();
-
+                LanguageParser.ProgContext cst = parser.prog();
                 iterator++;
+
+                BaseNode ast;
+                ASTBuilder astBuilder = new ASTBuilder();
+                ast = astBuilder.visitProg(cst);
+                ast.PrintTree();
+
 
 
 
@@ -87,22 +96,34 @@ public class ParseTester
 
             BaseNode ast;
             ast = astBuilder.visitProg(cst);
-            ast.PrintTree();
+            //ast.PrintTree();
 
             /*
             PrettyPrinter pretty = new PrettyPrinter();
             ast.Accept(pretty);
             */
 
+            FunctionTableFiller tableFiller = new FunctionTableFiller();
+            ast.Accept(tableFiller);
+
+            TypeChecker typeChecker = new TypeChecker();
+            ast.Accept(typeChecker);
 
 
-            //ProgNode.errorList.add(new Error("this is error"));
-			/*
+            /*
+            IdentifierNode node = new IdentifierNode();
+            node.content = "ThisIsANode";
+            ProgNode.EnterSymbol(node.content.toString(), node);
+            */
+
+            System.out.println("Amount of hashtables: "+ProgNode.symbolTable.size());
+            System.out.println("Amount of entries in first hashtable: "+ProgNode.symbolTable.peek().size());
+            System.out.println("Hashtable: " + ProgNode.symbolTable.peek());
+
+            //notify user of errors
 			for (Error error : ProgNode.errorList){
 				System.out.println(error.getMessage());
 			}
-			*/
-
 
         }
         catch (IOException parser)

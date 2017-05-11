@@ -30,24 +30,25 @@ public abstract class Visitor implements ASTVisitor
         ArrayList<BaseNode> list = new ArrayList<BaseNode>();
 
         //get all children of node and put into list
-        BaseNode next = node.getLeftmostchild();
-        while(true)
-        {
-            list.add(next);
-            if(next.getRightsibling() == null)
-            {
-                break;
+        if(node.getLeftmostchild() != null) {
+            BaseNode next = node.getLeftmostchild();
+            while (true) {
+                list.add(next);
+                if (next.getRightsibling() == null) {
+                    break;
+                } else {
+                    next = next.getRightsibling();
+                }
             }
-            else
-            {
-                next = next.getRightsibling();
+            Collections.reverse(list);
+            //visit all children
+            for (BaseNode item : list) {
+                item.Accept(this);
             }
         }
-        Collections.reverse(list);
-        //visit all children
-        for(BaseNode item : list)
+        else
         {
-            item.Accept(this);
+            //do nothing
         }
     }
 
