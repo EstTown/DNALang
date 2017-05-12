@@ -5,6 +5,8 @@ import ASTNodes.BaseNode;
 
 public class BlockNode extends BaseNode
 {
+    public boolean HasNotBeenChecked = true;
+
     @Override
     public void Accept(Visitor nodevisitor)
     {

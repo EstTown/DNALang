@@ -267,6 +267,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         node.pos = ctx.getStart().getCharPositionInLine();
 
         node.spelling = visit(ctx.left).content.toString();
+        node.AddChild(visit(ctx.left)); //this caused some sort of problem, don't remember, but it does have to be here
         node.AddChild(visit(ctx.right));
 
         return node;
@@ -514,6 +515,8 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         DeclareFunctionNode node = new DeclareFunctionNode();
         node.content = ctx.TYPE().toString(); //type of this function
 
+
+
         //get formal parameters
         int children = ctx.getChildCount();
         int i;
@@ -531,18 +534,18 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
 
         /*add formal parameters to the declarefunctionnode, so that we don't have to look at this nodes children,
         to find the formal parameters, when we want to put that information into the symbol table */
-
-
         for(BaseNode item : list)
         {
-            node.AddParameters(item.content.toString(), item.getLeftmostchild().content.toString());
+            node.AddParameters(item.content.toString(), item.spelling); //(type, parametername)
         }
+
 
         BaseNode temp2 = visit(ctx.funcname);
         node.AddChild(temp2);
         node.functionName = temp2.content.toString();
 
         node.AddChild(visit(ctx.block()));
+
 		node.line = ctx.getStart().getLine();
 		node.pos = ctx.getStart().getCharPositionInLine();
 

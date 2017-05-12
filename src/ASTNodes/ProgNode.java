@@ -1,9 +1,11 @@
 package ASTNodes;
 
 import AST.Visitor;
+import ASTNodes.DeclareFunctionNodes.DeclareFunctionNode;
 import ASTNodes.DeclareVarNodes.DeclareVarNode;
 import ASTNodes.TerminalNodes.IdentifierNode;
 import Interfaces.ASTVisitor;
+import SemanticAnalysis.TypeChecker;
 import com.sun.org.apache.xerces.internal.util.SymbolTable;
 import ASTNodes.BlockNodes.*;
 
@@ -64,7 +66,6 @@ public class ProgNode extends BaseNode
     }
 
 
-
     //this method is supposed to build the symbol table
     public static void ProcessNode(BaseNode node)
 	{
@@ -87,8 +88,16 @@ public class ProgNode extends BaseNode
 			    BaseNode temp = ProgNode.RetrieveSymbol(node.content.toString());
                 if(temp ==  null)
 				{
-					errorList.add(new Error("Undeclared symbol..", node.line, node.pos));
+					errorList.add(new Error("Undeclared symbol..\""+node.content+"\"", node.line, node.pos));
                 }
+                break;
+			case "DeclareFunctionNode":
+				DeclareFunctionNode temp2 = (DeclareFunctionNode) node;
+				temp2.GiveCopyOfSymbolTable(ProgNode.symbolTable);
+				//because of static scoping we need to remember what the  variables were, at the time of declararing this function
+				break;
+            default:
+                break;
 		}
 
 		ArrayList<BaseNode> list = new ArrayList<BaseNode>();
@@ -102,20 +111,24 @@ public class ProgNode extends BaseNode
 				else
 					next = next.getRightsibling();
 			}
-			//Collections.reverse(list); //by removing this, it fixed an issue, but why?
+
 			for (BaseNode item : list) {
 				ProgNode.ProcessNode(item);
 			}
 
-			if (node.getClass().getSimpleName().equals("BlockNode"))
+			//maybe add prognode to this case. //that should do it
+			if (node.getClass().getSimpleName().equals("BlockNode") || node.getClass().getSimpleName().equals("ProgNode"))
 			{
 			    //typecheck here?
+				TypeChecker typeChecker = new TypeChecker();
+				node.Accept(typeChecker);
+				if(node.getClass().getSimpleName().equals("BlockNode"))
+				{
+					BlockNode temp = (BlockNode)node;
+					temp.HasNotBeenChecked = false;
+				}
                 ProgNode.CloseScope();
             }
-		}
-		else
-		{
-			//do nothing
 		}
 	}
 }

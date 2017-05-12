@@ -11,6 +11,7 @@ import Generated.*;
 import java.io.*;
 
 import SemanticAnalysis.FunctionTableFiller;
+import SemanticAnalysis.SymbolTableFiller;
 import SemanticAnalysis.TypeChecker;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -60,10 +61,24 @@ public class ParseTester
                 BaseNode ast;
                 ASTBuilder astBuilder = new ASTBuilder();
                 ast = astBuilder.visitProg(cst);
-                ast.PrintTree();
+                //ast.PrintTree();
 
+                FunctionTableFiller functionTableFiller = new FunctionTableFiller();
+                ast.Accept(functionTableFiller);
 
+                SymbolTableFiller symbolTableFiller = new SymbolTableFiller();
+                ast.Accept(symbolTableFiller);
 
+                System.out.println("Amount of hashtables: " + ProgNode.symbolTable.size());
+                if (ProgNode.symbolTable.size() > 0) {
+                    System.out.println("Amount of entries in first hashtable: " + ProgNode.symbolTable.peek().size());
+                    System.out.println("Hashtable: " + ProgNode.symbolTable.peek());
+                }
+                //notify user of errors
+                for (Error error : ProgNode.errorList){
+                    System.out.println(error.getMessage());
+                }
+                ProgNode.errorList.clear();
 
             }
             catch (Exception parser)
@@ -74,8 +89,7 @@ public class ParseTester
     }
     public void ParseSpecificInput(int i)
     {
-        try
-        {
+        try {
             String str = "InputFiles/Input" + Integer.toString(i);
             //This would not work, if "InputFiles" was a "package". It has to be a folder
             InputStream stream = new FileInputStream(str);
@@ -96,35 +110,30 @@ public class ParseTester
 
             BaseNode ast;
             ast = astBuilder.visitProg(cst);
-            //ast.PrintTree();
+            ast.PrintTree();
 
             /*
             PrettyPrinter pretty = new PrettyPrinter();
             ast.Accept(pretty);
             */
 
-            FunctionTableFiller tableFiller = new FunctionTableFiller();
-            ast.Accept(tableFiller);
+            FunctionTableFiller functionTableFiller = new FunctionTableFiller();
+            ast.Accept(functionTableFiller);
 
-            TypeChecker typeChecker = new TypeChecker();
-            ast.Accept(typeChecker);
+            SymbolTableFiller symbolTableFiller = new SymbolTableFiller();
+            ast.Accept(symbolTableFiller);
 
 
-            /*
-            IdentifierNode node = new IdentifierNode();
-            node.content = "ThisIsANode";
-            ProgNode.EnterSymbol(node.content.toString(), node);
-            */
-
-            System.out.println("Amount of hashtables: "+ProgNode.symbolTable.size());
-            System.out.println("Amount of entries in first hashtable: "+ProgNode.symbolTable.peek().size());
+            System.out.println("Amount of hashtables: " + ProgNode.symbolTable.size());
+            if (ProgNode.symbolTable.size() > 0) {
+                System.out.println("Amount of entries in first hashtable: " + ProgNode.symbolTable.peek().size());
             System.out.println("Hashtable: " + ProgNode.symbolTable.peek());
+            }
 
             //notify user of errors
 			for (Error error : ProgNode.errorList){
 				System.out.println(error.getMessage());
 			}
-
         }
         catch (IOException parser)
         {

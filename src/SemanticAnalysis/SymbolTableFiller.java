@@ -9,10 +9,8 @@ import ASTNodes.ProgNode;
 public class SymbolTableFiller extends Visitor
 {
     @Override
-    public void Visit(DeclareFunctionNode node)
+    public void Visit(ProgNode node)
     {
-
-        
-        //should be able to type check return value with declared function type
+        ProgNode.ProcessNode(node);
     }
 }

@@ -18,10 +18,12 @@ public class FunctionTableFiller extends Visitor
         visitChildren(node);
     }
 
+
     @Override
     public void Visit(ProgNode node)
     {
         ProgNode.OpenScope();
         visitChildren(node);
     }
+
 }
