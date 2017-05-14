@@ -74,7 +74,7 @@ public class ProgNode extends BaseNode
 			case "BlockNode":
                 ProgNode.OpenScope();
 				break;
-			case "DeclareVarNode":
+			case "DeclareVarNode":	//insert identifiers with their type also
                 if (ProgNode.RetrieveSymbol(node.spelling) == null)
                 {
                     ProgNode.EnterSymbol(node.spelling.toString(), node);
@@ -120,8 +120,11 @@ public class ProgNode extends BaseNode
 			if (node.getClass().getSimpleName().equals("BlockNode") || node.getClass().getSimpleName().equals("ProgNode"))
 			{
 			    //typecheck here?
+
 				TypeChecker typeChecker = new TypeChecker();
 				node.Accept(typeChecker);
+
+
 				if(node.getClass().getSimpleName().equals("BlockNode"))
 				{
 					BlockNode temp = (BlockNode)node;

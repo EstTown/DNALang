@@ -18,6 +18,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import Generated.*;
@@ -61,6 +62,7 @@ public class ParseTester
                 BaseNode ast;
                 ASTBuilder astBuilder = new ASTBuilder();
                 ast = astBuilder.visitProg(cst);
+
                 //ast.PrintTree();
 
                 FunctionTableFiller functionTableFiller = new FunctionTableFiller();
@@ -69,12 +71,14 @@ public class ParseTester
                 SymbolTableFiller symbolTableFiller = new SymbolTableFiller();
                 ast.Accept(symbolTableFiller);
 
+
                 System.out.println("Amount of hashtables: " + ProgNode.symbolTable.size());
                 if (ProgNode.symbolTable.size() > 0) {
                     System.out.println("Amount of entries in first hashtable: " + ProgNode.symbolTable.peek().size());
                     System.out.println("Hashtable: " + ProgNode.symbolTable.peek());
                 }
                 //notify user of errors
+                Collections.reverse(ProgNode.errorList);
                 for (Error error : ProgNode.errorList){
                     System.out.println(error.getMessage());
                 }
@@ -117,8 +121,10 @@ public class ParseTester
             ast.Accept(pretty);
             */
 
+
             FunctionTableFiller functionTableFiller = new FunctionTableFiller();
             ast.Accept(functionTableFiller);
+
 
             SymbolTableFiller symbolTableFiller = new SymbolTableFiller();
             ast.Accept(symbolTableFiller);
@@ -131,6 +137,7 @@ public class ParseTester
             }
 
             //notify user of errors
+            Collections.reverse(ProgNode.errorList); //errors get added in reverse direction
 			for (Error error : ProgNode.errorList){
 				System.out.println(error.getMessage());
 			}

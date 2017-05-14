@@ -1,1 +1,2 @@
-a as int + 5+7 as bool;
+dna a;
+rna b = a as rna;

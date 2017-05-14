@@ -594,7 +594,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     @Override
     public BaseNode visitConvertExp(LanguageParser.ConvertExpContext ctx) {
         ConvertNode node = new ConvertNode();
-        node.content = ctx.TYPE();
+        node.content = ctx.TYPE();      //type to convert to
         node.AddChild(visit(ctx.left));
 		node.line = ctx.getStart().getLine();
 		node.pos = ctx.getStart().getCharPositionInLine();
