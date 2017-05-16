@@ -142,6 +142,11 @@ public class ParseTester
 			for (Error error : ProgNode.errorList){
 				System.out.println(error.getMessage());
 			}
+
+			//CodeGenerator gen = new CodeGenerator();
+            //ast.Accept(gen);
+            //gen.makeFile();
+
         }
         catch (IOException parser)
         {

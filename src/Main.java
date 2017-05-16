@@ -29,6 +29,5 @@ public class Main
         ParseTreeGUI ptg = new ParseTreeGUI();
         ptg.Show(number); //specify input file by giving an integer
         */
-
     }
 }
