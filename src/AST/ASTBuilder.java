@@ -515,7 +515,14 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         DeclareFunctionNode node = new DeclareFunctionNode();
         node.content = ctx.TYPE().toString(); //type of this function
 
+        BaseNode temp2 = visit(ctx.funcname);
+        node.AddChild(temp2);
+        node.functionName = temp2.content.toString();
 
+        node.AddChild(visit(ctx.block()));
+
+		node.line = ctx.getStart().getLine();
+		node.pos = ctx.getStart().getCharPositionInLine();
 
         //get formal parameters
         int children = ctx.getChildCount();
@@ -538,16 +545,6 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         {
             node.AddParameters(item.content.toString(), item.spelling); //(type, parametername)
         }
-
-
-        BaseNode temp2 = visit(ctx.funcname);
-        node.AddChild(temp2);
-        node.functionName = temp2.content.toString();
-
-        node.AddChild(visit(ctx.block()));
-
-		node.line = ctx.getStart().getLine();
-		node.pos = ctx.getStart().getCharPositionInLine();
 
 		//find return types??
 
