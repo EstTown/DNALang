@@ -138,17 +138,19 @@ public class ParseTester
             }
 
             //notify user of errors
-            Collections.reverse(ProgNode.errorList); //errors get added in reverse direction
+            //Collections.reverse(ProgNode.errorList); //errors get added in reverse direction
 			for (Error error : ProgNode.errorList){
 				System.out.println(error.getMessage());
 			}
 
-
 			//compile, if there's no errors
-			CodeGenerator gen = new CodeGenerator();
-            ast.Accept(gen);
-            gen.makeFile();
-
+            /*
+            if(ProgNode.errorList.isEmpty()) {
+                CodeGenerator gen = new CodeGenerator();
+                ast.Accept(gen);
+                gen.makeFile();
+            }
+            */
         }
         catch (IOException parser)
         {

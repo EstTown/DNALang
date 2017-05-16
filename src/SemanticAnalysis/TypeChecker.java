@@ -4,6 +4,7 @@ import AST.Visitor;
 import ASTNodes.BaseNode;
 import ASTNodes.BlockNodes.BlockNode;
 import ASTNodes.CommandNodes.AssignCommandNode;
+import ASTNodes.DeclareVarNodes.DeclareArrayNode;
 import ASTNodes.DeclareVarNodes.DeclareVarNode;
 import ASTNodes.Error;
 import ASTNodes.ExpressionNodes.*;
@@ -157,28 +158,38 @@ public class TypeChecker extends Visitor
         }
     }
 
-    @Override
-    public void Visit(DeclareVarNode node) {
-        super.Visit(node);
-    }
+
 
     @Override
     public void Visit(NotNode node)
     {
         visitChildren(node);
+        String type = node.getLeftmostchild().type;
+
+        if(!type.equals(BOOLTYPE))
+        {
+            ProgNode.errorList.add(new Error("Cannot apply \"!\" on type "+type));
+        }
+        else
+        {
+            node.type = type;
+        }
     }
 
     @Override
     public void Visit(IdentifierNode node)
     {
-        BaseNode temp = ProgNode.symbolTable.peek().get(node.content.toString());
+        BaseNode temp = ProgNode.RetrieveSymbol(node.content.toString());
+
         if(temp != null)
         {
-            node.type = ProgNode.symbolTable.peek().get(node.content.toString()).content.toString(); //content should be the type information
+            //node.type = ProgNode.symbolTable.peek().get(node.content.toString()).content.toString(); //content should be the type information
+            node.type = ProgNode.RetrieveSymbol(node.content.toString()).content.toString();
         }
         else
         {
-            node.type = DEFAULTTYPE;
+            System.out.println("In last else ");
+            node.type = DEFAULTTYPE; //should never enter this
         }
     }
 
@@ -213,16 +224,15 @@ public class TypeChecker extends Visitor
     @Override
     public void Visit(AssignCommandNode node)
     {
-        //cannot quite remember what assignments are legal
         visitChildren(node);
 
         String type1 = node.getLeftmostchild().type;
         String type2 = node.getLeftmostchild().getRightsibling().type;
-
-        if(!type1.equals(type2))
+        if (!type1.equals(type2))
         {
-            ProgNode.errorList.add(new Error("cannot assign "+type2+" to "+type1, node.line, node.pos));
+            ProgNode.errorList.add(new Error("cannot assign " + type2 + " to " + type1, node.line, node.pos));
         }
+
     }
 
     @Override
@@ -385,6 +395,10 @@ public class TypeChecker extends Visitor
         {
             node.type = type2;
         }
+        else if(type1.equals(CODONTYPE) && (type2.equals(PROTEINTYPE) || type2.equals(DNATYPE) || type2.equals(RNATYPE)))
+        {
+            node.type = type2;
+        }
         else
             {
                 ProgNode.errorList.add(new Error("Cannot convert "+type1 +" to "+type2));
@@ -461,4 +475,33 @@ public class TypeChecker extends Visitor
         //resulting type will always be the secondary type, which is the parameter, from which we want to remove something
         DoComplexCheck(node, "remove ", types.type2);
     }
+
+    @Override
+    public void Visit(DeclareArrayNode node)
+    {
+        visitChildren(node);
+        //should evaluate what type of the array is. The only type not allowed is a boolarray
+        String typeOfArray = node.content.toString();
+        if(typeOfArray.equals(BOOLTYPE))
+        {
+            ProgNode.errorList.add(new Error("Cannot have an array of "+typeOfArray, node.line, node.pos));
+        }
+        else
+        {
+            node.type = typeOfArray;
+        }
+        //we should also typecheck the expression, which says how much memory to allocate to this array,
+        // which means that this expression must be of type int
+        String arrayMemoryExpression = node.getLeftmostchild().type;
+        if(!arrayMemoryExpression.equals(INTTYPE))
+        {
+            ProgNode.errorList.add(new Error("Memory allocation expression must be of type "+"\""+INTTYPE+"\""));
+            node.type = DEFAULTTYPE;
+        }
+        else
+        {
+            node.type = ARRAYTYPE;
+        }
+    }
+
 }

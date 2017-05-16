@@ -51,8 +51,8 @@ public class ProgNode extends BaseNode
 
 	public static void OpenScope()
     {
-		symbolTable.add(new Hashtable<String, BaseNode>());
-	}
+		symbolTable.push(new Hashtable<String, BaseNode>());
+    }
 
 	public static void CloseScope()
     {
@@ -65,7 +65,6 @@ public class ProgNode extends BaseNode
         else{return false;}
     }
 
-
     //this method is supposed to build the symbol table
     public static void ProcessNode(BaseNode node)
 	{
@@ -73,9 +72,8 @@ public class ProgNode extends BaseNode
 		{
 			case "BlockNode":
                 ProgNode.OpenScope();
-				break;
+                break;
 			case "DeclareVarNode":	//insert identifiers with their type also
-                //if (ProgNode.RetrieveSymbol(node.spelling) == null)
                 if(!ProgNode.DeclaredLocally(node.spelling))
                 {
                     ProgNode.EnterSymbol(node.spelling.toString(), node);
@@ -84,6 +82,8 @@ public class ProgNode extends BaseNode
                 {
                     errorList.add(new Error("Identifier \""+node.spelling+"\""+" already used", node.line, node.pos));
                 }
+				break;
+			case "DeclareArrayNode":
 				break;
 			case "IdentifierNode":
 			    BaseNode temp = ProgNode.RetrieveSymbol(node.content.toString());
@@ -124,7 +124,6 @@ public class ProgNode extends BaseNode
 
 				TypeChecker typeChecker = new TypeChecker();
 				node.Accept(typeChecker);
-
 
 				if(node.getClass().getSimpleName().equals("BlockNode"))
 				{

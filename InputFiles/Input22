@@ -1,3 +1,4 @@
-rna a;
-protein b;
-protein c = a as protein+b;
+int b = 10;
+while(1 < 2){
+         b = 4;
+}
