@@ -385,7 +385,7 @@ public class TypeChecker extends Visitor
         {
             node.type = type2;
         }
-        else if(type1.equals(CODONTYPE) && type2.equals(PROTEINTYPE) || type2.equals(DNATYPE) || type2.equals(RNATYPE))
+        else if(type1.equals(CODONTYPE) && (type2.equals(PROTEINTYPE) || type2.equals(DNATYPE) || type2.equals(RNATYPE)))
         {
             node.type = type2;
         }
