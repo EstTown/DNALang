@@ -552,7 +552,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         }
 
         BaseNode temp2 = visit(ctx.funcname);
-        node.AddChild(temp2);
+        //node.AddChild(temp2);
         node.functionName = temp2.content.toString();
 
         node.AddChild(visit(ctx.block()));

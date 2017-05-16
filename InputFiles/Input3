@@ -1,7 +1,15 @@
 int thisisfunction(int value, int value2, int value3){
+
+
+
     int b = 43;
     int c = 33 + b;
     int a = 3251;
+
+    while(1 < 2){
+         int b = 4;
+    }
+
     return c;
 }
 

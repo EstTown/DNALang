@@ -42,11 +42,12 @@ public class PrettyPrinter extends Visitor
 		System.out.print(declareFunctionNode.content.toString());
 		System.out.print(" ");
 		//Identifier
-		declareFunctionNode.getLeftmostchild().Accept(this);
+		System.out.print(declareFunctionNode.functionName);
 		System.out.print("(");
-		getNext(declareFunctionNode.getLeftmostchild().getRightsibling());
+		declareFunctionNode.getLeftmostchild().Accept(this);
+		getNext(declareFunctionNode.getLeftmostchild());
 		System.out.print(")");
-		declareFunctionNode.getLeftmostchild().getRightsibling().Accept(this);
+		//declareFunctionNode.getLeftmostchild().getRightsibling().Accept(this);
 	}
 
 	@Override
