@@ -15,6 +15,16 @@ public class CodeGenerator extends Visitor {
 	public String codeMain = "";
 	public String codeFuncs = "";
 
+	public String codeAsFunc = "";
+	public String codeCompFunc = "";
+	public String codeRevFunc = "";
+	public String codeLenFunc = "";
+	public String codePosFunc = "";
+	public String codeCountFunc = "";
+	public String codeContainFunc = "";
+	public String codeRemoveFunc = "";
+	public String codeGetFunc = "";
+
 	public void emit(String str){
 		codeMain += str;
 	}
@@ -478,6 +488,7 @@ public class CodeGenerator extends Visitor {
 		System.out.print(convertNode.content);
 
 	}
+
 
 
 	//endregion
