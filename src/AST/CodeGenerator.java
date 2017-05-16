@@ -16,6 +16,16 @@ public class CodeGenerator extends Visitor {
 	private String codeMain = "";
 	private String codeFuncs = "";
 
+	public String codeAsFunc = "";
+	public String codeCompFunc = "";
+	public String codeRevFunc = "";
+	public String codeLenFunc = "";
+	public String codePosFunc = "";
+	public String codeCountFunc = "";
+	public String codeContainFunc = "";
+	public String codeRemoveFunc = "";
+	public String codeGetFunc = "";
+
 	private Boolean amiinfunction = false;
 
 	private void emitToDecl(String str){
@@ -28,15 +38,18 @@ public class CodeGenerator extends Visitor {
 		codeFuncs += str;
 	}
 
+
 	public void makeFile(){
 		Writer writer = null;
 		try {
 			writer = new BufferedWriter(new OutputStreamWriter(
 					new FileOutputStream("src/Output/out.java"), "utf-8"));
+
 			writer.write("public class Main\n{\npublic static void main(String[] args)\n{\n");
 			writer.write(this.codeMain);
 			writer.write("}\n " + codeFuncs + "\n}");
 		} catch (IOException ex) {
+			// report
 		} finally {
 			try {writer.close();} catch (Exception ex) {/*ignore*/}
 		}
@@ -468,6 +481,7 @@ public class CodeGenerator extends Visitor {
 		positionNode.getLeftmostchild().Accept(this);
 		System.out.print(" in ");
 		positionNode.getLeftmostchild().getRightsibling().Accept(this);
+		emit(";\n");
 	}
 
 	@Override
@@ -486,4 +500,5 @@ public class CodeGenerator extends Visitor {
 		System.out.print(convertNode.content);
 
 	}
+
 }
