@@ -481,7 +481,7 @@ public class CodeGenerator extends Visitor {
 		positionNode.getLeftmostchild().Accept(this);
 		System.out.print(" in ");
 		positionNode.getLeftmostchild().getRightsibling().Accept(this);
-		emit(";\n");
+		emitToDecl(";\n");
 	}
 
 	@Override
