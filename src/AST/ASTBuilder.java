@@ -23,7 +23,8 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         BaseNode ast = new ProgNode();
 
         int children = ctx.getChildCount();
-
+        int i;
+        /*
 		int funcCounter = 0;
 		int declCounter = 0;
 		int stmtCounter = 0;
@@ -47,6 +48,27 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
 				}
 			}
 		}
+		*/
+        for(i = 0; i < children; i++)
+        {
+            if (ctx.declarations(i) != null) {
+                ast.AddChild(visitDeclarations(ctx.declarations(i)));
+            }
+        }
+        for(i = 0; i < children; i++)
+        {
+
+            if (ctx.functions(i) != null) {
+                ast.AddChild(visitFunctions(ctx.functions(i)));
+            }
+        }
+        for(i = 0; i < children; i++)
+        {
+            if (ctx.statements(i) != null) {
+                ast.AddChild(visitStatements(ctx.statements(i)));
+            }
+        }
+
         return ast;
     }
 
@@ -347,14 +369,6 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         return visit(ctx.compoundstatement());
     }
 
-    /*
-    @Override
-    public BaseNode visitCompoundstatement(LanguageParser.CompoundstatementContext ctx)
-    {
-        return null;
-    }
-    */
-
     @Override
     public BaseNode visitPrintstmt(LanguageParser.PrintstmtContext ctx)
     {
@@ -515,8 +529,6 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         DeclareFunctionNode node = new DeclareFunctionNode();
         node.content = ctx.TYPE().toString(); //type of this function
 
-
-
         //get formal parameters
         int children = ctx.getChildCount();
         int i;
@@ -539,7 +551,6 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
             node.AddParameters(item.content.toString(), item.spelling); //(type, parametername)
         }
 
-
         BaseNode temp2 = visit(ctx.funcname);
         node.AddChild(temp2);
         node.functionName = temp2.content.toString();
@@ -560,7 +571,9 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         BlockNode node = new BlockNode();
 
         int children = ctx.getChildCount();
+        int i;
 
+        /*
 		int declCounter = 0;
 		int stmtCounter = 0;
 
@@ -579,10 +592,23 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
 				}
 			}
 		}
-
+		*/
+        for(i = 0; i < children; i++)
+        {
+            if(ctx.declarations(i) != null)
+            {
+                node.AddChild(visitDeclarations(ctx.declarations(i)));
+            }
+        }
+        for(i = 0; i < children; i++)
+        {
+            if(ctx.statements(i)!= null)
+            {
+                node.AddChild(visitStatements(ctx.statements(i)));
+            }
+        }
 		node.line = ctx.getStart().getLine();
 		node.pos = ctx.getStart().getCharPositionInLine();
-
         return node;
     }
 

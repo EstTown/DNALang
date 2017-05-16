@@ -1,0 +1,3 @@
+rna a;
+protein b;
+protein c = a as protein+b;

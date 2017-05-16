@@ -21,15 +21,14 @@ public class Main
 {
     public static void main(String[] args)
     {
-        int number = 22;
+        int number = 21;
         ParseTester parseTester = new ParseTester();
-        parseTester.ParseAllInputs(number);
-
-        //parseTester.ParseSpecificInput(number);
-
+        //parseTester.ParseAllInputs(number);
+        parseTester.ParseSpecificInput(number);
         /*
         ParseTreeGUI ptg = new ParseTreeGUI();
         ptg.Show(number); //specify input file by giving an integer
         */
+
     }
 }
