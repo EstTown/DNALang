@@ -12,29 +12,31 @@ import java.io.*;
 
 public class CodeGenerator extends Visitor {
 
-	public String codeMain = "";
-	public String codeFuncs = "";
+	private String codeDecl = "";
+	private String codeMain = "";
+	private String codeFuncs = "";
 
-	public void emit(String str){
+	private Boolean amiinfunction = false;
+
+	private void emitToDecl(String str){
+		codeDecl += str;
+	}
+	private void emitToMain(String str){
 		codeMain += str;
 	}
-
-	public void emitFunction(String str){
+	private void emitToFunction(String str){
 		codeFuncs += str;
 	}
-
 
 	public void makeFile(){
 		Writer writer = null;
 		try {
 			writer = new BufferedWriter(new OutputStreamWriter(
 					new FileOutputStream("src/Output/out.java"), "utf-8"));
-
 			writer.write("public class Main\n{\npublic static void main(String[] args)\n{\n");
 			writer.write(this.codeMain);
 			writer.write("}\n " + codeFuncs + "\n}");
 		} catch (IOException ex) {
-			// report
 		} finally {
 			try {writer.close();} catch (Exception ex) {/*ignore*/}
 		}
@@ -64,21 +66,74 @@ public class CodeGenerator extends Visitor {
 			return getNextRightSibling(node.getRightsibling());
 	}
 
-	//region Block Nodes
+	@Override
+	public void Visit(DeclareFunctionNode declareFunctionNode)
+	{
+		amiinfunction = true;
+		//Return type
+		emitToFunction(declareFunctionNode.content.toString());
+		emitToFunction(" ");
+		//Identifier
+		declareFunctionNode.getLeftmostchild().Accept(this);
+		emitToFunction("(");
+		getNext(declareFunctionNode.getLeftmostchild().getRightsibling());
+		emitToFunction(")");
+		declareFunctionNode.getLeftmostchild().getRightsibling().Accept(this);
+		amiinfunction = false;
+	}
+
+	@Override
+	public void Visit(DeclareVarNode varNode)
+	{
+		if (varNode.content != null) {
+			if (varNode.getParent().getClass().getSimpleName().equals("DeclareFunctionNode"))
+				emitToFunction(varNode.content + " ");
+			else
+				System.out.print(varNode.content + " ");
+
+		}
+		if (varNode.getLeftmostchild() != null)
+			varNode.getLeftmostchild().Accept(this);
+
+		if (varNode.getParent().getClass().getSimpleName().equals("DeclareFunctionNode"))
+			emitToFunction(varNode.spelling);
+		else
+			System.out.print(varNode.spelling);
+
+		if (varNode.getParent().getClass().getSimpleName().equals("BlockNode") &&
+				varNode.getParent().getClass().getSimpleName().equals("DeclareFunctionNode"))
+			emitToFunction(";\n");
+		else if	(varNode.getParent().getClass().getSimpleName().equals("DeclareFunctionNode") &&
+				varNode.getRightsibling() != null)
+			emitToFunction(", ");
+		else if (varNode.getParent().getClass().getSimpleName().equals("DeclareFunctionNode"))
+			emitToFunction("");
+		else
+			System.out.println();
+	}
+
+	@Override
+	public void Visit(DeclareArrayNode arrayNode){
+		System.out.print(arrayNode.content);
+		System.out.print("[");
+		arrayNode.getLeftmostchild().Accept(this);
+		System.out.print("];\n");
+	}
+
 	@Override
 	public void Visit(BlockNode blockNode)
 	{
 		if (blockNode.getParent().getClass().getSimpleName().equals("DeclareFunctionNode")){
-			emitFunction("{\n");
+			emitToFunction("{\n");
 			blockNode.getLeftmostchild().Accept(this);
 			blockNodeHelper(blockNode.getLeftmostchild());
-			emitFunction("\n}");
+			emitToFunction("\n}");
 		}
 		else {
-			emit("{\n");
+			System.out.print("{\n");
 			blockNode.getLeftmostchild().Accept(this);
 			blockNodeHelper(blockNode.getLeftmostchild());
-			emit("\n}");
+			System.out.print("\n}");
 		}
 	}
 
@@ -91,106 +146,57 @@ public class CodeGenerator extends Visitor {
 		}
 	}
 
-	//endregion
-
-	//region DeclareFunction Nodes
-	@Override
-	public void Visit(DeclareFunctionNode declareFunctionNode)
-	{
-		//Return type
-		//emit("public ");
-		emitFunction(declareFunctionNode.content.toString());
-		emitFunction(" ");
-		//Identifier
-		declareFunctionNode.getLeftmostchild().Accept(this);
-		emitFunction("(");
-		getNext(declareFunctionNode.getLeftmostchild().getRightsibling());
-		emitFunction(")");
-		declareFunctionNode.getLeftmostchild().getRightsibling().Accept(this);
-		//declareFunctionNode.getLeftmostchild().getRightsibling()
-	}
-	//endregion
-
-	//region DeclareVar Nodes
-	@Override
-	public void Visit(DeclareVarNode varNode)
-	{
-		//Type
-		if (varNode.getParent().getClass().getSimpleName().equals("DeclareFunctionNode") ||
-				varNode.getParent().getParent().getClass().getSimpleName().equals("DeclareFunctionNode")) {
-			emitFunction(varNode.content + " ");
-			emitFunction(varNode.spelling);
-		}
-		else {
-			emit(varNode.content + " ");
-			emit(varNode.spelling);
-		}
-
-		if (varNode.getParent().getClass().getSimpleName().equals("BlockNode")){
-			if (varNode.getParent().getClass().getSimpleName().equals("DeclareFunctionNode"))
-			emit(";\n");
-		}
-		else if (varNode.getParent().getClass().getSimpleName().equals("DeclareFunctionNode")){
-			if (varNode.getRightsibling() != null)
-				emitFunction(", ");
-		}
-		else
-			emit("\n");
-	}
-	//endregion
-
-	//region Command Nodes
 	@Override
 	public void Visit(AssignCommandNode assignCommandNode)
 	{
 		//Identifier and equal symbol
 		assignCommandNode.getLeftmostchild().Accept(this);
-		emit(" = ");
+		System.out.print(" = ");
 		//Right hand expression
 		assignCommandNode.getLeftmostchild().getRightsibling().Accept(this);
 
 		if (assignCommandNode.getParent().getClass().getSimpleName().equals("ForCommandNode")){
-			emit("; ");
+			System.out.print("; ");
 		}
 		else
-			emit(";\n");
+			System.out.print(";\n");
 	}
 
 	@Override
 	public void Visit(BreakCommandNode breakCommandNode)
 	{
-		emit("break;");
+		System.out.print("break;");
 	}
 
 	@Override
 	public void Visit(CallCommandNode callCommandNode)
 	{
 		callCommandNode.getLeftmostchild().Accept(this);
-		emit("(");
+		System.out.print("(");
 		callCommandNode.getLeftmostchild().getRightsibling().Accept(this);
-		emit("); \n");
+		System.out.print("); \n");
 	}
 
 	@Override
 	public void Visit(ForCommandNode forCommandNode)
 	{
-		emit("for (");
+		System.out.print("for (");
 		forCommandNode.getLeftmostchild().Accept(this);
 		forCommandNode.getLeftmostchild().getRightsibling().Accept(this);
-		emit("; ");
+		System.out.print("; ");
 		forCommandNode.getLeftmostchild().getRightsibling().getRightsibling().Accept(this);
-		emit(")");
+		System.out.print(")");
 		forCommandNode.getLeftmostchild().getRightsibling().getRightsibling().getRightsibling().Accept(this);
 	}
 
 	@Override
 	public void Visit(IfCommandNode ifCommandNode)
 	{
-		emit("\n");
-		emit("if (");
+		System.out.println();
+		System.out.print("if (");
 		//bool expression
 		ifCommandNode.getLeftmostchild().Accept(this);
-		emit(")");
+		System.out.print(")");
 
 		//block
 		if (ifCommandNode.getLeftmostchild().getRightsibling() != null)
@@ -200,14 +206,14 @@ public class CodeGenerator extends Visitor {
 	@Override
 	public void Visit(IfElseCommandNode ifElseCommandNode)
 	{
-		emit("\n");
-		emit("if (");
+		System.out.println();
+		System.out.print("if (");
 		//bool expression
 		ifElseCommandNode.getLeftmostchild().Accept(this);
-		emit(") \n");
+		System.out.print(") \n");
 		//block1
 		getNext(ifElseCommandNode.getLeftmostchild().getRightsibling());
-		emit("\nelse\n");
+		System.out.print("\nelse\n");
 		//block2
 		ifElseCommandNode.getLeftmostchild().getRightsibling().Accept(this);
 	}
@@ -215,85 +221,80 @@ public class CodeGenerator extends Visitor {
 	@Override
 	public void Visit(PrintCommandNode printCommandNode)
 	{
-		emit("System.out.println(");
+		System.out.print("print(");
 		printCommandNode.getLeftmostchild().Accept(this);
-		emit("); \n");
+		System.out.print("); \n");
 	}
 
 	@Override
 	public void Visit(ReturnCommandNode returnCommandNode)
 	{
-		emit("return");
+		System.out.print("return");
 		if (returnCommandNode.getLeftmostchild() != null) {
-			emit(" ");
+			System.out.print(" ");
 			returnCommandNode.getLeftmostchild().Accept(this);
 		}
-		emit("; \n");
+		System.out.print("; \n");
 	}
 
 	@Override
 	public void Visit(WhileCommandNode whileCommandNode)
 	{
-		emit("\n");
-		emit("while (");
+		System.out.println();
+		System.out.print("while (");
 		whileCommandNode.getLeftmostchild().Accept(this);
 		whileCommandNode.getLeftmostchild().getRightsibling().Accept(this);
 	}
-	//endregion
 
-	//region Terminal Nodes
 	@Override
 	public void Visit(AminoLiteralNode aminoLiteralNode)
 	{
-		emit(aminoLiteralNode.content.toString());
+		System.out.print(aminoLiteralNode.content);
 	}
 
 	@Override
 	public void Visit(BoolLiteralNode boolLiteralNode)
 	{
-		emit(boolLiteralNode.content.toString());
+		System.out.print(boolLiteralNode.content);
 	}
 
 	@Override
 	public void Visit(CodonLiteralNode codonLiteralNode)
 	{
-		emit(codonLiteralNode.content.toString());
+		System.out.print(codonLiteralNode.content);
 	}
 
 	@Override
 	public void Visit(DNALiteralNode dnaLiteralNode)
 	{
-		emit(dnaLiteralNode.content.toString());
+		System.out.print(dnaLiteralNode.content);
 	}
 
 	@Override
 	public void Visit(IdentifierNode idNode)
 	{
 		if (idNode.getParent().getClass().getSimpleName().equals("DeclareFunctionNode"))
-			emitFunction(idNode.content.toString());
-		else
-			emit(idNode.content.toString());
+			emitToFunction(idNode.content.toString());
+		//System.out.print(idNode.content);
 	}
 
 	@Override
 	public void Visit(IntegerLiteralNode intNode)
 	{
-		emit(intNode.content.toString());
+		System.out.print(intNode.content);
 	}
 
 	@Override
 	public void Visit(RNALiteratalNode rnaLiteratalNode)
 	{
-		emit(rnaLiteratalNode.content.toString());
+		System.out.print(rnaLiteratalNode.content);
 	}
-	//endregion
 
-	//region Expression Nodes
 	@Override
 	public void Visit(AndNode andNode)
 	{
 		andNode.getLeftmostchild().Accept(this);
-		emit(" && ");
+		System.out.print(" && ");
 		andNode.getLeftmostchild().getRightsibling().Accept(this);
 	}
 
@@ -302,7 +303,7 @@ public class CodeGenerator extends Visitor {
 	public void Visit(ComparisonNode comparisonNode)
 	{
 		comparisonNode.getLeftmostchild().Accept(this);
-		emit(" == ");
+		System.out.print(" == ");
 		comparisonNode.getLeftmostchild().getRightsibling().Accept(this);
 	}
 
@@ -310,7 +311,7 @@ public class CodeGenerator extends Visitor {
 	public void Visit(GreaterOrEqualNode greaterOrEqualNode)
 	{
 		greaterOrEqualNode.getLeftmostchild().Accept(this);
-		emit(" >= ");
+		System.out.print(" >= ");
 		greaterOrEqualNode.getLeftmostchild().getRightsibling().Accept(this);
 	}
 
@@ -318,7 +319,7 @@ public class CodeGenerator extends Visitor {
 	public void Visit(GreaterThanNode greaterThanNode)
 	{
 		greaterThanNode.getLeftmostchild().Accept(this);
-		emit(" > ");
+		System.out.print(" > ");
 		greaterThanNode.getLeftmostchild().getRightsibling().Accept(this);
 	}
 
@@ -326,7 +327,7 @@ public class CodeGenerator extends Visitor {
 	public void Visit(LessOrEqualNode lessOrEqualNode)
 	{
 		lessOrEqualNode.getLeftmostchild().Accept(this);
-		emit(" <= ");
+		System.out.print(" <= ");
 		lessOrEqualNode.getLeftmostchild().getRightsibling().Accept(this);
 	}
 
@@ -334,7 +335,7 @@ public class CodeGenerator extends Visitor {
 	public void Visit(LessThanNode lessThanNode)
 	{
 		lessThanNode.getLeftmostchild().Accept(this);
-		emit(" < ");
+		System.out.print(" < ");
 		lessThanNode.getLeftmostchild().getRightsibling().Accept(this);
 	}
 
@@ -342,14 +343,14 @@ public class CodeGenerator extends Visitor {
 	public void Visit(ModNode modNode)
 	{
 		modNode.getLeftmostchild().Accept(this);
-		emit(" % ");
+		System.out.print(" % ");
 		modNode.getLeftmostchild().getRightsibling().Accept(this);
-		emit(";\n");
+		System.out.print(";\n");
 	}
 
 	@Override
 	public void Visit(NotNode notNode){
-		emit("!");
+		System.out.print("!");
 		notNode.getLeftmostchild().Accept(this);
 	}
 
@@ -357,7 +358,7 @@ public class CodeGenerator extends Visitor {
 	public void Visit(NotEqualNode notEqualNode)
 	{
 		notEqualNode.getLeftmostchild().Accept(this);
-		emit(" != ");
+		System.out.print(" != ");
 		notEqualNode.getLeftmostchild().getRightsibling().Accept(this);
 	}
 
@@ -365,7 +366,7 @@ public class CodeGenerator extends Visitor {
 	public void Visit(EqualNode equalNode)
 	{
 		equalNode.getLeftmostchild().Accept(this);
-		emit(" == ");
+		System.out.print(" == ");
 		equalNode.getLeftmostchild().getRightsibling().Accept(this);
 	}
 
@@ -373,112 +374,116 @@ public class CodeGenerator extends Visitor {
 	public void Visit(OrNode orNode)
 	{
 		orNode.getLeftmostchild().Accept(this);
-		emit(" || ");
+		System.out.print(" || ");
 		getNextRightSibling(orNode.getLeftmostchild()).Accept(this);
 	}
 
 	@Override
 	public void Visit(PlusNode plusNode)
 	{
-		emit("(");
+		System.out.print("(");
 		plusNode.getLeftmostchild().Accept(this);
-		emit(" + ");
+		System.out.print(" + ");
 		//plusNode.getLeftmostchild().getRightsibling().Accept(this);
 		getNextRightSibling(plusNode.getLeftmostchild()).Accept(this);
 		//System.out.print(";\n");
-		emit(")");
+		System.out.print(")");
 	}
 
 	@Override
 	public void Visit(MinusNode minusNode)
 	{
-		emit("(");
+		System.out.print("(");
 		minusNode.getLeftmostchild().Accept(this);
-		emit(" - ");
+		System.out.print(" - ");
 		getNextRightSibling(minusNode.getLeftmostchild()).Accept(this);
-		emit(")");
+		System.out.print(")");
 	}
 
 	@Override
 	public void Visit(MultNode multNode)
 	{
-		emit("(");
+		System.out.print("(");
 		multNode.getLeftmostchild().Accept(this);
-		emit(" * ");
+		System.out.print(" * ");
 		getNextRightSibling(multNode.getLeftmostchild()).Accept(this);
-		emit(")");
+		System.out.print(")");
 	}
 
 	@Override
 	public void Visit(DivNode divNode)
 	{
-		emit("(");
+		System.out.print("(");
 		divNode.getLeftmostchild().Accept(this);
-		emit(" / ");
+		System.out.print(" / ");
 		getNextRightSibling(divNode.getLeftmostchild()).Accept(this);
-		emit(")");
+		System.out.print(")");
 	}
 
 	@Override
 	public void Visit(ComplementaryNode complementaryNode){
-		emit("comp: ");
+		System.out.print("comp: ");
+		System.out.print("(");
 		complementaryNode.getLeftmostchild().Accept(this);
+		System.out.print(")");
 	}
 
 	@Override
 	public void Visit(ReverseNode reverseNode){
-		emit("rev: ");
+		System.out.print("rev: ");
+		System.out.print("(");
 		reverseNode.getLeftmostchild().Accept(this);
+		System.out.print(")");
 	}
 
 	@Override
 	public void Visit(LengthNode lengthNode){
-		emit("len: ");
+		System.out.print("len: ");
+		System.out.print("(");
 		lengthNode.getLeftmostchild().Accept(this);
+		System.out.println(")");
 	}
 
 	@Override
 	public void Visit(ContainsNode containsNode){
+		System.out.print("(");
 		containsNode.getLeftmostchild().Accept(this);
-		emit(" contains: ");
+		System.out.print(" contains: ");
 		containsNode.getLeftmostchild().getRightsibling().Accept(this);
+		System.out.print(")");
 	}
 
 	@Override
 	public void Visit(CountNode countNode){
-		emit("count ");
+		System.out.print("count ");
 		countNode.getLeftmostchild().Accept(this);
-		emit(" in ");
+		System.out.print(" in ");
 		countNode.getLeftmostchild().getRightsibling().Accept(this);
-		emit(";\n");
+		System.out.print(";\n");
 	}
 
 	@Override
 	public void Visit(PositionNode positionNode){
-		emit("position of ");
+		System.out.print("position of ");
 		positionNode.getLeftmostchild().Accept(this);
-		emit(" in ");
+		System.out.print(" in ");
 		positionNode.getLeftmostchild().getRightsibling().Accept(this);
-		emit(";\n");
 	}
 
 	@Override
 	public void Visit(RemoveNode removeNode){
-		emit("remove ");
+		System.out.print("remove ");
 		removeNode.getLeftmostchild().Accept(this);
-		emit(" from ");
+		System.out.print(" from ");
 		removeNode.getLeftmostchild().getRightsibling().Accept(this);
-		emit(";\n");
+		System.out.print(";\n");
 	}
 
 	@Override
 	public void Visit(ConvertNode convertNode){
 		convertNode.getLeftmostchild().Accept(this);
-		emit(" as ");
+		System.out.print(" as ");
 		System.out.print(convertNode.content);
 
 	}
-
-
-	//endregion
 }

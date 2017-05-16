@@ -116,10 +116,10 @@ public class ParseTester
             ast = astBuilder.visitProg(cst);
             ast.PrintTree();
 
-            /*
-            PrettyPrinter pretty = new PrettyPrinter();
-            ast.Accept(pretty);
-            */
+
+            //PrettyPrinter pretty = new PrettyPrinter();
+            //ast.Accept(pretty);
+
 
 
             FunctionTableFiller functionTableFiller = new FunctionTableFiller();
@@ -142,9 +142,11 @@ public class ParseTester
 				System.out.println(error.getMessage());
 			}
 
-			//CodeGenerator gen = new CodeGenerator();
-            //ast.Accept(gen);
-            //gen.makeFile();
+
+			//compile, if there's no errors
+			CodeGenerator gen = new CodeGenerator();
+            ast.Accept(gen);
+            gen.makeFile();
 
         }
         catch (IOException parser)
