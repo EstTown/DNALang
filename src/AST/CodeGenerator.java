@@ -7,6 +7,9 @@ import ASTNodes.BlockNodes.*;
 import ASTNodes.CommandNodes.*;
 import ASTNodes.DeclareFunctionNodes.*;
 import ASTNodes.DeclareVarNodes.*;
+import com.google.common.io.CharSink;
+import com.google.common.io.CharSource;
+import com.google.googlejavaformat.java.Formatter;
 
 import java.io.*;
 
@@ -38,21 +41,36 @@ public class CodeGenerator extends Visitor {
 		codeFuncs += str;
 	}
 
-
 	public void makeFile(){
-		Writer writer = null;
-		try {
-			writer = new BufferedWriter(new OutputStreamWriter(
-					new FileOutputStream("src/Output/out.java"), "utf-8"));
+	    //Assemble parts of java file
+        String code = "";
+        code += "public class Main{";
+        code += this.codeDecl;
+        code += "public static void main(String[] args){";
+        code += this.codeMain;
+        code += "}";
+        code += this.codeFuncs;
+        code += "}";
 
-			writer.write("public class Main\n{\npublic static void main(String[] args)\n{\n");
-			writer.write(this.codeMain);
-			writer.write("}\n " + codeFuncs + "\n}");
-		} catch (IOException ex) {
-			// report
-		} finally {
-			try {writer.close();} catch (Exception ex) {/*ignore*/}
-		}
+        //Make it not look like shit - powered by Google
+        String formattedSource = "";
+        try {
+            formattedSource = new Formatter().formatSource(code);
+        } catch (Exception ex) {
+            System.out.println("Google's Java formatter done fucked up.");
+        }
+
+        //Write code to file
+        Writer writer = null;
+        try {
+            writer = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream("src/Output/out.java"), "utf-8"));
+            writer.write(formattedSource);
+        } catch (Exception ex) {
+        } finally {
+            try {writer.close();} catch (Exception ex) {/*ignore*/}
+        }
+        //Eat cake
 	}
 
 	@Override
@@ -114,7 +132,7 @@ public class CodeGenerator extends Visitor {
 			varNode.getLeftmostchild().Accept(this);
 
 		if (varNode.getParent().getClass().getSimpleName().equals("BlockNode") && infunction)
-			emitToFunction(";\n");
+			emitToFunction(";");
 		else if	(infunction && !varNode.getRightsibling().getClass().getSimpleName().equals("BlockNode"))
 			emitToFunction(", ");
 		else
@@ -126,7 +144,7 @@ public class CodeGenerator extends Visitor {
 		System.out.print(arrayNode.content);
 		System.out.print("[");
 		arrayNode.getLeftmostchild().Accept(this);
-		System.out.print("];\n");
+		System.out.print("];");
 	}
 
 	@Override
@@ -134,16 +152,16 @@ public class CodeGenerator extends Visitor {
 	{
 		if (infunction){
 			emitToFunction(")");
-			emitToFunction("{\n");
+			emitToFunction("{");
 			blockNode.getLeftmostchild().Accept(this);
 			blockNodeHelper(blockNode.getLeftmostchild());
-			emitToFunction("\n}");
+			emitToFunction("}");
 		}
 		else {
-			System.out.print("{\n");
+			System.out.print("{");
 			blockNode.getLeftmostchild().Accept(this);
 			blockNodeHelper(blockNode.getLeftmostchild());
-			System.out.print("\n}");
+			System.out.print("}");
 		}
 	}
 
@@ -173,7 +191,7 @@ public class CodeGenerator extends Visitor {
 			System.out.print("; ");
 		}
 		else
-			System.out.print(";\n");
+			System.out.print(";");
 	}
 
 	@Override
@@ -188,7 +206,7 @@ public class CodeGenerator extends Visitor {
 		callCommandNode.getLeftmostchild().Accept(this);
 		System.out.print("(");
 		callCommandNode.getLeftmostchild().getRightsibling().Accept(this);
-		System.out.print("); \n");
+		System.out.print(");");
 	}
 
 	@Override
@@ -224,10 +242,10 @@ public class CodeGenerator extends Visitor {
 		System.out.print("if (");
 		//bool expression
 		ifElseCommandNode.getLeftmostchild().Accept(this);
-		System.out.print(") \n");
+		System.out.print(")");
 		//block1
 		getNext(ifElseCommandNode.getLeftmostchild().getRightsibling());
-		System.out.print("\nelse\n");
+		System.out.print("else");
 		//block2
 		ifElseCommandNode.getLeftmostchild().getRightsibling().Accept(this);
 	}
@@ -237,7 +255,7 @@ public class CodeGenerator extends Visitor {
 	{
 		System.out.print("print(");
 		printCommandNode.getLeftmostchild().Accept(this);
-		System.out.print("); \n");
+		System.out.print(");");
 	}
 
 	@Override
@@ -246,7 +264,7 @@ public class CodeGenerator extends Visitor {
 		if (infunction) {
 			emitToFunction("return ");
 			returnCommandNode.getLeftmostchild().Accept(this);
-			emitToFunction(";\n");
+			emitToFunction(";");
 		}
 		/*
 		System.out.print("return");
@@ -262,7 +280,7 @@ public class CodeGenerator extends Visitor {
 	public void Visit(WhileCommandNode whileCommandNode)
 	{
 		if (infunction){
-			emitToFunction("\nwhile (");
+			emitToFunction("while (");
 			whileCommandNode.getLeftmostchild().Accept(this);
 			whileCommandNode.getLeftmostchild().getRightsibling().Accept(this);
 		}
@@ -389,7 +407,7 @@ public class CodeGenerator extends Visitor {
 		if (infunction)
 			emitToFunction(" % ");
 		modNode.getLeftmostchild().getRightsibling().Accept(this);
-		System.out.print(";\n");
+		System.out.print(";");
 	}
 
 	@Override
@@ -526,7 +544,7 @@ public class CodeGenerator extends Visitor {
 			countNode.getLeftmostchild().Accept(this);
 			emitToFunction(" in ");
 			countNode.getLeftmostchild().getRightsibling().Accept(this);
-			emitToFunction(";\n");
+			emitToFunction(";");
 		}
 	}
 
@@ -537,7 +555,7 @@ public class CodeGenerator extends Visitor {
 			positionNode.getLeftmostchild().Accept(this);
 			emitToFunction(" in ");
 			positionNode.getLeftmostchild().getRightsibling().Accept(this);
-			emitToFunction(";\n");
+			emitToFunction(";");
 		}
 	}
 
@@ -548,7 +566,7 @@ public class CodeGenerator extends Visitor {
 			removeNode.getLeftmostchild().Accept(this);
 			emitToFunction(" from ");
 			removeNode.getLeftmostchild().getRightsibling().Accept(this);
-			emitToFunction(";\n");
+			emitToFunction(";");
 		}
 	}
 
