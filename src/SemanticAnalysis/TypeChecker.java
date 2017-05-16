@@ -4,6 +4,7 @@ import AST.Visitor;
 import ASTNodes.BaseNode;
 import ASTNodes.BlockNodes.BlockNode;
 import ASTNodes.CommandNodes.AssignCommandNode;
+import ASTNodes.DeclareVarNodes.DeclareArrayNode;
 import ASTNodes.DeclareVarNodes.DeclareVarNode;
 import ASTNodes.Error;
 import ASTNodes.ExpressionNodes.*;
@@ -157,29 +158,37 @@ public class TypeChecker extends Visitor
         }
     }
 
-    @Override
-    public void Visit(DeclareVarNode node) {
-        super.Visit(node);
-    }
+
 
     @Override
     public void Visit(NotNode node)
     {
         visitChildren(node);
+        String type = node.getLeftmostchild().type;
+
+        if(!type.equals(BOOLTYPE))
+        {
+            ProgNode.errorList.add(new Error("Cannot apply \"!\" on type "+type));
+        }
+        else
+        {
+            node.type = type;
+        }
     }
 
     @Override
     public void Visit(IdentifierNode node)
     {
         BaseNode temp = ProgNode.symbolTable.peek().get(node.content.toString());
+
         if(temp != null)
         {
             node.type = ProgNode.symbolTable.peek().get(node.content.toString()).content.toString(); //content should be the type information
         }
         else
-        {
-            node.type = DEFAULTTYPE;
-        }
+            {
+                node.type = DEFAULTTYPE; //should never enter this
+            }
     }
 
     //don't visitchildren on literals, since they should always be leaf nodes
@@ -213,15 +222,21 @@ public class TypeChecker extends Visitor
     @Override
     public void Visit(AssignCommandNode node)
     {
-        //cannot quite remember what assignments are legal
-        visitChildren(node);
+        BaseNode temp = node.getParent();
+        if(temp.getClass().getSimpleName().equals("DeclareVarNode")) {
+            visitChildren(node);
 
-        String type1 = node.getLeftmostchild().type;
-        String type2 = node.getLeftmostchild().getRightsibling().type;
+            String type1 = node.getLeftmostchild().type;
+            System.out.println("In TypeChecker " + type1);
+            String type2 = node.getLeftmostchild().getRightsibling().type;
 
-        if(!type1.equals(type2))
+            if (!type1.equals(type2)) {
+                ProgNode.errorList.add(new Error("cannot assign " + type2 + " to " + type1, node.line, node.pos));
+            }
+        }
+        else
         {
-            ProgNode.errorList.add(new Error("cannot assign "+type2+" to "+type1, node.line, node.pos));
+            //do nothing
         }
     }
 
@@ -465,4 +480,33 @@ public class TypeChecker extends Visitor
         //resulting type will always be the secondary type, which is the parameter, from which we want to remove something
         DoComplexCheck(node, "remove ", types.type2);
     }
+
+    @Override
+    public void Visit(DeclareArrayNode node)
+    {
+        visitChildren(node);
+        //should evaluate what type of the array is. The only type not allowed is a boolarray
+        String typeOfArray = node.content.toString();
+        if(typeOfArray.equals(BOOLTYPE))
+        {
+            ProgNode.errorList.add(new Error("Cannot have an array of "+typeOfArray, node.line, node.pos));
+        }
+        else
+        {
+            node.type = typeOfArray;
+        }
+        //we should also typecheck the expression, which says how much memory to allocate to this array,
+        // which means that this expression must be of type int
+        String arrayMemoryExpression = node.getLeftmostchild().type;
+        if(!arrayMemoryExpression.equals(INTTYPE))
+        {
+            ProgNode.errorList.add(new Error("Memory allocation expression must be of type "+"\""+INTTYPE+"\""));
+            node.type = DEFAULTTYPE;
+        }
+        else
+        {
+            node.type = ARRAYTYPE;
+        }
+    }
+
 }

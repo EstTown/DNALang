@@ -40,7 +40,6 @@ public abstract class Visitor implements ASTVisitor
                     next = next.getRightsibling();
                 }
             }
-            Collections.reverse(list);
             //visit all children
             for (BaseNode item : list) {
                 item.Accept(this);

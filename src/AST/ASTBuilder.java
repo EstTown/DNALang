@@ -349,6 +349,9 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         DeclareArrayNode node = new DeclareArrayNode();
         node.content = ctx.TYPE();
         node.AddChild(visit(ctx.expression()));
+
+        node.line = ctx.getStart().getLine();
+        node.pos = ctx.getStart().getCharPositionInLine();
         return node;
     }
 
