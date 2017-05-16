@@ -16,11 +16,6 @@ public class PrettyPrinter extends Visitor
     {
         progNode.getLeftmostchild().Accept(this); //this visits child node. Dunno how work
 		getNext(progNode.getLeftmostchild());
-
-		//progNode.getLeftmostchild().getRightsibling().Accept(this);
-		//progNode.getLeftmostchild().getRightsibling().getRightsibling().Accept(this);
-
-		//System.out.println("We are at a prognode/root");
     }
 
     private void getNext(BaseNode node)
@@ -40,7 +35,50 @@ public class PrettyPrinter extends Visitor
 			return getNextRightSibling(node.getRightsibling());
 	}
 
-	//region Block Nodes
+	@Override
+	public void Visit(DeclareFunctionNode declareFunctionNode)
+	{
+		//Return type
+		System.out.print(declareFunctionNode.content.toString());
+		System.out.print(" ");
+		//Identifier
+		declareFunctionNode.getLeftmostchild().Accept(this);
+		System.out.print("(");
+		getNext(declareFunctionNode.getLeftmostchild().getRightsibling());
+		System.out.print(")");
+		declareFunctionNode.getLeftmostchild().getRightsibling().Accept(this);
+	}
+
+	@Override
+	public void Visit(DeclareVarNode varNode)
+	{
+		if (varNode.content != null)
+			System.out.print(varNode.content + " ");
+		if (varNode.getLeftmostchild() != null)
+			varNode.getLeftmostchild().Accept(this);
+		else
+			System.out.print(varNode.spelling);
+
+		if (varNode.getParent().getClass().getSimpleName().equals("BlockNode") &&
+				varNode.getParent().getClass().getSimpleName().equals("DeclareFunctionNode"))
+			System.out.print(";\n");
+		else if	(varNode.getParent().getClass().getSimpleName().equals("DeclareFunctionNode") &&
+				varNode.getRightsibling() != null)
+				System.out.print(", ");
+		else if (varNode.getParent().getClass().getSimpleName().equals("DeclareFunctionNode"))
+			System.out.print("");
+		else
+			System.out.println();
+	}
+
+	@Override
+	public void Visit(DeclareArrayNode arrayNode){
+		System.out.print(arrayNode.content);
+		System.out.print("[");
+		arrayNode.getLeftmostchild().Accept(this);
+		System.out.print("];\n");
+	}
+
 	@Override
 	public void Visit(BlockNode blockNode)
 	{
@@ -60,49 +98,6 @@ public class PrettyPrinter extends Visitor
 		}
 	}
 
-	//endregion
-
-	//region DeclareFunction Nodes
-	@Override
-	public void Visit(DeclareFunctionNode declareFunctionNode)
-	{
-		//Return type
-		System.out.print(declareFunctionNode.content);
-		System.out.print(" ");
-		//Identifier
-		declareFunctionNode.getLeftmostchild().Accept(this);
-		System.out.print("(");
-		getNext(declareFunctionNode.getLeftmostchild().getRightsibling());
-		declareFunctionNode.getLeftmostchild().getRightsibling().Accept(this);
-
-		//declareFunctionNode.getLeftmostchild().getRightsibling()
-
-
-		//There's an error somewhere, 'cause the return stm is printed outside the block
-	}
-	//endregion
-
-	//region DeclareVar Nodes
-	@Override
-	public void Visit(DeclareVarNode varNode)
-	{
-		//Type
-		System.out.print(varNode.content + " ");
-		//Assignment
-		//varNode.getLeftmostchild().Accept(this);
-		System.out.printf(varNode.spelling);
-		if (varNode.getParent().getClass().getSimpleName().equals("BlockNode")){
-			System.out.println();
-		}
-		else if (varNode.getParent().getClass().getSimpleName().equals("DeclareFunctionNode")){
-			System.out.print(", ");
-		}
-		else
-			System.out.println();
-	}
-	//endregion
-
-	//region Command Nodes
 	@Override
 	public void Visit(AssignCommandNode assignCommandNode)
 	{
@@ -202,9 +197,7 @@ public class PrettyPrinter extends Visitor
 		whileCommandNode.getLeftmostchild().Accept(this);
 		whileCommandNode.getLeftmostchild().getRightsibling().Accept(this);
 	}
-	//endregion
 
-	//region Terminal Nodes
 	@Override
 	public void Visit(AminoLiteralNode aminoLiteralNode)
 	{
@@ -246,9 +239,7 @@ public class PrettyPrinter extends Visitor
 	{
 		System.out.print(rnaLiteratalNode.content);
 	}
-	//endregion
 
-	//region Expression Nodes
 	@Override
 	public void Visit(AndNode andNode)
 	{
@@ -382,26 +373,34 @@ public class PrettyPrinter extends Visitor
 	@Override
 	public void Visit(ComplementaryNode complementaryNode){
 		System.out.print("comp: ");
+		System.out.print("(");
 		complementaryNode.getLeftmostchild().Accept(this);
+		System.out.print(")");
 	}
 
 	@Override
 	public void Visit(ReverseNode reverseNode){
 		System.out.print("rev: ");
+		System.out.print("(");
 		reverseNode.getLeftmostchild().Accept(this);
+		System.out.print(")");
 	}
 
 	@Override
 	public void Visit(LengthNode lengthNode){
 		System.out.print("len: ");
+		System.out.print("(");
 		lengthNode.getLeftmostchild().Accept(this);
+		System.out.println(")");
 	}
 
 	@Override
 	public void Visit(ContainsNode containsNode){
+		System.out.print("(");
 		containsNode.getLeftmostchild().Accept(this);
 		System.out.print(" contains: ");
 		containsNode.getLeftmostchild().getRightsibling().Accept(this);
+		System.out.print(")");
 	}
 
 	@Override
@@ -419,7 +418,6 @@ public class PrettyPrinter extends Visitor
 		positionNode.getLeftmostchild().Accept(this);
 		System.out.print(" in ");
 		positionNode.getLeftmostchild().getRightsibling().Accept(this);
-		System.out.print(";\n");
 	}
 
 	@Override
@@ -438,9 +436,6 @@ public class PrettyPrinter extends Visitor
 		System.out.print(convertNode.content);
 
 	}
-
-
-	//endregion
 
 
 	@Override

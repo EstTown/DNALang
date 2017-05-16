@@ -21,6 +21,7 @@ public class TypeChecker extends Visitor
     private static String RNATYPE = "rna";
     private static String CODONTYPE = "codon";
     private static String PROTEINTYPE = "protein";
+    private static String ARRAYTYPE = "array";      //just array?
     private static String DEFAULTTYPE= "default";
     private class BinaryExpressionTypes
     {
@@ -40,6 +41,14 @@ public class TypeChecker extends Visitor
         private boolean AreBothTypesInt()
         {
             if(type1.equals(INTTYPE) && type2.equals(INTTYPE)) {return true;}
+            return false;
+        }
+        private boolean TypesAreTheSame()
+        {
+            if(type1.equals(type2))
+            {
+                return true;
+            }
             return false;
         }
     }
@@ -63,17 +72,50 @@ public class TypeChecker extends Visitor
         }
         node.type = INTTYPE;
     }
+
+    private void DoCentralDogmaCheck(ExpressionNode node, String operation, String nodetype)
+    {
+        BinaryExpressionTypes types = new BinaryExpressionTypes(node);
+
+        if((types.type1.equals(DNATYPE)||types.type1.equals(RNATYPE)||types.type1.equals(CODONTYPE))&&
+                (types.type2.equals(DNATYPE)||types.type2.equals(RNATYPE)||types.type2.equals(CODONTYPE)))
+        {
+            node.type = nodetype;
+        }
+        else
+        {
+            ProgNode.errorList.add(new Error("Cannot "+operation+types.type1+" in "+types.type2, node.line, node.pos));
+            node.type = nodetype;
+        }
+    }
+    private void DoDogmaWithIntsCheck(ExpressionNode node, String operation, String nodetype)
+    {
+        BinaryExpressionTypes types = new BinaryExpressionTypes(node);
+
+        if(!types.type1.equals(BOOLTYPE)&&
+        !types.type2.contains(BOOLTYPE))
+        {
+            node.type = nodetype;
+        }
+        else
+            {
+                ProgNode.errorList.add(new Error("Cannot "+operation+types.type1+" and "+types.type2, node.line, node.pos));
+                node.type = nodetype;
+            }
+    }
+
     private void DoComplexCheck(ExpressionNode node, String operation, String nodetype)
     {
         BinaryExpressionTypes types = new BinaryExpressionTypes(node);
 
-        if(types.type1.equals(types.type2) && !types.type1.equals(CODONTYPE) && !types.type1.equals(INTTYPE) && !types.type1.equals(BOOLTYPE))
+        if(types.type1.equals(types.type2) && !types.type1.equals(CODONTYPE) &&
+                !types.type1.equals(INTTYPE) && !types.type1.equals(BOOLTYPE))
         {
             node.type = nodetype;
         }
         //the following else if, covers some unnecessary cases from the previous if, but that is okay
-        else if(types.type1.equals(DNATYPE) || types.type1.equals(RNATYPE) || types.type1.equals(CODONTYPE) &&
-                types.type2.equals(DNATYPE) || types.type2.equals(RNATYPE) || types.type2.equals(PROTEINTYPE))
+        else if((types.type1.equals(DNATYPE) || types.type1.equals(RNATYPE) || types.type1.equals(CODONTYPE)) &&
+                (types.type2.equals(DNATYPE) || types.type2.equals(RNATYPE) || types.type2.equals(PROTEINTYPE)))
         {
             node.type = nodetype;
         }
@@ -103,34 +145,15 @@ public class TypeChecker extends Visitor
     public void Visit(PlusNode node)
     {
         visitChildren(node);
-
-        String type1 = node.getLeftmostchild().type;
-        String type2 = node.getLeftmostchild().getRightsibling().type;
-
-        System.out.println("PlusNode type1: "+type1);
-        System.out.println("PlusNode type2 "+type2);
-
-        /*type check plusnode*/
-        if(type1.equals(type2) && !type1.equals(BOOLTYPE) && !type2.equals(BOOLTYPE) && !type1.equals(CODONTYPE)) //basic cases
+        BinaryExpressionTypes types = new BinaryExpressionTypes(node);
+        if(!types.TypesAreTheSame() && !types.type1.equals(BOOLTYPE) && !types.type2.equals(BOOLTYPE))
         {
-            node.type = type1;
-        }
-        else if(type1.equals(DNATYPE) && type2.equals(RNATYPE) || type2.equals(CODONTYPE))
-        {
-            node.type = type1;
-        }
-        else if (type1.equals(RNATYPE) && type2.equals(CODONTYPE))
-        {
-            node.type = type1;
-        }
-        else if (type1.equals(PROTEINTYPE) && type2.equals(DNATYPE) || type2.equals(RNATYPE) || type2.equals(CODONTYPE))
-        {
-            node.type = type1;
+            ProgNode.errorList.add(new Error("Cannot add "+types.type1+" and "+types.type2, node.line, node.pos));
+            node.type = DEFAULTTYPE;
         }
         else
         {
-            ProgNode.errorList.add(new Error("Cannot add " + type1 + " and " + type2, node.line, node.pos));
-            node.type = DEFAULTTYPE;
+            node.type = types.type1;
         }
     }
 
@@ -159,13 +182,9 @@ public class TypeChecker extends Visitor
         }
     }
 
+    //don't visitchildren on literals, since they should always be leaf nodes
     @Override
-    public void Visit(AminoLiteralNode node)
-    {
-        //don't visitchildren on literals, since they should always be leaf nodes
-        node.type = PROTEINTYPE;
-    }
-
+    public void Visit(AminoLiteralNode node) { node.type = PROTEINTYPE;  }
     @Override
     public void Visit(BoolLiteralNode node) {
         node.type = BOOLTYPE;
@@ -199,9 +218,6 @@ public class TypeChecker extends Visitor
 
         String type1 = node.getLeftmostchild().type;
         String type2 = node.getLeftmostchild().getRightsibling().type;
-
-        System.out.println("type1: "+type1);
-        System.out.println("type2: "+type2);
 
         if(!type1.equals(type2))
         {
@@ -237,28 +253,112 @@ public class TypeChecker extends Visitor
     @Override
     public void Visit(OrNode node) {
         visitChildren(node);
-        DoSimpleBoolCheck(node, "compare");
+        DoSimpleBoolCheck(node, "compare ");
     }
 
     @Override
     public void Visit(AndNode node) {
         visitChildren(node);
-        DoSimpleBoolCheck(node, "compare");
+        DoSimpleBoolCheck(node, "compare ");
     }
 
     /* the following two ndoes have special cases */
     @Override
-    public void Visit(EqualNode node) {
-        super.Visit(node);
+    public void Visit(EqualNode node)
+    {
+        visitChildren(node);
+        BinaryExpressionTypes types = new BinaryExpressionTypes(node);
+
+        //extended with special cases, done with DoComplexCheck
+        if(!types.TypesAreTheSame())
+        {
+            ProgNode.errorList.add(new Error("Cannot compare "+types.type1+" and "+types.type2));
+            node.type = DEFAULTTYPE;
+        }
+        else
+        {
+            node.type = BOOLTYPE;
+        }
     }
 
     @Override
-    public void Visit(NotEqualNode node) {
-        super.Visit(node);
+    public void Visit(NotEqualNode node)
+    {
+        visitChildren(node);
+        BinaryExpressionTypes types = new BinaryExpressionTypes(node);
+
+        if(!types.TypesAreTheSame())
+        {
+            ProgNode.errorList.add(new Error("Cannot compare "+types.type1+" and "+types.type2));
+            node.type = DEFAULTTYPE;
+        }
+        else
+        {
+            node.type = BOOLTYPE;
+        }
+    }
+
+    @Override
+    public void Visit(LessThanNode node) {
+        visitChildren(node);
+        BinaryExpressionTypes types = new BinaryExpressionTypes(node);
+
+        if(!types.TypesAreTheSame())
+        {
+            DoDogmaWithIntsCheck(node, "compare ", BOOLTYPE);
+        }
+        else
+            {
+                node.type = BOOLTYPE;
+            }
+    }
+
+    @Override
+    public void Visit(GreaterThanNode node) {
+        visitChildren(node);
+        BinaryExpressionTypes types = new BinaryExpressionTypes(node);
+
+        if(!types.TypesAreTheSame())
+        {
+            DoDogmaWithIntsCheck(node, "compare ", BOOLTYPE);
+        }
+        else
+            {
+                node.type = BOOLTYPE;
+            }
+    }
+
+    @Override
+    public void Visit(LessOrEqualNode node) {
+        visitChildren(node);
+        BinaryExpressionTypes types = new BinaryExpressionTypes(node);
+
+        if(!types.TypesAreTheSame())
+        {
+            DoDogmaWithIntsCheck(node, "compare ", BOOLTYPE);
+        }
+        else
+        {
+            node.type = BOOLTYPE;
+        }
+    }
+
+    @Override
+    public void Visit(GreaterOrEqualNode node) {
+        visitChildren(node);
+        BinaryExpressionTypes types = new BinaryExpressionTypes(node);
+
+        if(!types.TypesAreTheSame())
+        {
+            DoDogmaWithIntsCheck(node, "compare ", BOOLTYPE);
+        }
+        else
+        {
+            node.type = BOOLTYPE;
+        }
     }
 
     /*special expressions */
-
     @Override
     public void Visit(ConvertNode node) {
         visitChildren(node);
@@ -277,11 +377,11 @@ public class TypeChecker extends Visitor
         {
             //should give warning, because this would make no sense
         }
-        else if(type1.equals(DNATYPE) && type2.equals(RNATYPE) || type2.equals(PROTEINTYPE))
+        else if(type1.equals(DNATYPE) && (type2.equals(RNATYPE) || type2.equals(PROTEINTYPE)))
         {
             node.type = type2;
         }
-        else if(type1.equals(RNATYPE) && type2.equals(PROTEINTYPE) || type2.equals(DNATYPE))
+        else if(type1.equals(RNATYPE) && (type2.equals(PROTEINTYPE) || type2.equals(DNATYPE)))
         {
             node.type = type2;
         }

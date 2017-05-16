@@ -34,7 +34,7 @@ public class ParseTester
             String str = "InputFiles/Input" + Integer.toString(iterator);
             allInputs.add(str);
             iterator++;
-            if (iterator == i){
+            if (iterator == i+1){
                 break;
             }
         }
@@ -82,8 +82,9 @@ public class ParseTester
                 for (Error error : ProgNode.errorList){
                     System.out.println(error.getMessage());
                 }
+                //we should obviously clear error list AND symboltable for each run.
+                ProgNode.symbolTable.clear();
                 ProgNode.errorList.clear();
-
             }
             catch (Exception parser)
             {
@@ -116,10 +117,10 @@ public class ParseTester
             ast = astBuilder.visitProg(cst);
             ast.PrintTree();
 
-            /*
-            PrettyPrinter pretty = new PrettyPrinter();
-            ast.Accept(pretty);
-            */
+
+            //PrettyPrinter pretty = new PrettyPrinter();
+            //ast.Accept(pretty);
+
 
 
             FunctionTableFiller functionTableFiller = new FunctionTableFiller();
@@ -142,9 +143,11 @@ public class ParseTester
 				System.out.println(error.getMessage());
 			}
 
-			//CodeGenerator gen = new CodeGenerator();
-            //ast.Accept(gen);
-            //gen.makeFile();
+
+			//compile, if there's no errors
+			CodeGenerator gen = new CodeGenerator();
+            ast.Accept(gen);
+            gen.makeFile();
 
         }
         catch (IOException parser)

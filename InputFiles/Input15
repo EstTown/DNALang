@@ -1,2 +1,2 @@
-AT+comp:(AATG)*4;
+b = AT+comp:(AATG)*4;
 int a = 4+len:(ATGATAGTAG);

@@ -1,6 +1,6 @@
 int add (int a, bool b)
-{ int c = 5; d = 7; return a;}
-int e = 5;
-bool f = false;
-Print(e);
-add(e,f);
+{ int c = 5; dna d; d = ATG; return d;}
+
+Print(a);
+int c = 17;
+
