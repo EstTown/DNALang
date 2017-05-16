@@ -285,6 +285,10 @@ public class TypeChecker extends Visitor
         {
             node.type = type2;
         }
+        else if(type1.equals(CODONTYPE) && type2.equals(PROTEINTYPE) || type2.equals(DNATYPE) || type2.equals(RNATYPE))
+        {
+            node.type = type2;
+        }
         else
             {
                 ProgNode.errorList.add(new Error("Cannot convert "+type1 +" to "+type2));
