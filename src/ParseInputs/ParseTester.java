@@ -34,7 +34,7 @@ public class ParseTester
             String str = "InputFiles/Input" + Integer.toString(iterator);
             allInputs.add(str);
             iterator++;
-            if (iterator == i){
+            if (iterator == i+1){
                 break;
             }
         }
@@ -82,8 +82,9 @@ public class ParseTester
                 for (Error error : ProgNode.errorList){
                     System.out.println(error.getMessage());
                 }
+                //we should obviously clear error list AND symboltable for each run.
+                ProgNode.symbolTable.clear();
                 ProgNode.errorList.clear();
-
             }
             catch (Exception parser)
             {

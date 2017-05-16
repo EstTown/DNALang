@@ -75,13 +75,14 @@ public class ProgNode extends BaseNode
                 ProgNode.OpenScope();
 				break;
 			case "DeclareVarNode":	//insert identifiers with their type also
-                if (ProgNode.RetrieveSymbol(node.spelling) == null)
+                //if (ProgNode.RetrieveSymbol(node.spelling) == null)
+                if(!ProgNode.DeclaredLocally(node.spelling))
                 {
                     ProgNode.EnterSymbol(node.spelling.toString(), node);
                 }
                 else
                 {
-                    errorList.add(new Error("Identifier \""+node.spelling+"\""+"already used", node.line, node.pos));
+                    errorList.add(new Error("Identifier \""+node.spelling+"\""+" already used", node.line, node.pos));
                 }
 				break;
 			case "IdentifierNode":
