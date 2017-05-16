@@ -1,5 +1,6 @@
+dna d = ACGTAC;
 int add (int a, bool b)
-{ int c = 5; dna d; d = ATG; return d;}
+{ int c = 5; d = ATG; return d;}
 
 Print(a);
 int c = 17;

@@ -1,2 +1,2 @@
 int d;
-int add(int foo, bool bar){int d; dna d; Print(foo); return foo;}
+int add(int foo, bool bar){int d; Print(foo); return foo;}

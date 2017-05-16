@@ -125,7 +125,6 @@ public class ProgNode extends BaseNode
 				TypeChecker typeChecker = new TypeChecker();
 				node.Accept(typeChecker);
 
-
 				if(node.getClass().getSimpleName().equals("BlockNode"))
 				{
 					BlockNode temp = (BlockNode)node;

@@ -179,16 +179,18 @@ public class TypeChecker extends Visitor
     @Override
     public void Visit(IdentifierNode node)
     {
-        BaseNode temp = ProgNode.symbolTable.peek().get(node.content.toString());
+        BaseNode temp = ProgNode.RetrieveSymbol(node.content.toString());
 
         if(temp != null)
         {
-            node.type = ProgNode.symbolTable.peek().get(node.content.toString()).content.toString(); //content should be the type information
+            //node.type = ProgNode.symbolTable.peek().get(node.content.toString()).content.toString(); //content should be the type information
+            node.type = ProgNode.RetrieveSymbol(node.content.toString()).content.toString();
         }
         else
-            {
-                node.type = DEFAULTTYPE; //should never enter this
-            }
+        {
+            System.out.println("In last else ");
+            node.type = DEFAULTTYPE; //should never enter this
+        }
     }
 
     //don't visitchildren on literals, since they should always be leaf nodes
@@ -222,22 +224,15 @@ public class TypeChecker extends Visitor
     @Override
     public void Visit(AssignCommandNode node)
     {
-        BaseNode temp = node.getParent();
-        if(temp.getClass().getSimpleName().equals("DeclareVarNode")) {
-            visitChildren(node);
+        visitChildren(node);
 
-            String type1 = node.getLeftmostchild().type;
-            System.out.println("In TypeChecker " + type1);
-            String type2 = node.getLeftmostchild().getRightsibling().type;
-
-            if (!type1.equals(type2)) {
-                ProgNode.errorList.add(new Error("cannot assign " + type2 + " to " + type1, node.line, node.pos));
-            }
-        }
-        else
+        String type1 = node.getLeftmostchild().type;
+        String type2 = node.getLeftmostchild().getRightsibling().type;
+        if (!type1.equals(type2))
         {
-            //do nothing
+            ProgNode.errorList.add(new Error("cannot assign " + type2 + " to " + type1, node.line, node.pos));
         }
+
     }
 
     @Override
