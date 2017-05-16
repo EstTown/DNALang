@@ -118,8 +118,8 @@ public class ParseTester
             ast.PrintTree();
 
 
-            PrettyPrinter pretty = new PrettyPrinter();
-            ast.Accept(pretty);
+            //PrettyPrinter pretty = new PrettyPrinter();
+            //ast.Accept(pretty);
 
 
 
