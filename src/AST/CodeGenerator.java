@@ -50,8 +50,9 @@ public class CodeGenerator extends Visitor {
 	    //Step 1
 	    //Assemble parts of java file
         String code = "";
+        code += "package Output;";
         code += "import java.util.*;";
-        code += "public class Main{";
+        code += "public class out{";
         code += codeDecl;
         code += "public static void main(String[] args){";
         code += codeMain;
