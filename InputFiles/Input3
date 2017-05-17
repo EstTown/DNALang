@@ -1,9 +1,27 @@
+int a = 4;
+rna thisisrna = AUG;
+dna thisisdna = ATG;
+
+dna dsfjksdjfkl = comp:thisisdna;
+
 int thisisfunction(int value, int value2, int value3){
     int b = 43;
     int c = 33 + b;
     int a = 3251;
+
+    dna newdna = (thisisdna);
+
+    Print(3+3);
+
+    while(1 < 2){
+         b = 4;
+         break;
+    }
     return c;
 }
 
+if(1 < 2){
+    a = 4;
+}
 
-
+Print(a + 45 - 33);

@@ -100,7 +100,7 @@ jump
 	;
 
 printstatement
-	: 'Print' '(' left=identifier ')' ';'   #print
+	: 'Print' '(' left=expression ')' ';'   #print
 	;
 
 
