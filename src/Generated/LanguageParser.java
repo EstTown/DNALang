@@ -1,4 +1,4 @@
-// Generated from C:/Stuff/Dropbox/ProgrammingProjects/JavaProjects/DNALang/grammar\Language.g4 by ANTLR 4.7
+// Generated from /Users/frederik/Desktop/P4Project/grammar/Language.g4 by ANTLR 4.7
 package Generated;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -2174,9 +2174,9 @@ public class LanguageParser extends Parser {
 		}
 	}
 	public static class PrintContext extends PrintstatementContext {
-		public IdentifierContext left;
-		public IdentifierContext identifier() {
-			return getRuleContext(IdentifierContext.class,0);
+		public ExpressionContext left;
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
 		}
 		public PrintContext(PrintstatementContext ctx) { copyFrom(ctx); }
 		@Override
@@ -2206,7 +2206,7 @@ public class LanguageParser extends Parser {
 			setState(281);
 			match(LPAREN);
 			setState(282);
-			((PrintContext)_localctx).left = identifier();
+			((PrintContext)_localctx).left = expression(0);
 			setState(283);
 			match(RPAREN);
 			setState(284);
@@ -2349,9 +2349,9 @@ public class LanguageParser extends Parser {
 		"\2\2\2\u0110\u0104\3\2\2\2\u0111!\3\2\2\2\u0112\u0113\7\13\2\2\u0113\u0119"+
 		"\7#\2\2\u0114\u0115\7\f\2\2\u0115\u0116\5\36\20\2\u0116\u0117\7#\2\2\u0117"+
 		"\u0119\3\2\2\2\u0118\u0112\3\2\2\2\u0118\u0114\3\2\2\2\u0119#\3\2\2\2"+
-		"\u011a\u011b\7\r\2\2\u011b\u011c\7\34\2\2\u011c\u011d\5\n\6\2\u011d\u011e"+
-		"\7\37\2\2\u011e\u011f\7#\2\2\u011f%\3\2\2\2\31)/\65=BERY_jo\u0085\u009b"+
-		"\u00a7\u00b7\u00bf\u00d6\u00e0\u00fa\u00fc\u010b\u0110\u0118";
+		"\u011a\u011b\7\r\2\2\u011b\u011c\7\34\2\2\u011c\u011d\5\36\20\2\u011d"+
+		"\u011e\7\37\2\2\u011e\u011f\7#\2\2\u011f%\3\2\2\2\31)/\65=BERY_jo\u0085"+
+		"\u009b\u00a7\u00b7\u00bf\u00d6\u00e0\u00fa\u00fc\u010b\u0110\u0118";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

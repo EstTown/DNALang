@@ -19,18 +19,19 @@ public class CodeGenerator extends Visitor {
 	private String codeFuncs = "";
 
 	//Custom methods - (always included in compiled java-file)
-	public String codeAsFunc = "";
-	public String codeCompFunc = "";
-	public String codeRevFunc = "";
-	public String codeLenFunc = "";
-	public String codePosFunc = "";
-	public String codeCountFunc = "";
-	public String codeContainFunc = "";
-	public String codeRemoveFunc = "";
-	public String codeGetFunc = "";
+	private String codeAsFunc = "";
+	private String codeCompFunc = "";
+	private String codeRevFunc = "";
+	private String codeLenFunc = "";
+	private String codePosFunc = "";
+	private String codeCountFunc = "";
+	private String codeContainFunc = "";
+	private String codeRemoveFunc = "";
+	private String codeGetFunc = "";
 
 	//Local variables
 	private Boolean infunction = false;
+	private Boolean indecl = true;
 	private String ps = "public static "; //snippet, likely used in many places
 
     //Emitters - just a simpler way to add stuff
@@ -49,6 +50,7 @@ public class CodeGenerator extends Visitor {
 	    //Step 1
 	    //Assemble parts of java file
         String code = "";
+        code += "import java.util.*;";
         code += "public class Main{";
         code += codeDecl;
         code += "public static void main(String[] args){";
@@ -63,8 +65,10 @@ public class CodeGenerator extends Visitor {
         try {
             formattedSource = new Formatter().formatSource(code);
         } catch (Exception ex) {
-            System.out.println("Google's Java formatter done fucked up.");
+            System.out.println("Google's Java formatter done fucked up." + ex.getMessage());
         }
+
+		System.out.println(code);
 
         //Step 3
         //Write code to file
@@ -90,8 +94,7 @@ public class CodeGenerator extends Visitor {
 	@Override
 	public void Visit(ProgNode progNode)
 	{
-		progNode.getLeftmostchild().Accept(this); //this visits child node. Dunno how work
-		getNext(progNode.getLeftmostchild());
+		visitChildren(progNode);
 	}
 
 	private void getNext(BaseNode node)
@@ -114,43 +117,57 @@ public class CodeGenerator extends Visitor {
 	@Override
 	public void Visit(DeclareFunctionNode declareFunctionNode)
 	{
+		indecl = false;
 		infunction = true;
 		//Return type
+		emitToFunction("public ");
 		emitToFunction(declareFunctionNode.content.toString());
 		emitToFunction(" ");
 		//Identifier
 		emitToFunction(declareFunctionNode.functionName);
 		emitToFunction("(");
-		declareFunctionNode.getLeftmostchild().Accept(this);
-		getNext(declareFunctionNode.getLeftmostchild());
-		//declareFunctionNode.getLeftmostchild().getRightsibling().Accept(this);
+		//Params & block
+		visitChildren(declareFunctionNode);
 		infunction = false;
 	}
 
 	@Override
 	public void Visit(DeclareVarNode varNode)
 	{
+		//Convert our types to String
+		String tmp = varNode.content.toString();
+		if (tmp.equals("dna") || tmp.equals("rna") || tmp.equals("protein") ||
+				tmp.equals("codon"))
+			tmp = "String";
+
+
 		if (varNode.content != null) {
 			if (infunction)
-				emitToFunction(varNode.content + " ");
+				emitToFunction(tmp + " ");
+			else if (indecl)
+				emitToDecl(ps + tmp + " ");
 			else
-				System.out.print(varNode.content + " ");
+				emitToMain(tmp + " ");
 		}
 
 		if (infunction)
 			emitToFunction(varNode.spelling);
+		else if (indecl)
+			emitToDecl(varNode.spelling);
 		else
-			System.out.print(varNode.spelling);
+			emitToMain(varNode.spelling);
 
 		if (varNode.getLeftmostchild() != null)
 			varNode.getLeftmostchild().Accept(this);
 
 		if (varNode.getParent().getClass().getSimpleName().equals("BlockNode") && infunction)
-			emitToFunction(";");
+			emitToFunction("");
 		else if	(infunction && !varNode.getRightsibling().getClass().getSimpleName().equals("BlockNode"))
 			emitToFunction(", ");
-		else
-			System.out.println();
+
+		if (!infunction && indecl)
+			emitToDecl(";");
+
 	}
 
 	@Override
@@ -163,9 +180,14 @@ public class CodeGenerator extends Visitor {
 		if (infunction){
 			emitToFunction(")");
 			emitToFunction("{");
-			blockNode.getLeftmostchild().Accept(this);
-			blockNodeHelper(blockNode.getLeftmostchild());
+			visitChildren(blockNode);
 			emitToFunction("}");
+		}
+		else{
+			emitToMain(")");
+			emitToMain("{");
+			visitChildren(blockNode);
+			emitToMain("}");
 		}
 	}
 
@@ -186,14 +208,26 @@ public class CodeGenerator extends Visitor {
 			assignCommandNode.getLeftmostchild().Accept(this);
 		if (infunction)
 			emitToFunction(" = ");
+		else if (indecl)
+			emitToDecl(" = ");
+		else
+			emitToMain(" = ");
 		//Right hand expression
 		assignCommandNode.getLeftmostchild().getRightsibling().Accept(this);
+
+		if (infunction)
+			emitToFunction(";");
+		else if (!indecl)
+			emitToMain(";");
 	}
 
 	@Override
 	public void Visit(BreakCommandNode breakCommandNode)
 	{
-
+		if (infunction)
+			emitToFunction("break;");
+		else
+			emitToMain("break;");
 	}
 
 	@Override
@@ -211,7 +245,14 @@ public class CodeGenerator extends Visitor {
 	@Override
 	public void Visit(IfCommandNode ifCommandNode)
 	{
-
+		if (infunction){
+			emitToFunction("if (");
+			visitChildren(ifCommandNode);
+		}
+		else {
+			emitToMain("if (");
+			visitChildren(ifCommandNode);
+		}
 	}
 
 	@Override
@@ -223,7 +264,17 @@ public class CodeGenerator extends Visitor {
 	@Override
 	public void Visit(PrintCommandNode printCommandNode)
 	{
+		if (infunction)
+			emitToFunction("System.out.println(");
+		else
+			emitToMain("System.out.println(");
 
+		visitChildren(printCommandNode);
+
+		if (infunction)
+			emitToFunction(");");
+		else
+			emitToMain(");");
 	}
 
 	@Override
@@ -249,25 +300,45 @@ public class CodeGenerator extends Visitor {
 	@Override
 	public void Visit(AminoLiteralNode aminoLiteralNode)
 	{
-
+		if (infunction)
+			emitToFunction('"' + aminoLiteralNode.content.toString() + '"');
+		else if (indecl)
+			emitToDecl('"' + aminoLiteralNode.content.toString() + '"');
+		else
+			emitToMain('"' + aminoLiteralNode.content.toString() + '"');
 	}
 
 	@Override
 	public void Visit(BoolLiteralNode boolLiteralNode)
 	{
-
+		if (infunction)
+			emitToFunction(boolLiteralNode.content.toString());
+		else if (indecl)
+			emitToDecl(boolLiteralNode.content.toString());
+		else
+			emitToMain(boolLiteralNode.content.toString());
 	}
 
 	@Override
 	public void Visit(CodonLiteralNode codonLiteralNode)
 	{
-
+		if (infunction)
+			emitToFunction('"' + codonLiteralNode.content.toString() + '"');
+		else if (indecl)
+			emitToDecl('"' + codonLiteralNode.content.toString() + '"');
+		else
+			emitToMain('"' + codonLiteralNode.content.toString() + '"');
 	}
 
 	@Override
 	public void Visit(DNALiteralNode dnaLiteralNode)
 	{
-
+		if (infunction)
+			emitToFunction('"' + dnaLiteralNode.content.toString() + '"');
+		else if (indecl)
+			emitToDecl('"' + dnaLiteralNode.content.toString() + '"');
+		else
+			emitToMain('"' + dnaLiteralNode.content.toString() + '"');
 	}
 
 	@Override
@@ -275,6 +346,10 @@ public class CodeGenerator extends Visitor {
 	{
 		if (infunction)
 			emitToFunction(idNode.content.toString());
+		else if (indecl)
+			emitToDecl(idNode.content.toString());
+		else
+			emitToMain(idNode.content.toString());
 	}
 
 	@Override
@@ -282,12 +357,21 @@ public class CodeGenerator extends Visitor {
 	{
 		if (infunction)
 			emitToFunction(intNode.content.toString());
+		else if (indecl)
+			emitToDecl(intNode.content.toString());
+		else
+			emitToMain(intNode.content.toString());
 	}
 
 	@Override
 	public void Visit(RNALiteratalNode rnaLiteratalNode)
 	{
-
+		if (infunction)
+			emitToFunction('"' + rnaLiteratalNode.content.toString() + '"');
+		else if (indecl)
+			emitToDecl('"' + rnaLiteratalNode.content.toString() + '"');
+		else
+			emitToMain('"' + rnaLiteratalNode.content.toString() + '"');
 	}
 
 	@Override
@@ -341,16 +425,36 @@ public class CodeGenerator extends Visitor {
 		lessThanNode.getLeftmostchild().Accept(this);
 		if (infunction)
 			emitToFunction(" < ");
+		else
+			emitToMain(" < ");
 		lessThanNode.getLeftmostchild().getRightsibling().Accept(this);
 	}
 
 	@Override
 	public void Visit(ModNode modNode)
 	{
-		modNode.getLeftmostchild().Accept(this);
-		if (infunction)
+		if (infunction) {
+			emitToFunction("(");
+			modNode.getLeftmostchild().Accept(this);
 			emitToFunction(" % ");
-		modNode.getLeftmostchild().getRightsibling().Accept(this);
+			modNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToFunction(")");
+		}
+		else if (indecl){
+			emitToDecl("(");
+			modNode.getLeftmostchild().Accept(this);
+			emitToDecl(" % ");
+			modNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToDecl(")");
+		}
+		else{
+			emitToMain("(");
+			modNode.getLeftmostchild().Accept(this);
+			emitToMain(" % ");
+			modNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToMain(")");
+		}
+
 	}
 
 	@Override
@@ -397,6 +501,20 @@ public class CodeGenerator extends Visitor {
 			getNextRightSibling(plusNode.getLeftmostchild()).Accept(this);
 			emitToFunction(")");
 		}
+		else if (indecl) {
+			emitToDecl("(");
+			plusNode.getLeftmostchild().Accept(this);
+			emitToDecl(" + ");
+			getNextRightSibling(plusNode.getLeftmostchild()).Accept(this);
+			emitToDecl(")");
+		}
+		else {
+			emitToMain("(");
+			plusNode.getLeftmostchild().Accept(this);
+			emitToMain(" + ");
+			getNextRightSibling(plusNode.getLeftmostchild()).Accept(this);
+			emitToMain(")");
+		}
 	}
 
 	@Override
@@ -408,6 +526,20 @@ public class CodeGenerator extends Visitor {
 			emitToFunction(" - ");
 			getNextRightSibling(minusNode.getLeftmostchild()).Accept(this);
 			emitToFunction(")");
+		}
+		else if (indecl){
+			emitToDecl("(");
+			minusNode.getLeftmostchild().Accept(this);
+			emitToDecl(" - ");
+			getNextRightSibling(minusNode.getLeftmostchild()).Accept(this);
+			emitToDecl(")");
+		}
+		else{
+			emitToMain("(");
+			minusNode.getLeftmostchild().Accept(this);
+			emitToMain(" - ");
+			getNextRightSibling(minusNode.getLeftmostchild()).Accept(this);
+			emitToMain(")");
 		}
 	}
 
@@ -421,6 +553,21 @@ public class CodeGenerator extends Visitor {
 			getNextRightSibling(multNode.getLeftmostchild()).Accept(this);
 			emitToFunction(")");
 		}
+		else if (indecl){
+			emitToDecl("(");
+			multNode.getLeftmostchild().Accept(this);
+			emitToDecl(" * ");
+			getNextRightSibling(multNode.getLeftmostchild()).Accept(this);
+			emitToDecl(")");
+		}
+		else{
+			emitToMain("(");
+			multNode.getLeftmostchild().Accept(this);
+			emitToMain(" * ");
+			getNextRightSibling(multNode.getLeftmostchild()).Accept(this);
+			emitToMain(")");
+		}
+
 	}
 
 	@Override
@@ -433,36 +580,145 @@ public class CodeGenerator extends Visitor {
 			getNextRightSibling(divNode.getLeftmostchild()).Accept(this);
 			emitToFunction(")");
 		}
+		else if (indecl){
+			emitToDecl("(");
+			divNode.getLeftmostchild().Accept(this);
+			emitToDecl(" / ");
+			getNextRightSibling(divNode.getLeftmostchild()).Accept(this);
+			emitToDecl(")");
+		}
+		else{
+			emitToMain("(");
+			divNode.getLeftmostchild().Accept(this);
+			emitToMain(" / ");
+			getNextRightSibling(divNode.getLeftmostchild()).Accept(this);
+			emitToMain(")");
+		}
 	}
 
 	@Override
 	public void Visit(ComplementaryNode complementaryNode){
-
+		if (infunction){
+			emitToFunction("Comp(");
+			visitChildren(complementaryNode);
+			emitToFunction(")");
+		}
+		else if (indecl) {
+			emitToDecl("Comp(");
+			visitChildren(complementaryNode);
+			emitToDecl(")");
+		}
+		else{
+			emitToMain("Comp(");
+			visitChildren(complementaryNode);
+			emitToDecl(")");
+		}
 	}
 
 	@Override
 	public void Visit(ReverseNode reverseNode){
-
+		if (infunction){
+			emitToFunction("Rev(");
+			visitChildren(reverseNode);
+			emitToFunction(")");
+		}
+		else if (indecl){
+			emitToDecl("Rev(");
+			visitChildren(reverseNode);
+			emitToDecl(")");
+		}
+		else{
+			emitToMain("Rev(");
+			visitChildren(reverseNode);
+			emitToMain(")");
+		}
 	}
 
 	@Override
 	public void Visit(LengthNode lengthNode){
-
+		if (infunction){
+			emitToFunction("Len(");
+			visitChildren(lengthNode);
+			emitToFunction(")");
+		}
+		else if (indecl){
+			emitToDecl("Len(");
+			visitChildren(lengthNode);
+			emitToDecl(")");
+		}
+		else{
+			emitToMain("Len(");
+			visitChildren(lengthNode);
+			emitToMain(")");
+		}
 	}
 
 	@Override
 	public void Visit(ContainsNode containsNode){
-
+		if (infunction){
+			emitToFunction("Contains(");
+			containsNode.getLeftmostchild().Accept(this);
+			emitToFunction(", ");
+			containsNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToFunction(")");
+		}
+		else if (indecl){
+			emitToDecl("Contains(");
+			containsNode.getLeftmostchild().Accept(this);
+			emitToDecl(", ");
+			containsNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToDecl(")");
+		}
+		else{
+			emitToMain("Contains(");
+			containsNode.getLeftmostchild().Accept(this);
+			emitToMain(", ");
+			containsNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToMain(")");
+		}
 	}
 
 	@Override
 	public void Visit(CountNode countNode){
-
+		if (infunction){
+			emitToFunction("Count(");
+			countNode.getLeftmostchild().Accept(this);
+			emitToFunction(", ");
+			countNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToFunction(")");
+		}
+		else if (indecl){
+			emitToDecl("Count(");
+			countNode.getLeftmostchild().Accept(this);
+			emitToDecl(", ");
+			countNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToDecl(")");
+		}
+		else{
+			emitToMain("Count(");
+			countNode.getLeftmostchild().Accept(this);
+			emitToMain(", ");
+			countNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToMain(")");
+		}
 	}
 
 	@Override
 	public void Visit(PositionNode positionNode){
-
+		if (infunction){
+			emitToFunction("Pos(");
+			positionNode.getLeftmostchild().Accept(this);
+			emitToFunction(", ");
+			positionNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToFunction(")");
+		}
+		else if (indecl){
+			emitToFunction("Pos(");
+			positionNode.getLeftmostchild().Accept(this);
+			emitToFunction(", ");
+			positionNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToFunction(")");
+		}
 	}
 
 	@Override
