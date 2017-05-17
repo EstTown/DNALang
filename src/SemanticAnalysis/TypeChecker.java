@@ -3,15 +3,18 @@ package SemanticAnalysis;
 import AST.Visitor;
 import ASTNodes.BaseNode;
 import ASTNodes.BlockNodes.BlockNode;
-import ASTNodes.CommandNodes.AssignCommandNode;
+import ASTNodes.CommandNodes.*;
+import ASTNodes.DeclareFunctionNodes.DeclareFunctionNode;
 import ASTNodes.DeclareVarNodes.DeclareArrayNode;
 import ASTNodes.DeclareVarNodes.DeclareVarNode;
 import ASTNodes.Error;
 import ASTNodes.ExpressionNodes.*;
 import ASTNodes.ProgNode;
 import ASTNodes.TerminalNodes.*;
+import org.antlr.v4.codegen.model.decl.Decl;
 
 import java.beans.Expression;
+import java.util.ArrayList;
 
 
 public class TypeChecker extends Visitor
@@ -183,7 +186,6 @@ public class TypeChecker extends Visitor
 
         if(temp != null)
         {
-            //node.type = ProgNode.symbolTable.peek().get(node.content.toString()).content.toString(); //content should be the type information
             node.type = ProgNode.RetrieveSymbol(node.content.toString()).content.toString();
         }
         else
@@ -504,4 +506,132 @@ public class TypeChecker extends Visitor
         }
     }
 
+    @Override
+    public void Visit(IfCommandNode node)
+    {
+        visitChildren(node);
+        BaseNode temp = node.getLeftmostchild(); //get predicate
+        if(!temp.type.equals(BOOLTYPE))
+        {
+            ProgNode.errorList.add(new Error("Predicate of controlstructure does not evaluate to "+BOOLTYPE, node.line, node.pos));
+        }
+    }
+
+    @Override
+    public void Visit(IfElseCommandNode node)
+    {
+        visitChildren(node);
+        BaseNode temp = node.getLeftmostchild();
+        if(!temp.type.equals(BOOLTYPE))
+        {
+            ProgNode.errorList.add(new Error("Predicate of controlstructure does not evaluate to "+BOOLTYPE, node.line, node.pos));
+        }
+    }
+
+    @Override
+    public void Visit(ForCommandNode node)
+    {
+        visitChildren(node);
+        BaseNode temp = node.getLeftmostchild().getRightsibling(); //get predicate
+        if(!temp.type.equals(BOOLTYPE))
+        {
+            ProgNode.errorList.add(new Error("Predicate of controlstructure does not evaluate to "+BOOLTYPE, node.line, node.pos));
+        }
+    }
+
+    @Override
+    public void Visit(WhileCommandNode node)
+    {
+        visitChildren(node);
+        BaseNode temp = node.getLeftmostchild(); //get predicate
+        if(!temp.type.equals(BOOLTYPE))
+        {
+            ProgNode.errorList.add(new Error("Predicate of controlstructure does not evaluate to "+BOOLTYPE, node.line, node.pos));
+        }
+    }
+
+    @Override
+    public void Visit(CallCommandNode node)
+    {
+        visitChildren(node);
+        //need to access symboltable, therefore find DeclareFunctionNode
+        DeclareFunctionNode temp = (DeclareFunctionNode) ProgNode.RetrieveSymbol(node.getLeftmostchild().getRightsibling().content.toString());
+
+        node.type = temp.content.toString();
+
+        //typecheck actual parameters with formal parameters. Formal parameters are in temp (0). Actual parameters in node (2)
+        int childrenToSkip = 2;     //in a callcommandnode, the first two children, will never be the actual parameters, there skip those.
+        if(node.ActualParameters != temp.listOfParameters.size())
+        {
+            ProgNode.errorList.add(new Error("Amount of actual parameters does not match amount of formal parameters", node.line, node.pos));
+        }
+        else
+        {
+            ArrayList<BaseNode> listOfActualParameters = ProgNode.GetListOfChildren(node);
+            for (int i = 0; i < temp.listOfParameters.size(); i++)
+            {
+                if (!temp.listOfParameters.get(i).GetParameterType().equals(listOfActualParameters.get(i+childrenToSkip).type))
+                {
+                    ProgNode.errorList.add(new Error("Type of formal parameter "+
+                            "\""+listOfActualParameters.get(i+childrenToSkip).content.toString()+"\"" + " does not match the type of actual parameter "+
+                            "\""+temp.listOfParameters.get(i).GetParameterName()+"\""));
+                }
+            }
+        }
+    }
+
+    @Override
+    public void Visit(DeclareFunctionNode node)
+    {
+        visitChildren(node);
+
+        String functionReturnType = node.content.toString();
+        //find return type. It should be
+
+        for(BaseNode tempNode1 : ProgNode.GetListOfChildren(node))
+        {
+            if(tempNode1.getClass().getSimpleName().equals("BlockNode")) //DeclareFunctionNode should always have only 1 BlockNode child
+            {
+                ArrayList<BaseNode> list = ProgNode.GetListOfChildren(tempNode1);
+                if(list.isEmpty()) //then there is no return statement
+                {
+                    ProgNode.errorList.add(new Error("Missing return statement in function "+"\""+node.functionName+"\"", node.line, node.pos));
+                }
+                else if(!list.get(list.size()-1).getClass().getSimpleName().equals("ReturnCommandNode"))
+                {
+                    ProgNode.errorList.add(new Error("Function must end with a return statement", node.line,node.pos));
+                }
+                //from here on, should/could be done in ReturnCommandNode
+                /*
+                else
+                {
+                    String returnType = list.get(list.size()-1).getLeftmostchild().type;
+                    if(!returnType.equals(node.content.toString()))
+                    {
+                        ProgNode.errorList.add(new Error("Function "+node.functionName+
+                                " must return a value of type "+"\""+node.content.toString()+"\"",node.line,node.pos));
+                    }
+                }
+                */
+            }
+        }
+    }
+
+    @Override
+    public void Visit(ReturnCommandNode node)
+    {
+        visitChildren(node);
+        String returnType = node.getLeftmostchild().type;
+
+        DeclareFunctionNode functionNode = (DeclareFunctionNode) ProgNode.GetDeclareFunctionParent(node);
+
+        System.out.println("ReturnType "+returnType);
+        System.out.println("FunctionType " +functionNode.content.toString());
+
+        if(!returnType.equals(functionNode.content.toString()))
+        {
+            ProgNode.errorList.add(new Error("Function "+"\""+functionNode.functionName+"\""+
+                    " must return a value of type "+"\""+functionNode.content.toString()+"\"",node.line,node.pos));
+        }
+    }
 }

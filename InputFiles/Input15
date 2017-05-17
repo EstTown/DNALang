@@ -1,2 +1,2 @@
-b = AT+comp:(AATG)*4;
-int a = 4+len:(ATGATAGTAG);
+dna b = comp:(ATG);
+int a = len:(b);

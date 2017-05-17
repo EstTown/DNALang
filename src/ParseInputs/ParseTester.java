@@ -72,18 +72,13 @@ public class ParseTester
                 ast.Accept(symbolTableFiller);
 
 
-                System.out.println("Amount of hashtables: " + ProgNode.symbolTable.size());
-                if (ProgNode.symbolTable.size() > 0) {
-                    System.out.println("Amount of entries in first hashtable: " + ProgNode.symbolTable.peek().size());
-                    System.out.println("Hashtable: " + ProgNode.symbolTable.peek());
-                }
                 //notify user of errors
                 Collections.reverse(ProgNode.errorList);
                 for (Error error : ProgNode.errorList){
                     System.out.println(error.getMessage());
                 }
                 //we should obviously clear error list AND symboltable for each run.
-                ProgNode.symbolTable.clear();
+                ProgNode.ClearSymbolTable();
                 ProgNode.errorList.clear();
             }
             catch (Exception parser)
@@ -131,11 +126,6 @@ public class ParseTester
             ast.Accept(symbolTableFiller);
 
 
-            System.out.println("Amount of hashtables: " + ProgNode.symbolTable.size());
-            if (ProgNode.symbolTable.size() > 0) {
-                System.out.println("Amount of entries in first hashtable: " + ProgNode.symbolTable.peek().size());
-            System.out.println("Hashtable: " + ProgNode.symbolTable.peek());
-            }
 
             //notify user of errors
             //Collections.reverse(ProgNode.errorList); //errors get added in reverse direction

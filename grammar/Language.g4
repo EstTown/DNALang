@@ -205,7 +205,6 @@ AMINOACIDTRIPLE
 	| 'Tyr'
 	;
 
-
 fragment
 Digit
 	: [0-9]

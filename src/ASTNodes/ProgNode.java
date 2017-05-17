@@ -19,7 +19,8 @@ public class ProgNode extends BaseNode
         nodevisitor.Visit(this);
     }
 
-	public static Stack<Hashtable<String, BaseNode>> symbolTable = new Stack<Hashtable<String, BaseNode>>();
+    //THESE SHOULD BE PRIVATE
+	private static Stack<Hashtable<String, BaseNode>> symbolTable = new Stack<Hashtable<String, BaseNode>>();
     public static List<Error> errorList = new ArrayList<>();
 
 	public static BaseNode RetrieveSymbol(String name){
@@ -49,6 +50,11 @@ public class ProgNode extends BaseNode
 		}
 	}
 
+	public static void ClearSymbolTable()
+	{
+		symbolTable.clear();
+	}
+
 	public static void OpenScope()
     {
 		symbolTable.push(new Hashtable<String, BaseNode>());
@@ -65,7 +71,48 @@ public class ProgNode extends BaseNode
         else{return false;}
     }
 
-    //this method is supposed to build the symbol table
+
+    public static ArrayList<BaseNode> GetListOfChildren(BaseNode node) {
+		ArrayList<BaseNode> list = new ArrayList<BaseNode>();
+
+		if (node.getLeftmostchild() != null) {
+			BaseNode next = node.getLeftmostchild();
+			while (true) {
+				list.add(next);
+				if (next.getRightsibling() == null) {
+					break;
+				}
+				else
+				{
+					next = next.getRightsibling();
+				}
+			}
+		}
+		return list;
+	}
+
+	public static BaseNode GetDeclareFunctionParent(BaseNode node)
+	{
+		if(node.getParent() != null)
+		{
+			BaseNode next = node.getParent();
+			while(true)
+			{
+				if(next.getClass().getSimpleName().equals("DeclareFunctionNode"))
+				{
+					return next;
+				}
+				else
+				{
+					next = next.getParent();
+				}
+			}
+		}
+		return null;
+	}
+
+
+    //this method is builds the symbol table
     public static void ProcessNode(BaseNode node)
 	{
 		switch(node.getClass().getSimpleName())
@@ -95,43 +142,26 @@ public class ProgNode extends BaseNode
 			case "DeclareFunctionNode":
 				DeclareFunctionNode temp2 = (DeclareFunctionNode) node;
 				temp2.GiveCopyOfSymbolTable(ProgNode.symbolTable);
-				//because of static scoping we need to remember what the  variables were, at the time of declararing this function
+				//because of static scoping we need to remember what the variables were, at the time of declararing this function
 				break;
             default:
                 break;
 		}
+		for (BaseNode item : GetListOfChildren(node))
+		{
+			ProgNode.ProcessNode(item);
+		}
 
-		ArrayList<BaseNode> list = new ArrayList<BaseNode>();
-
-		if(node.getLeftmostchild() != null) {
-			BaseNode next = node.getLeftmostchild();
-			while (true) {
-				list.add(next);
-				if (next.getRightsibling() == null)
-					break;
-				else
-					next = next.getRightsibling();
-			}
-
-			for (BaseNode item : list) {
-				ProgNode.ProcessNode(item);
-			}
-
-			//maybe add prognode to this case. //that should do it
-			if (node.getClass().getSimpleName().equals("BlockNode") || node.getClass().getSimpleName().equals("ProgNode"))
+		if (node.getClass().getSimpleName().equals("BlockNode") || node.getClass().getSimpleName().equals("ProgNode"))
+		{
+			TypeChecker typeChecker = new TypeChecker();
+			node.Accept(typeChecker);
+			if(node.getClass().getSimpleName().equals("BlockNode"))
 			{
-			    //typecheck here?
-
-				TypeChecker typeChecker = new TypeChecker();
-				node.Accept(typeChecker);
-
-				if(node.getClass().getSimpleName().equals("BlockNode"))
-				{
-					BlockNode temp = (BlockNode)node;
-					temp.HasNotBeenChecked = false;
-				}
+				BlockNode temp = (BlockNode)node;
+				temp.HasNotBeenChecked = false;
+			}
                 ProgNode.CloseScope();
             }
 		}
 	}
-}

@@ -257,11 +257,10 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     public BaseNode visitVariableExp(LanguageParser.VariableExpContext ctx)
     {
         IdentifierNode node = new IdentifierNode();
-
-		node.line = ctx.getStart().getLine();
-		node.pos = ctx.getStart().getCharPositionInLine();
         node.content = ctx.getText();
 
+        node.line = ctx.getStart().getLine();
+		node.pos = ctx.getStart().getCharPositionInLine();
         return node;
     }
 
@@ -456,15 +455,17 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         node.AddChild(visit(ctx.funcname));
 
         int children = ctx.getChildCount();
-        int i;
+        int i, counter = 0;
 
         for(i = 0; i < children; i++)
         {
             if(ctx.expression(i) != null)
             {
                 node.AddChild(visit(ctx.expression(i)));
+                counter++;
             }
         }
+        node.ActualParameters = counter;
 
 		node.line = ctx.getStart().getLine();
 		node.pos = ctx.getStart().getCharPositionInLine();
@@ -532,7 +533,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         DeclareFunctionNode node = new DeclareFunctionNode();
         node.content = ctx.TYPE().toString(); //type of this function
 
-        //get formal parameters
+        //get formal parameters and put in list
         int children = ctx.getChildCount();
         int i;
         ArrayList<BaseNode> list = new ArrayList<>();
