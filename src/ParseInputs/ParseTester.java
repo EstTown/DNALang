@@ -134,11 +134,11 @@ public class ParseTester
 			}
 
             //if(ProgNode.errorList.isEmpty()) {
-            /*
+
                 CodeGenerator gen = new CodeGenerator();
                 ast.Accept(gen);
                 gen.makeFile();
-            */
+
             //}
         }
         catch (IOException parser)

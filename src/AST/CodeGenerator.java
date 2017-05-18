@@ -59,7 +59,7 @@ public class CodeGenerator extends Visitor {
 	    //Assemble parts of java file
 		readCustomFuncionTextFiles();
 		String code = "";
-        code += "package Output;";
+        //code += "package Output;";
         code += "import java.util.*;";
         code += "public class out{";
         code += codeDecl;
@@ -78,7 +78,7 @@ public class CodeGenerator extends Visitor {
             System.out.println("Google's Java formatter done fucked up." + ex.getMessage());
         }
 
-		System.out.println(code);
+		//System.out.println(code);
 
         //Step 3
         //Write code to file
@@ -104,6 +104,8 @@ public class CodeGenerator extends Visitor {
 	@Override
 	public void Visit(ProgNode progNode)
 	{
+		if (!progNode.getLeftmostchild().getClass().getSimpleName().equals("DeclareVarNode"))
+			this.indecl = false;
 		visitChildren(progNode);
 	}
 
@@ -287,6 +289,8 @@ public class CodeGenerator extends Visitor {
 	@Override
 	public void Visit(ForCommandNode forCommandNode)
 	{
+		indecl = false;
+
 		if (infunction){
 			emitToFunction("for(");
 			forCommandNode.getLeftmostchild().Accept(this);
@@ -310,6 +314,8 @@ public class CodeGenerator extends Visitor {
 	@Override
 	public void Visit(IfCommandNode ifCommandNode)
 	{
+		indecl = false;
+
 		if (infunction){
 			emitToFunction("if (");
 			visitChildren(ifCommandNode);
@@ -323,6 +329,8 @@ public class CodeGenerator extends Visitor {
 	@Override
 	public void Visit(IfElseCommandNode ifElseCommandNode)
 	{
+		indecl = false;
+
 		if (infunction){
 			emitToFunction("if (");
 			//Expression
@@ -347,6 +355,8 @@ public class CodeGenerator extends Visitor {
 	@Override
 	public void Visit(PrintCommandNode printCommandNode)
 	{
+		indecl = false;
+
 		if (infunction)
 			emitToFunction("System.out.println(");
 		else
@@ -373,6 +383,8 @@ public class CodeGenerator extends Visitor {
 	@Override
 	public void Visit(WhileCommandNode whileCommandNode)
 	{
+		indecl = false;
+
 		if (infunction){
 			emitToFunction("while (");
 			whileCommandNode.getLeftmostchild().Accept(this);
@@ -810,7 +822,7 @@ public class CodeGenerator extends Visitor {
 	@Override
 	public void Visit(PositionNode positionNode){
 		if (infunction){
-			emitToFunction("Pps(");
+			emitToFunction("pos(");
 			positionNode.getLeftmostchild().Accept(this);
 			emitToFunction(", ");
 			positionNode.getLeftmostchild().getRightsibling().Accept(this);
