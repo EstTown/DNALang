@@ -1,4 +1,4 @@
 dna a = AATG;
 int b = 2;
-rna c = a[b] as rna;
+dna c = b[a];
 

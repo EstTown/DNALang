@@ -641,9 +641,9 @@ public class TypeChecker extends Visitor
         {
             ProgNode.errorList.add(new Error("Expression must be of type "+INTTYPE, node.line, node.pos));
         }
-        else if(types.type1.equals(INTTYPE) || types.type1.equals(BOOLTYPE))
+        if(types.type1.equals(INTTYPE) || types.type1.equals(BOOLTYPE))
         {
-            ProgNode.errorList.add(new Error("Expression cannot be "+types.type1));
+            ProgNode.errorList.add(new Error("Expression cannot be "+types.type1, node.line, node.pos));
         }
         node.type = types.type1;
     }
