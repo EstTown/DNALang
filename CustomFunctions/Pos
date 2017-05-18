@@ -1,8 +1,11 @@
+//finder første forkomst af str1 i str2 ved brug af KMP
 public static int pos(String str1, String str2)
 {
     return kmpSearch(str1, str2);
 }
 
+// KMP algoritmen i form af de to metoder kmpSearch og kmpTable, som er implementeret ud fra pseudokode fra Wiki:
+// https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm
 public static int kmpSearch(String str1, String str2) {
     char[] s = str2.toCharArray();
     char[] w = str1.toCharArray();
