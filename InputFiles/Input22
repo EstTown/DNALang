@@ -1,11 +1,11 @@
 int b = 2;
-int add(int parameter1, int parameter2){ int c; c = 25; return c;}
+bool parameter1 = true;
+int add(int parameter1, int parameter2){int c; c = 25; return parameter1;}
 
 if(1 < 2){
 
-}
-         int c = 4;
-         int f = 17;
+         int c = 15;
+         int f = 25;
          int ger = 42;
          int g = add(c,f);
          Print(g);

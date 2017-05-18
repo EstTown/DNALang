@@ -1,3 +1,4 @@
-int[50] array;
-dna[25] array2;
+dna a = AATG;
+int b = 2;
+rna c = a[b] as rna;
 

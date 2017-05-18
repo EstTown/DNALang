@@ -9,19 +9,7 @@ import ASTNodes.ExpressionNodes.*;
 import ASTNodes.*;
 import ASTNodes.TerminalNodes.*;
 import Interfaces.ASTVisitor;
-
 import java.util.ArrayList;
-import java.util.Collections;
-
-/*
-In general, it seems that it's best to let each visitor (prettyprinter, typechecker etc.)
-decide how to traverse the AST instead of having code in each node for that purpose,
-although it does seem like it would make sense to have it in each node, because
-we probably want to traverse in the same way, which would mean copying some code.
-On the other hand it seems more natural to encapsulate this concern in each visitor,
-because they might want to traverse differently <- not sure about that.
-*/
-
 
 public abstract class Visitor implements ASTVisitor
 {
@@ -50,7 +38,6 @@ public abstract class Visitor implements ASTVisitor
             //do nothing
         }
     }
-
 
     @Override
     public void Visit(BlockNode node)
@@ -189,6 +176,7 @@ public abstract class Visitor implements ASTVisitor
     {
         visitChildren(node);
     }
+
     @Override
     public void Visit(NullNode node)
     {
@@ -332,4 +320,7 @@ public abstract class Visitor implements ASTVisitor
 
     @Override
     public void Visit(DeclareArrayNode node) {visitChildren(node); }
+
+    @Override
+    public void Visit(GetNode node) { visitChildren(node); }
 }

@@ -631,4 +631,17 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
 		node.pos = ctx.getStart().getCharPositionInLine();
         return node;
     }
+
+    @Override
+    public BaseNode visitGetExp(LanguageParser.GetExpContext ctx)
+    {
+        GetNode node = new GetNode();
+        //visit and add both children
+        node.AddChild(visit(ctx.expression(0)));
+        node.AddChild(visit(ctx.expression(1)));
+
+        node.line = ctx.getStart().getLine();
+        node.pos = ctx.getStart().getCharPositionInLine();
+        return node;
+    }
 }

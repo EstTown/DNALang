@@ -90,7 +90,7 @@ expression
     | left=expression op=AND  right=expression              #binaryExp
     | left=expression op=OR right=expression                #binaryExp
     | functioncall                               #functioncallExp
-    | identifier'['expression']'                 #arrayVariableExp
+    | first=expression'['second=expression']'                 #getExp
     | identifier                                 #variableExp
     | INT                                        #numberExp
     | BOOL                                       #boolExp

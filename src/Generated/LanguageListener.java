@@ -264,18 +264,6 @@ public interface LanguageListener extends ParseTreeListener {
 	 */
 	void exitConvertExp(LanguageParser.ConvertExpContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code arrayVariableExp}
-	 * labeled alternative in {@link LanguageParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterArrayVariableExp(LanguageParser.ArrayVariableExpContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code arrayVariableExp}
-	 * labeled alternative in {@link LanguageParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitArrayVariableExp(LanguageParser.ArrayVariableExpContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code boolExp}
 	 * labeled alternative in {@link LanguageParser#expression}.
 	 * @param ctx the parse tree
@@ -311,6 +299,18 @@ public interface LanguageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFunctioncallExp(LanguageParser.FunctioncallExpContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code getExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterGetExp(LanguageParser.GetExpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code getExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitGetExp(LanguageParser.GetExpContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code parensExp}
 	 * labeled alternative in {@link LanguageParser#expression}.

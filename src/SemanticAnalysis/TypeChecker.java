@@ -571,8 +571,8 @@ public class TypeChecker extends Visitor
             {
                 if (!temp.listOfParameters.get(i).GetParameterType().equals(listOfActualParameters.get(i+childrenToSkip).type))
                 {
-                    ProgNode.errorList.add(new Error("Type of formal parameter "+
-                            "\""+listOfActualParameters.get(i+childrenToSkip).content.toString()+"\"" + " does not match the type of actual parameter "+
+                    ProgNode.errorList.add(new Error("Type of actual parameter "+
+                            "\""+listOfActualParameters.get(i+childrenToSkip).content.toString()+"\"" + " does not match the type of formal parameter "+
                             "\""+temp.listOfParameters.get(i).GetParameterName()+"\""));
                 }
             }
@@ -629,5 +629,22 @@ public class TypeChecker extends Visitor
             ProgNode.errorList.add(new Error("Function "+"\""+functionNode.functionName+"\""+
                     " must return a value of type "+"\""+functionNode.content.toString()+"\"",node.line,node.pos));
         }
+    }
+
+    @Override
+    public void Visit(GetNode node)
+    {
+        visitChildren(node);
+        BinaryExpressionTypes types = new BinaryExpressionTypes(node);
+
+        if(!types.type2.equals(INTTYPE))
+        {
+            ProgNode.errorList.add(new Error("Expression must be of type "+INTTYPE, node.line, node.pos));
+        }
+        else if(types.type1.equals(INTTYPE) || types.type1.equals(BOOLTYPE))
+        {
+            ProgNode.errorList.add(new Error("Expression cannot be "+types.type1));
+        }
+        node.type = types.type1;
     }
 }

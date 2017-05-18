@@ -162,13 +162,6 @@ public interface LanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitConvertExp(LanguageParser.ConvertExpContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code arrayVariableExp}
-	 * labeled alternative in {@link LanguageParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitArrayVariableExp(LanguageParser.ArrayVariableExpContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code boolExp}
 	 * labeled alternative in {@link LanguageParser#expression}.
 	 * @param ctx the parse tree
@@ -189,6 +182,13 @@ public interface LanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitFunctioncallExp(LanguageParser.FunctioncallExpContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code getExp}
+	 * labeled alternative in {@link LanguageParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitGetExp(LanguageParser.GetExpContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code parensExp}
 	 * labeled alternative in {@link LanguageParser#expression}.

@@ -119,7 +119,11 @@ public class ProgNode extends BaseNode
 		switch(node.getClass().getSimpleName())
 		{
 			case "BlockNode":
-				ProgNode.OpenScope();
+				BaseNode temp = node.getParent();
+				if(!temp.getClass().getSimpleName().equals("DeclareFunctionNode"))
+				{
+					ProgNode.OpenScope();
+				}
                 break;
 			//insert identifiers with their type also
 			case "DeclareVarNode":
@@ -142,6 +146,7 @@ public class ProgNode extends BaseNode
                 }
                 break;
 			case "DeclareFunctionNode":
+				ProgNode.OpenScope();
 				DeclareFunctionNode temp3 = (DeclareFunctionNode) node;
 				temp3.GiveCopyOfSymbolTable(ProgNode.symbolTable);
 				//because of static scoping we need to remember what the variables were, at the time of declaring this function
