@@ -1,0 +1,10 @@
+//returnerer delstreng af str der er str fra et givet index
+public static String get(String str, int pos)
+{
+    if (pos > str.length() - 1) {
+        return("");
+    }
+    else {
+        return str.substring(pos);
+    }
+}

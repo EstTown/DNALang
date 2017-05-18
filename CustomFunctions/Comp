@@ -1,0 +1,18 @@
+public static String comp(String str)
+{
+	String temp = "";
+	
+	for(char chr: str.toCharArray()) {
+		switch (chr) {
+			case 'A' : temp = temp + "T";
+			break;
+			case 'T' : temp = temp + "A";
+			break;
+			case 'G' : temp = temp + "C";
+			break;
+			case 'C' : temp = temp + "G";
+			break;
+		}
+	}
+	return temp;
+}

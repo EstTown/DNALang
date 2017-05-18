@@ -1,0 +1,17 @@
+//tæller forkomster af str1 i str2
+public static int count(String str1, String str2)
+{
+    int counter = 0;
+    int pos = 0;
+
+    while (pos != -1) {
+        pos = str2.indexOf(str1, pos);
+
+        if(pos != -1){
+            counter++;
+            pos += str1.length();
+        }
+    }
+
+    return counter;
+}

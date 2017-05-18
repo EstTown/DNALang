@@ -1,0 +1,4 @@
+public static String rev(String str)
+{
+    return new StringBuilder(str).reverse().toString();
+}
