@@ -308,6 +308,8 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         }
         else
         {
+            node.content = ctx.TYPE();
+            node.type = visit(ctx.arrtype).type;
             node.AddChild(visit(ctx.arrtype));
             node.AddChild(visit(ctx.assignment()));
             node.spelling=node.getLeftmostchild().getRightsibling().spelling; //should be correct child
@@ -328,12 +330,10 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         }
         else
         {
-            node.AddChild(visit(ctx.arrtype));
+            node.content = ctx.type;
+            node.type = visit(ctx.arrtype).type;
+            node.AddChild(visit(ctx.arrtype)); //do not need to add a child here.
         }
-        /*
-        node.AddChild(visit(ctx.identifier()));     //we don't want to add the identifier as a child
-        node.spelling = node.getLeftmostchild().content.toString();
-        */
 
         node.spelling = visit(ctx.identifier()).content.toString();
 
@@ -346,7 +346,8 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     public BaseNode visitArraytype(LanguageParser.ArraytypeContext ctx)
     {
         DeclareArrayNode node = new DeclareArrayNode();
-        node.content = ctx.TYPE();
+        node.content = ctx.TYPE(); //this should not be used anymore
+        node.type = "array";
         node.AddChild(visit(ctx.expression()));
 
         node.line = ctx.getStart().getLine();

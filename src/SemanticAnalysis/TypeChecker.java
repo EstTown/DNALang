@@ -186,11 +186,10 @@ public class TypeChecker extends Visitor
 
         if(temp != null)
         {
-            node.type = ProgNode.RetrieveSymbol(node.content.toString()).content.toString();
+            node.type = temp.content.toString();
         }
         else
         {
-            System.out.println("In last else ");
             node.type = DEFAULTTYPE; //should never enter this
         }
     }
@@ -274,7 +273,7 @@ public class TypeChecker extends Visitor
         DoSimpleBoolCheck(node, "compare ");
     }
 
-    /* the following two ndoes have special cases */
+    /* the following two nodes have special cases */
     @Override
     public void Visit(EqualNode node)
     {
@@ -624,9 +623,6 @@ public class TypeChecker extends Visitor
         String returnType = node.getLeftmostchild().type;
 
         DeclareFunctionNode functionNode = (DeclareFunctionNode) ProgNode.GetDeclareFunctionParent(node);
-
-        System.out.println("ReturnType "+returnType);
-        System.out.println("FunctionType " +functionNode.content.toString());
 
         if(!returnType.equals(functionNode.content.toString()))
         {
