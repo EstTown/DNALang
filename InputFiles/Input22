@@ -1,7 +1,9 @@
 int b = 2;
-int add(int parameter1, int parameter2){ int c; c = 25; return 25;}
+int add(int parameter1, int parameter2){ int c; c = 25; return c;}
 
 if(1 < 2){
+
+}
          int c = 4;
          int f = 17;
          int ger = 42;

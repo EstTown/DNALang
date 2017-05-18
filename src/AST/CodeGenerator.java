@@ -78,7 +78,7 @@ public class CodeGenerator extends Visitor {
             System.out.println("Google's Java formatter done fucked up." + ex.getMessage());
         }
 
-		//System.out.println(code);
+		System.out.println(code);
 
         //Step 3
         //Write code to file
@@ -203,13 +203,15 @@ public class CodeGenerator extends Visitor {
 	public void Visit(BlockNode blockNode)
 	{
 		if (infunction){
-			emitToFunction(")");
+			if (!blockNode.getParent().getClass().getSimpleName().equals("IfElseCommandNode"))
+				emitToFunction(")");
 			emitToFunction("{");
 			visitChildren(blockNode);
 			emitToFunction("}");
 		}
 		else{
-			emitToMain(")");
+			if (!blockNode.getParent().getClass().getSimpleName().equals("IfElseCommandNode"))
+				emitToMain(")");
 			emitToMain("{");
 			visitChildren(blockNode);
 			emitToMain("}");
@@ -240,10 +242,12 @@ public class CodeGenerator extends Visitor {
 		//Right hand expression
 		assignCommandNode.getLeftmostchild().getRightsibling().Accept(this);
 
-		if (infunction)
-			emitToFunction(";");
-		else if (!indecl)
-			emitToMain(";");
+		if (!assignCommandNode.getParent().getClass().getSimpleName().equals("ForCommandNode")) {
+			if (infunction)
+				emitToFunction(";");
+			else if (!indecl)
+				emitToMain(";");
+		}
 	}
 
 	@Override
@@ -283,7 +287,24 @@ public class CodeGenerator extends Visitor {
 	@Override
 	public void Visit(ForCommandNode forCommandNode)
 	{
-
+		if (infunction){
+			emitToFunction("for(");
+			forCommandNode.getLeftmostchild().Accept(this);
+			emitToFunction(";");
+			forCommandNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToFunction(";");
+			forCommandNode.getLeftmostchild().getRightsibling().getRightsibling().Accept(this);
+			forCommandNode.getLeftmostchild().getRightsibling().getRightsibling().getRightsibling().Accept(this);
+		}
+		else{
+			emitToMain("for(");
+			forCommandNode.getLeftmostchild().Accept(this);
+			emitToMain(";");
+			forCommandNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToMain(";");
+			forCommandNode.getLeftmostchild().getRightsibling().getRightsibling().Accept(this);
+			forCommandNode.getLeftmostchild().getRightsibling().getRightsibling().getRightsibling().Accept(this);
+		}
 	}
 
 	@Override
@@ -302,7 +323,25 @@ public class CodeGenerator extends Visitor {
 	@Override
 	public void Visit(IfElseCommandNode ifElseCommandNode)
 	{
-
+		if (infunction){
+			emitToFunction("if (");
+			//Expression
+			ifElseCommandNode.getLeftmostchild().Accept(this);
+			emitToFunction(")");
+			//Block1
+			ifElseCommandNode.getLeftmostchild().getRightsibling().getRightsibling().Accept(this);
+			emitToFunction("else");
+			//Block2
+			ifElseCommandNode.getLeftmostchild().getRightsibling().Accept(this);
+		}
+		else {
+			emitToMain("if (");
+			ifElseCommandNode.getLeftmostchild().Accept(this);
+			emitToMain(")");
+			ifElseCommandNode.getLeftmostchild().getRightsibling().getRightsibling().Accept(this);
+			emitToMain("else");
+			ifElseCommandNode.getLeftmostchild().getRightsibling().Accept(this);
+		}
 	}
 
 	@Override
@@ -336,6 +375,11 @@ public class CodeGenerator extends Visitor {
 	{
 		if (infunction){
 			emitToFunction("while (");
+			whileCommandNode.getLeftmostchild().Accept(this);
+			whileCommandNode.getLeftmostchild().getRightsibling().Accept(this);
+		}
+		else{
+			emitToMain("while (");
 			whileCommandNode.getLeftmostchild().Accept(this);
 			whileCommandNode.getLeftmostchild().getRightsibling().Accept(this);
 		}
@@ -505,6 +549,10 @@ public class CodeGenerator extends Visitor {
 	public void Visit(NotNode notNode){
 		if (infunction)
 			emitToFunction("!");
+		else if (indecl)
+			emitToDecl("!");
+		else
+			emitToMain("!");
 		notNode.getLeftmostchild().Accept(this);
 	}
 
@@ -514,6 +562,10 @@ public class CodeGenerator extends Visitor {
 		notEqualNode.getLeftmostchild().Accept(this);
 		if (infunction)
 			emitToFunction(" != ");
+		else if (indecl)
+			emitToDecl(" != ");
+		else
+			emitToMain(" != ");
 		notEqualNode.getLeftmostchild().getRightsibling().Accept(this);
 	}
 
@@ -523,6 +575,10 @@ public class CodeGenerator extends Visitor {
 		equalNode.getLeftmostchild().Accept(this);
 		if (infunction)
 			emitToFunction(" == ");
+		else if (indecl)
+			emitToDecl(" == ");
+		else
+			emitToMain( " == ");
 		equalNode.getLeftmostchild().getRightsibling().Accept(this);
 	}
 
@@ -532,6 +588,10 @@ public class CodeGenerator extends Visitor {
 		orNode.getLeftmostchild().Accept(this);
 		if (infunction)
 			emitToFunction(" || ");
+		else if (indecl)
+			emitToDecl(" || ");
+		else
+			emitToMain(" || ");
 		getNextRightSibling(orNode.getLeftmostchild()).Accept(this);
 	}
 
@@ -814,7 +874,11 @@ public class CodeGenerator extends Visitor {
 			emitToDecl(")");
 		}
 		else{
-
+			emitToMain("as(");
+			convertNode.getLeftmostchild().Accept(this);
+			emitToMain(", ");
+			convertNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToMain(")");
 		}
 	}
 

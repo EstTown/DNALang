@@ -20,16 +20,25 @@ arraytype
 //maybe add a #
 identifier
 	: Word
-	| Word'['expression']'
+	| Word
 	;
 
 statements
 	: statement
 	;
 
+
 block
     : declarations* statements*
     ;
+
+//redefining block, because of formal parameters for functiondeclarations is in wrong scope
+/*
+block
+    : declarations* statements*
+    |
+    ;
+*/
 
 statement
 	: assignment ';'        #assign
@@ -59,8 +68,9 @@ functions
 	;
 
 functiondeclaration
-	: TYPE funcname=identifier '(' declaration (',' declaration)* ')' '{' block '}'
-	| 'void' funcname=identifier '(' declaration (',' declaration)* ')' '{' block '}'
+	:
+	TYPE funcname=identifier '(' declaration (',' declaration)* ')' '{' block '}'
+	//| 'void' funcname=identifier '(' declaration (',' declaration)* ')' '{' block '}'
 	;
 
 assignment
@@ -80,6 +90,7 @@ expression
     | left=expression op=AND  right=expression              #binaryExp
     | left=expression op=OR right=expression                #binaryExp
     | functioncall                               #functioncallExp
+    | identifier'['expression']'                 #arrayVariableExp
     | identifier                                 #variableExp
     | INT                                        #numberExp
     | BOOL                                       #boolExp
@@ -102,8 +113,6 @@ jump
 printstatement
 	: 'Print' '(' left=expression ')' ';'   #print
 	;
-
-
 
 //*******************
 //		Lexer		|
