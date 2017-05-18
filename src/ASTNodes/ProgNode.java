@@ -4,6 +4,7 @@ import AST.Visitor;
 import ASTNodes.DeclareFunctionNodes.DeclareFunctionNode;
 import ASTNodes.DeclareVarNodes.DeclareVarNode;
 import ASTNodes.TerminalNodes.IdentifierNode;
+import ASTNodes.TerminalNodes.NullNode;
 import Interfaces.ASTVisitor;
 import SemanticAnalysis.TypeChecker;
 import com.sun.org.apache.xerces.internal.util.SymbolTable;
@@ -112,19 +113,20 @@ public class ProgNode extends BaseNode
 	}
 
 
-    //this method is builds the symbol table
+    //this method builds the symbol table
     public static void ProcessNode(BaseNode node)
 	{
 		switch(node.getClass().getSimpleName())
 		{
 			case "BlockNode":
-                ProgNode.OpenScope();
+				ProgNode.OpenScope();
                 break;
-			case "DeclareVarNode":	//insert identifiers with their type also
-                if(!ProgNode.DeclaredLocally(node.spelling))
+			//insert identifiers with their type also
+			case "DeclareVarNode":
+				if(!ProgNode.DeclaredLocally(node.spelling))
                 {
                     ProgNode.EnterSymbol(node.spelling.toString(), node);
-                }
+				}
                 else
                 {
                     errorList.add(new Error("Identifier \""+node.spelling+"\""+" already used", node.line, node.pos));
@@ -133,16 +135,17 @@ public class ProgNode extends BaseNode
 			case "DeclareArrayNode":
 				break;
 			case "IdentifierNode":
-			    BaseNode temp = ProgNode.RetrieveSymbol(node.content.toString());
-                if(temp ==  null)
+			    BaseNode temp2 = ProgNode.RetrieveSymbol(node.content.toString());
+				if(temp2 ==  null)
 				{
 					errorList.add(new Error("Undeclared symbol..\""+node.content+"\"", node.line, node.pos));
                 }
                 break;
 			case "DeclareFunctionNode":
-				DeclareFunctionNode temp2 = (DeclareFunctionNode) node;
-				temp2.GiveCopyOfSymbolTable(ProgNode.symbolTable);
-				//because of static scoping we need to remember what the variables were, at the time of declararing this function
+				DeclareFunctionNode temp3 = (DeclareFunctionNode) node;
+				temp3.GiveCopyOfSymbolTable(ProgNode.symbolTable);
+				//because of static scoping we need to remember what the variables were, at the time of declaring this function
+				//but in our language, functions come before all statements, and therefore they are automatically statically scoped
 				break;
             default:
                 break;
@@ -156,12 +159,12 @@ public class ProgNode extends BaseNode
 		{
 			TypeChecker typeChecker = new TypeChecker();
 			node.Accept(typeChecker);
-			if(node.getClass().getSimpleName().equals("BlockNode"))
+			if (node.getClass().getSimpleName().equals("BlockNode"))
 			{
-				BlockNode temp = (BlockNode)node;
-				temp.HasNotBeenChecked = false;
+				BlockNode temp2 = (BlockNode) node;
+				temp2.HasNotBeenChecked = false;
 			}
-                ProgNode.CloseScope();
-            }
+			ProgNode.CloseScope();
 		}
 	}
+}

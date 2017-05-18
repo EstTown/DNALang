@@ -1,3 +1,4 @@
+//tæller forkomster af str1 i str2
 public static int count(String str1, String str2)
 {
     int counter = 0;

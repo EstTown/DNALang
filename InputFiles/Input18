@@ -1,5 +1,3 @@
 int[50] array;
 dna[25] array2;
-dna a = ATG;
-bool b = !a;
 
