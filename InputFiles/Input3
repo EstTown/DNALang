@@ -1,8 +1,11 @@
 int a = 4;
 rna thisisrna = AUG;
 dna thisisdna = ATG;
-
+bool logic;
 dna dsfjksdjfkl = comp:thisisdna;
+
+int funcoutput = thisisfunction(2, 9, 4);
+
 
 int thisisfunction(int value, int value2, int value3){
     int b = 43;
@@ -23,5 +26,7 @@ int thisisfunction(int value, int value2, int value3){
 if(1 < 2){
     a = 4;
 }
+
+a = thisisfunction(2, 3, 4);
 
 Print(a + 45 - 33);

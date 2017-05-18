@@ -10,29 +10,22 @@ import ASTNodes.DeclareVarNodes.*;
 import com.google.googlejavaformat.java.Formatter;
 
 import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 
 public class CodeGenerator extends Visitor {
-
-    //Parts
-	private String codeDecl = "";
-	private String codeMain = "";
-	private String codeFuncs = "";
-
-	//Custom methods - (always included in compiled java-file)
-	private String codeAsFunc = "";
-	private String codeCompFunc = "";
-	private String codeRevFunc = "";
-	private String codeLenFunc = "";
-	private String codePosFunc = "";
-	private String codeCountFunc = "";
-	private String codeContainFunc = "";
-	private String codeRemoveFunc = "";
-	private String codeGetFunc = "";
 
 	//Local variables
 	private Boolean infunction = false;
 	private Boolean indecl = true;
 	private String ps = "public static "; //snippet, likely used in many places
+
+	//Parts
+	private String codeDecl = "";
+	private String codeMain = "";
+	private String codeFuncs = "";
 
     //Emitters - just a simpler way to add stuff
 	private void emitToDecl(String str){
@@ -45,11 +38,27 @@ public class CodeGenerator extends Visitor {
 		codeFuncs += str;
 	}
 
+	private void readCustomFuncionTextFiles(){
+		ArrayList<String> results = new ArrayList<String>();
+		File[] files = new File("CustomFunctions").listFiles();
+
+		for (File file : files) {
+			try {
+				byte[] bytes = Files.readAllBytes(Paths.get(file.getPath()));
+				String str = new String(bytes, Charset.defaultCharset());
+				codeFuncs += str;
+			}catch (Exception ex){
+				//System.out.println(ex.getMessage());
+			}
+		}
+	}
+
 	//Putting it all together
 	public void makeFile(){
 	    //Step 1
 	    //Assemble parts of java file
-        String code = "";
+		readCustomFuncionTextFiles();
+		String code = "";
         code += "package Output;";
         code += "import java.util.*;";
         code += "public class out{";
@@ -69,7 +78,7 @@ public class CodeGenerator extends Visitor {
             System.out.println("Google's Java formatter done fucked up." + ex.getMessage());
         }
 
-		System.out.println(code);
+		//System.out.println(code);
 
         //Step 3
         //Write code to file
@@ -102,6 +111,19 @@ public class CodeGenerator extends Visitor {
 	{
 		if (node.getRightsibling() != null) {
 			node.getRightsibling().Accept(this);
+
+			//Set commas between params in functioncalls
+			if (node.getParent().getClass().getSimpleName().equals("CallCommandNode")
+					&& node.getRightsibling().getRightsibling() != null){
+
+				if (infunction)
+					emitToFunction(", ");
+				else if (indecl)
+					emitToDecl(", ");
+				else
+					emitToMain(", ");
+			}
+
 			getNext(node.getRightsibling());
 		}
 	}
@@ -121,7 +143,7 @@ public class CodeGenerator extends Visitor {
 		indecl = false;
 		infunction = true;
 		//Return type
-		emitToFunction("public ");
+		emitToFunction(ps);
 		emitToFunction(declareFunctionNode.content.toString());
 		emitToFunction(" ");
 		//Identifier
@@ -140,6 +162,8 @@ public class CodeGenerator extends Visitor {
 		if (tmp.equals("dna") || tmp.equals("rna") || tmp.equals("protein") ||
 				tmp.equals("codon"))
 			tmp = "String";
+		if (tmp.equals("bool"))
+			tmp = "Boolean";
 
 
 		if (varNode.content != null) {
@@ -234,7 +258,26 @@ public class CodeGenerator extends Visitor {
 	@Override
 	public void Visit(CallCommandNode callCommandNode)
 	{
-
+		if (infunction){
+			//funcname
+			callCommandNode.getLeftmostchild().Accept(this);
+			//params
+			emitToFunction("(");
+			getNext(callCommandNode.getLeftmostchild().getRightsibling());
+			emitToFunction(")");
+		}
+		else if (indecl){
+			callCommandNode.getLeftmostchild().Accept(this);
+			emitToDecl("(");
+			getNext(callCommandNode.getLeftmostchild().getRightsibling());
+			emitToDecl(")");
+		}
+		else{
+			callCommandNode.getLeftmostchild().Accept(this);
+			emitToMain("(");
+			getNext(callCommandNode.getLeftmostchild().getRightsibling());
+			emitToMain(")");
+		}
 	}
 
 	@Override
@@ -714,22 +757,65 @@ public class CodeGenerator extends Visitor {
 			emitToFunction(")");
 		}
 		else if (indecl){
-			emitToFunction("Pos(");
+			emitToDecl("Pos(");
 			positionNode.getLeftmostchild().Accept(this);
-			emitToFunction(", ");
+			emitToDecl(", ");
 			positionNode.getLeftmostchild().getRightsibling().Accept(this);
-			emitToFunction(")");
+			emitToDecl(")");
+		}
+		else{
+			emitToMain("Pos(");
+			positionNode.getLeftmostchild().Accept(this);
+			emitToMain(", ");
+			positionNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToMain(")");
 		}
 	}
 
 	@Override
 	public void Visit(RemoveNode removeNode){
-
+		if (infunction){
+			emitToFunction("Remove(");
+			removeNode.getLeftmostchild().Accept(this);
+			emitToFunction(", ");
+			removeNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToFunction(")");
+		}
+		else if (indecl){
+			emitToDecl("Remove(");
+			removeNode.getLeftmostchild().Accept(this);
+			emitToDecl(", ");
+			removeNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToDecl(")");
+		}
+		else{
+			emitToMain("Remove(");
+			removeNode.getLeftmostchild().Accept(this);
+			emitToMain(", ");
+			removeNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToMain(")");
+		}
 	}
 
 	@Override
 	public void Visit(ConvertNode convertNode){
+		if (infunction){
+			emitToFunction("as(");
+			convertNode.getLeftmostchild().Accept(this);
+			emitToFunction(", ");
+			convertNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToFunction(")");
+		}
+		else if (indecl){
+			emitToDecl("as(");
+			convertNode.getLeftmostchild().Accept(this);
+			emitToDecl(", ");
+			convertNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToDecl(")");
+		}
+		else{
 
+		}
 	}
 
 }
