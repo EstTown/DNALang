@@ -1,0 +1,193 @@
+    public static String toDna(String str)
+    {
+        String dna = "";
+        char[] tempArray = str.toCharArray();
+        int i = 0;
+
+        for (char chr: str.toCharArray())
+        {
+            if (chr == 'U') {
+                dna = dna + "T";
+            }
+            else {
+                dna = dna + tempArray[i];
+            }
+
+            i++;
+        }
+
+        return dna;
+    }
+
+    public static String toRna(String str)
+    {
+        String rna = "";
+        char[] tempArray = str.toCharArray();
+        int i = 0;
+
+        for (char chr: str.toCharArray())
+        {
+            if (chr == 'T') {
+                rna = rna + "U";
+            }
+            else {
+                rna = rna + tempArray[i];
+            }
+
+            i++;
+
+        }
+
+        return rna;
+    }
+
+    public static String toProtein(String str)
+    {
+        String protein = "";
+
+        //indsætter elementer der ikke kan oversættes hvis sekvenser er for kort
+        if (str.length() % 3 == 2) {
+            str = str + "0";
+        }
+        else if (str.length() % 3 == 1) {
+            str = str + "00";
+        }
+
+        char[] chrArray = str.toCharArray();
+
+        for (int i = 0; i < chrArray.length; i = i+3) {
+            String temp = "" + chrArray[i] + chrArray[i+1] + chrArray[i+2];
+
+            switch (temp) {
+                case "UUU" :
+                case "UUC" : protein = protein + "F";
+                    break;
+
+                case "UUA" :
+                case "UUG" :
+                case "CUU" :
+                case "CUC" :
+                case "CUA" :
+                case "CUG" : protein = protein + "L";
+                    break;
+
+                case "AUU" :
+                case "AUC" :
+                case "AUA" : protein = protein + "I";
+                    break;
+
+                case "AUG" : protein = protein + "M";
+                    break;
+
+                case "GUU" :
+                case "GUC" :
+                case "GUA" :
+                case "GUG" : protein = protein + "V";
+                    break;
+
+                case "UCU" :
+                case "UCC" :
+                case "UCA" :
+                case "UCG" : protein = protein + "S";
+                    break;
+
+                case "CCU" :
+                case "CCC" :
+                case "CCA" :
+                case "CCG" : protein = protein + "P";
+                    break;
+
+                case "ACU" :
+                case "ACC" :
+                case "ACA" :
+                case "ACG" : protein = protein + "T";
+                    break;
+
+                case "GCU" :
+                case "GCC" :
+                case "GCA" :
+                case "GCG" : protein = protein + "A";
+                    break;
+
+                case "UAU" :
+                case "UAC" : protein = protein + "Y";
+                    break;
+
+                // stop codon
+                case "UAA" :
+                case "UAG" :
+                case "UGA" :
+                    break;
+
+                case "CAU" :
+                case "CAC" : protein = protein + "H";
+                    break;
+
+                case "CAA" :
+                case "CAG" : protein = protein + "E";
+                    break;
+
+                case "AAU" :
+                case "AAC" : protein = protein + "N";
+                    break;
+
+                case "AAA" :
+                case "AAG" : protein = protein + "K";
+                    break;
+
+                case "GAU" :
+                case "GAC" : protein = protein + "D";
+                    break;
+
+                case "GAA" :
+                case "GAG" : protein = protein + "E";
+                    break;
+
+                case "UGU" :
+                case "UGC" : protein = protein + "C";
+                    break;
+
+                case "UGG" : protein = protein + "W";
+                    break;
+
+                case "CGU" :
+                case "CGC" :
+                case "CGA" :
+                case "CGG" : protein = protein + "R";
+                    break;
+
+                case "AGU" :
+                case "AGC" : protein = protein + "S";
+                    break;
+
+                case "AGA" :
+                case "AGG" : protein = protein + "R";
+                    break;
+
+                case "GGU" :
+                case "GGC" :
+                case "GGA" :
+                case "GGG" : protein = protein + "G";
+                    break;
+
+                default : protein = protein + "";
+                    break;
+            }
+        }
+
+        return protein;
+    }
+
+    public static  String as(String str, String type)
+    {
+        if (type.equals("dna")) {
+            return toDna(str);
+        }
+        else if (type.equals("rna")) {
+            return toRna(str);
+        }
+        else {
+            String temp = toRna(str);
+            return toProtein(temp);
+        }
+    }

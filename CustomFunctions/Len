@@ -1,0 +1,4 @@
+public static int len(String str)
+{
+    return str.length();
+}

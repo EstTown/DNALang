@@ -1,0 +1,9 @@
+public static Boolean contains(String str1, String str2)
+{
+    if(kmpSearch(str1, str2) != -1) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}

@@ -1,0 +1,4 @@
+public static String remove(String str1, String str2)
+{
+    return str2.replace(str1, "");
+}
