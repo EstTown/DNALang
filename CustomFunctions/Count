@@ -5,6 +5,7 @@ public static int count(String str1, String str2)
     int pos = 0;
 
     while (pos != -1) {
+        //pos er start index i indexOf
         pos = str2.indexOf(str1, pos);
 
         if(pos != -1){
