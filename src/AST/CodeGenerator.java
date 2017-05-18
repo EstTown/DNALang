@@ -643,17 +643,17 @@ public class CodeGenerator extends Visitor {
 	@Override
 	public void Visit(ComplementaryNode complementaryNode){
 		if (infunction){
-			emitToFunction("Comp(");
+			emitToFunction("comp(");
 			visitChildren(complementaryNode);
 			emitToFunction(")");
 		}
 		else if (indecl) {
-			emitToDecl("Comp(");
+			emitToDecl("comp(");
 			visitChildren(complementaryNode);
 			emitToDecl(")");
 		}
 		else{
-			emitToMain("Comp(");
+			emitToMain("comp(");
 			visitChildren(complementaryNode);
 			emitToDecl(")");
 		}
@@ -662,17 +662,17 @@ public class CodeGenerator extends Visitor {
 	@Override
 	public void Visit(ReverseNode reverseNode){
 		if (infunction){
-			emitToFunction("Rev(");
+			emitToFunction("rev(");
 			visitChildren(reverseNode);
 			emitToFunction(")");
 		}
 		else if (indecl){
-			emitToDecl("Rev(");
+			emitToDecl("rev(");
 			visitChildren(reverseNode);
 			emitToDecl(")");
 		}
 		else{
-			emitToMain("Rev(");
+			emitToMain("rev(");
 			visitChildren(reverseNode);
 			emitToMain(")");
 		}
@@ -681,17 +681,17 @@ public class CodeGenerator extends Visitor {
 	@Override
 	public void Visit(LengthNode lengthNode){
 		if (infunction){
-			emitToFunction("Len(");
+			emitToFunction("len(");
 			visitChildren(lengthNode);
 			emitToFunction(")");
 		}
 		else if (indecl){
-			emitToDecl("Len(");
+			emitToDecl("len(");
 			visitChildren(lengthNode);
 			emitToDecl(")");
 		}
 		else{
-			emitToMain("Len(");
+			emitToMain("len(");
 			visitChildren(lengthNode);
 			emitToMain(")");
 		}
@@ -700,21 +700,21 @@ public class CodeGenerator extends Visitor {
 	@Override
 	public void Visit(ContainsNode containsNode){
 		if (infunction){
-			emitToFunction("Contains(");
+			emitToFunction("contains(");
 			containsNode.getLeftmostchild().Accept(this);
 			emitToFunction(", ");
 			containsNode.getLeftmostchild().getRightsibling().Accept(this);
 			emitToFunction(")");
 		}
 		else if (indecl){
-			emitToDecl("Contains(");
+			emitToDecl("contains(");
 			containsNode.getLeftmostchild().Accept(this);
 			emitToDecl(", ");
 			containsNode.getLeftmostchild().getRightsibling().Accept(this);
 			emitToDecl(")");
 		}
 		else{
-			emitToMain("Contains(");
+			emitToMain("contains(");
 			containsNode.getLeftmostchild().Accept(this);
 			emitToMain(", ");
 			containsNode.getLeftmostchild().getRightsibling().Accept(this);
@@ -725,21 +725,21 @@ public class CodeGenerator extends Visitor {
 	@Override
 	public void Visit(CountNode countNode){
 		if (infunction){
-			emitToFunction("Count(");
+			emitToFunction("count(");
 			countNode.getLeftmostchild().Accept(this);
 			emitToFunction(", ");
 			countNode.getLeftmostchild().getRightsibling().Accept(this);
 			emitToFunction(")");
 		}
 		else if (indecl){
-			emitToDecl("Count(");
+			emitToDecl("count(");
 			countNode.getLeftmostchild().Accept(this);
 			emitToDecl(", ");
 			countNode.getLeftmostchild().getRightsibling().Accept(this);
 			emitToDecl(")");
 		}
 		else{
-			emitToMain("Count(");
+			emitToMain("count(");
 			countNode.getLeftmostchild().Accept(this);
 			emitToMain(", ");
 			countNode.getLeftmostchild().getRightsibling().Accept(this);
@@ -750,21 +750,21 @@ public class CodeGenerator extends Visitor {
 	@Override
 	public void Visit(PositionNode positionNode){
 		if (infunction){
-			emitToFunction("Pos(");
+			emitToFunction("Pps(");
 			positionNode.getLeftmostchild().Accept(this);
 			emitToFunction(", ");
 			positionNode.getLeftmostchild().getRightsibling().Accept(this);
 			emitToFunction(")");
 		}
 		else if (indecl){
-			emitToDecl("Pos(");
+			emitToDecl("pos(");
 			positionNode.getLeftmostchild().Accept(this);
 			emitToDecl(", ");
 			positionNode.getLeftmostchild().getRightsibling().Accept(this);
 			emitToDecl(")");
 		}
 		else{
-			emitToMain("Pos(");
+			emitToMain("pos(");
 			positionNode.getLeftmostchild().Accept(this);
 			emitToMain(", ");
 			positionNode.getLeftmostchild().getRightsibling().Accept(this);
@@ -775,21 +775,21 @@ public class CodeGenerator extends Visitor {
 	@Override
 	public void Visit(RemoveNode removeNode){
 		if (infunction){
-			emitToFunction("Remove(");
+			emitToFunction("remove(");
 			removeNode.getLeftmostchild().Accept(this);
 			emitToFunction(", ");
 			removeNode.getLeftmostchild().getRightsibling().Accept(this);
 			emitToFunction(")");
 		}
 		else if (indecl){
-			emitToDecl("Remove(");
+			emitToDecl("remove(");
 			removeNode.getLeftmostchild().Accept(this);
 			emitToDecl(", ");
 			removeNode.getLeftmostchild().getRightsibling().Accept(this);
 			emitToDecl(")");
 		}
 		else{
-			emitToMain("Remove(");
+			emitToMain("remove(");
 			removeNode.getLeftmostchild().Accept(this);
 			emitToMain(", ");
 			removeNode.getLeftmostchild().getRightsibling().Accept(this);
