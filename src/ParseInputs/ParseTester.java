@@ -137,7 +137,7 @@ public class ParseTester
 
                 CodeGenerator gen = new CodeGenerator();
                 ast.Accept(gen);
-                gen.makeFile();
+                gen.makeFile(false);
 
             //}
         }

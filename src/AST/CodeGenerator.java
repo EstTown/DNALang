@@ -7,13 +7,19 @@ import ASTNodes.BlockNodes.*;
 import ASTNodes.CommandNodes.*;
 import ASTNodes.DeclareFunctionNodes.*;
 import ASTNodes.DeclareVarNodes.*;
+import com.google.common.base.Charsets;
+import com.google.common.io.CharStreams;
 import com.google.googlejavaformat.java.Formatter;
+import Compiler.JavaSourceFromString;
 
+import javax.tools.JavaFileObject;
 import java.io.*;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class CodeGenerator extends Visitor {
 
@@ -21,6 +27,9 @@ public class CodeGenerator extends Visitor {
 	private Boolean infunction = false;
 	private Boolean indecl = true;
 	private String ps = "public static "; //snippet, likely used in many places
+
+	public File source;
+	public JavaFileObject internalJavaFile;
 
 	//Parts
 	private String codeDecl = "";
@@ -39,8 +48,18 @@ public class CodeGenerator extends Visitor {
 	}
 
 	private void readCustomFuncionTextFiles(){
-		ArrayList<String> results = new ArrayList<String>();
-		File[] files = new File("CustomFunctions").listFiles();
+		//ArrayList<String> results = new ArrayList<String>();
+		//File[] files = new File("CustomFunctions").listFiles();
+
+		//ClassLoader classLoader = getClass().getClassLoader();
+		//File[] files = new File(classLoader.getResource("CustomFunctions").getPath()).listFiles();
+		/*
+		try {
+			System.out.println(files.length + " lol");
+		}
+		catch (Exception ex){
+			System.out.println(ex.getMessage());
+		}
 
 		for (File file : files) {
 			try {
@@ -51,10 +70,23 @@ public class CodeGenerator extends Visitor {
 				//System.out.println(ex.getMessage());
 			}
 		}
+		*/
+
+		String[] names = {"As", "Comp", "Contains", "Count", "Get", "Len", "Pos", "Remove", "Rev"};
+
+		for (String name : names){
+			InputStream x = getClass().getResourceAsStream("/CustomFunctions/" + name);
+			try {
+				String y = CharStreams.toString(new InputStreamReader(x, Charsets.UTF_8));
+				codeFuncs += y;
+			}catch (Exception ex){}
+		}
+
 	}
 
+
 	//Putting it all together
-	public void makeFile(){
+	public void makeFile(boolean MakeJavaFile){
 	    //Step 1
 	    //Assemble parts of java file
 		readCustomFuncionTextFiles();
@@ -78,21 +110,25 @@ public class CodeGenerator extends Visitor {
             System.out.println("Google's Java formatter done fucked up." + ex.getMessage());
         }
 
-		//System.out.println(code);
+		//Make file
+		if (MakeJavaFile == true) {
+			try {
+				File file = new File("out.java");
+				FileWriter fileWriter = new FileWriter(file);
+				fileWriter.write(formattedSource);
+				fileWriter.flush();
+				fileWriter.close();
+				this.source = file;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		//Make internal file representation
+		internalJavaFile = new JavaSourceFromString("out", formattedSource);
 
-        //Step 3
-        //Write code to file
-        Writer writer = null;
-        try {
-            writer = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream("src/Output/out.java"), "utf-8"));
-            writer.write(formattedSource);
-        } catch (Exception ex) {
-        } finally {
-            try {writer.close();} catch (Exception ex) {/*ignore*/}
-        }
 
-        //Step 4
+
+		//Step 4
         //???
 
         //Step 5
@@ -384,7 +420,6 @@ public class CodeGenerator extends Visitor {
 	public void Visit(WhileCommandNode whileCommandNode)
 	{
 		indecl = false;
-
 		if (infunction){
 			emitToFunction("while (");
 			whileCommandNode.getLeftmostchild().Accept(this);
