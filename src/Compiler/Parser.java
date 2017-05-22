@@ -83,8 +83,7 @@ public class Parser {
 				//Compile and run
 				JavaC out = new JavaC(this.args, internalJavaFile);
 				out.CompileAndRun();
-
-
+				
 			}
 			else{
 				//Print errors to user

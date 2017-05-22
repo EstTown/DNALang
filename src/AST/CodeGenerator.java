@@ -184,7 +184,13 @@ public class CodeGenerator extends Visitor {
 		infunction = true;
 		//Return type
 		emitToFunction(ps);
-		emitToFunction(declareFunctionNode.content.toString());
+		if (declareFunctionNode.content.toString().equals("dna")
+				|| declareFunctionNode.content.toString().equals("rna")
+				|| declareFunctionNode.content.toString().equals("protein")
+				|| declareFunctionNode.content.toString().equals("codon"))
+			emitToFunction("String");
+		else
+			emitToFunction(declareFunctionNode.content.toString());
 		emitToFunction(" ");
 		//Identifier
 		emitToFunction(declareFunctionNode.functionName);
@@ -621,14 +627,36 @@ public class CodeGenerator extends Visitor {
 	@Override
 	public void Visit(EqualNode equalNode)
 	{
-		equalNode.getLeftmostchild().Accept(this);
-		if (infunction)
-			emitToFunction(" == ");
-		else if (indecl)
-			emitToDecl(" == ");
-		else
-			emitToMain( " == ");
-		equalNode.getLeftmostchild().getRightsibling().Accept(this);
+		if (equalNode.getLeftmostchild().type.equals("dna")
+				|| equalNode.getLeftmostchild().type.equals("rna")
+				|| equalNode.getLeftmostchild().type.equals("codon")
+				|| equalNode.getLeftmostchild().type.equals("protein")) {
+
+			equalNode.getLeftmostchild().Accept(this);
+			if (infunction)
+				emitToFunction(".equals(");
+			else if (indecl)
+				emitToDecl(".equals(");
+			else
+				emitToMain(".equals(");
+			equalNode.getLeftmostchild().getRightsibling().Accept(this);
+			if (infunction)
+				emitToFunction(")");
+			else if (indecl)
+				emitToDecl(")");
+			else
+				emitToMain(")");
+		}
+		else{
+			equalNode.getLeftmostchild().Accept(this);
+			if (infunction)
+				emitToFunction(" == ");
+			else if (indecl)
+				emitToDecl(" == ");
+			else
+				emitToMain(" == ");
+			equalNode.getLeftmostchild().getRightsibling().Accept(this);
+		}
 	}
 
 	@Override

@@ -138,9 +138,6 @@ public class ParseTester
                 CodeGenerator gen = new CodeGenerator();
                 ast.Accept(gen);
                 gen.makeFile(true);
-
-
-
             //}
         }
         catch (IOException parser)

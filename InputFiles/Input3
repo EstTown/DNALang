@@ -1,3 +1,2 @@
-dna seq = ATGTTAGTCG;
-
-Print(comp:(seq));
+dna seq = ATG;
+Print(seq);
