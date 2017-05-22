@@ -557,8 +557,7 @@ public class TypeChecker extends Visitor
         DeclareFunctionNode temp = (DeclareFunctionNode) ProgNode.RetrieveSymbol(node.spelling);
 		if(temp == null )
         {
-        	if (!node.spelling.equals("len") && !node.spelling.equals("comp") && !node.spelling.equals("rev") && !node.spelling.equals("contains"))
-            	ProgNode.errorList.add(new Error("Function "+"\""+node.spelling+"\""+" has not been declared. Line: " + node.line + " col: " + node.pos));
+			ProgNode.errorList.add(new Error("Function "+"\""+node.spelling+"\""+" has not been declared. Line: " + node.line + " col: " + node.pos));
 		}
         else
         {
