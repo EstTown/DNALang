@@ -381,10 +381,14 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     @Override
     public BaseNode visitPrint(LanguageParser.PrintContext ctx)
     {
-        PrintCommandNode node = new PrintCommandNode();
-        node.AddChild(visit(ctx.left));
-		node.line = ctx.getStart().getLine();
-		node.pos = ctx.getStart().getCharPositionInLine();
+		PrintCommandNode node = new PrintCommandNode();
+
+		//This check allows us to have an empty print-stmt
+		if (ctx.left != null) {
+			node.AddChild(visit(ctx.left));
+			node.line = ctx.getStart().getLine();
+			node.pos = ctx.getStart().getCharPositionInLine();
+		}
 
         return node;
     }

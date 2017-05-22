@@ -555,11 +555,11 @@ public class TypeChecker extends Visitor
         visitChildren(node);
         //need to access symboltable, therefore find DeclareFunctionNode
         DeclareFunctionNode temp = (DeclareFunctionNode) ProgNode.RetrieveSymbol(node.spelling);
-
-        if(temp == null)
+		if(temp == null )
         {
-            ProgNode.errorList.add(new Error("Function "+"\""+node.spelling+"\""+" has not been declared"));
-        }
+        	if (!node.spelling.equals("len") && !node.spelling.equals("comp") && !node.spelling.equals("rev") && !node.spelling.equals("contains"))
+            	ProgNode.errorList.add(new Error("Function "+"\""+node.spelling+"\""+" has not been declared. Line: " + node.line + " col: " + node.pos));
+		}
         else
         {
             node.type = temp.content.toString();
@@ -593,6 +593,25 @@ public class TypeChecker extends Visitor
 
         String functionReturnType = node.content.toString();
         //find return type. It should be
+
+		//Cannot use reserved functionnames
+		if (node.functionName.equals("rev")
+				|| node.functionName.equals("contains")
+				|| node.functionName.equals("len")
+				|| node.functionName.equals("comp")
+				|| node.functionName.equals("toDna")
+				|| node.functionName.equals("toRna")
+				|| node.functionName.equals("toProtein")
+				|| node.functionName.equals("as")
+				|| node.functionName.equals("count")
+				|| node.functionName.equals("get")
+				|| node.functionName.equals("pos")
+				|| node.functionName.equals("kmpSearch")
+				|| node.functionName.equals("kmpTable")
+				|| node.functionName.equals("remove")
+				)
+			ProgNode.errorList.add(new Error("Cannot use reserved function name \"" + node.functionName + "\", Line: " + node.line));
+
 
         for(BaseNode tempNode1 : ProgNode.GetListOfChildren(node))
         {

@@ -108,7 +108,9 @@ public class CodeGenerator extends Visitor {
             formattedSource = new Formatter().formatSource(code);
         } catch (Exception ex) {
             System.out.println("Google's Java formatter done fucked up." + ex.getMessage());
+			System.out.println(code);
         }
+
 
 		//Make file
 		if (MakeJavaFile == true) {
@@ -762,7 +764,7 @@ public class CodeGenerator extends Visitor {
 		else{
 			emitToMain("comp(");
 			visitChildren(complementaryNode);
-			emitToDecl(")");
+			emitToMain(")");
 		}
 	}
 

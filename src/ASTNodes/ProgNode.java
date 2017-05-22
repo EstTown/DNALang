@@ -142,7 +142,8 @@ public class ProgNode extends BaseNode
 			    BaseNode temp2 = ProgNode.RetrieveSymbol(node.content.toString());
 				if(temp2 ==  null)
 				{
-					errorList.add(new Error("Undeclared symbol..\""+node.content+"\"", node.line, node.pos));
+					if (!node.getParent().getClass().getSimpleName().equals("CallCommandNode"))
+						errorList.add(new Error("Undeclared symbol..\""+node.content+"\"", node.line, node.pos));
                 }
                 break;
 			case "DeclareFunctionNode":

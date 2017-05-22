@@ -1,8 +1,7 @@
-int a = 4;
+dna a = ATG;
 
-if (true){
-    int b = 6;
-    Print(b);
+int count(dna a, dna b){
+    return 3;
 }
 
-int c = 8;
+Print(count(a, a));

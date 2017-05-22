@@ -111,7 +111,7 @@ jump
 	;
 
 printstatement
-	: 'Print' '(' left=expression ')' ';'   #print
+	: 'Print' '(' left=expression? ')' ';'   #print
 	;
 
 //*******************
@@ -252,10 +252,10 @@ DIV     : '/' ;
 ADD     : '+' ;
 MUL     : '*' ;
 MOD		: '%' ;
-CONTAINS: 'contains:';
-COMPLEMENTARY    : 'comp:';
-REVERSE          : 'rev:';
-LENGTH           : 'len:';
+CONTAINS: 'contains';
+COMPLEMENTARY    : 'comp';
+REVERSE          : 'rev';
+LENGTH           : 'len';
 POSITION         : 'position of ';
 COUNT            : 'count ';
 REMOVE           : 'remove ';
