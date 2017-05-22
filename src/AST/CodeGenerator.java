@@ -86,7 +86,7 @@ public class CodeGenerator extends Visitor {
 
 
 	//Putting it all together
-	public void makeFile(boolean MakeJavaFile){
+	public void makeFile(boolean cf_makeJavaFile){
 	    //Step 1
 	    //Assemble parts of java file
 		readCustomFuncionTextFiles();
@@ -113,7 +113,7 @@ public class CodeGenerator extends Visitor {
 
 
 		//Make file
-		if (MakeJavaFile == true) {
+		if (cf_makeJavaFile == true) {
 			try {
 				File file = new File("out.java");
 				FileWriter fileWriter = new FileWriter(file);
