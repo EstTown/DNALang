@@ -1,7 +1,3 @@
-dna a = ATG;
+dna seq = ATGTTAGTCG;
 
-int count(dna a, dna b){
-    return 3;
-}
-
-Print(count(a, a));
+Print(comp:(seq));

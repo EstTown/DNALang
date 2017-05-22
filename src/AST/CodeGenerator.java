@@ -912,21 +912,49 @@ public class CodeGenerator extends Visitor {
 			emitToFunction("as(");
 			convertNode.getLeftmostchild().Accept(this);
 			emitToFunction(", ");
-			convertNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToFunction("\"" + convertNode.content + "\"");
+			//convertNode.getLeftmostchild().getRightsibling().Accept(this);
 			emitToFunction(")");
 		}
 		else if (indecl){
 			emitToDecl("as(");
 			convertNode.getLeftmostchild().Accept(this);
 			emitToDecl(", ");
-			convertNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToDecl("\"" + convertNode.content + "\"");
+			//convertNode.getLeftmostchild().getRightsibling().Accept(this);
 			emitToDecl(")");
 		}
 		else{
 			emitToMain("as(");
 			convertNode.getLeftmostchild().Accept(this);
 			emitToMain(", ");
-			convertNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToMain("\"" + convertNode.content + "\"");
+			//convertNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToMain(")");
+		}
+	}
+
+	@Override
+	public void Visit(GetNode getNode){
+		if (infunction){
+			emitToFunction("get(");
+			getNode.getLeftmostchild().Accept(this);
+			emitToFunction(", ");
+			getNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToFunction(")");
+		}
+		else if (indecl){
+			emitToDecl("get(");
+			getNode.getLeftmostchild().Accept(this);
+			emitToDecl(", ");
+			getNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToDecl(")");
+		}
+		else {
+			emitToMain("get(");
+			getNode.getLeftmostchild().Accept(this);
+			emitToMain(", ");
+			getNode.getLeftmostchild().getRightsibling().Accept(this);
 			emitToMain(")");
 		}
 	}

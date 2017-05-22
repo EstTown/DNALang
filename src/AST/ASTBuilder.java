@@ -175,7 +175,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
 		node.line = ctx.getStart().getLine();
 		node.pos = ctx.getStart().getCharPositionInLine();
 
-        node.AddChild(visit(ctx.left));
+		node.AddChild(visit(ctx.left));
         node.AddChild(visit(ctx.right));
 
         return node;
@@ -484,8 +484,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     public BaseNode visitComplementary(LanguageParser.ComplementaryContext ctx)
     {
         BaseNode node;
-
-        switch(ctx.op.getType())
+		switch(ctx.op.getType())
         {
             case LanguageLexer.COMPLEMENTARY:
                 node = new ComplementaryNode();

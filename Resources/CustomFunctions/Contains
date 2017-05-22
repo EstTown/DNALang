@@ -1,6 +1,6 @@
 public static Boolean contains(String str1, String str2)
 {
-    if(kmpSearch(str1, str2) != -1) {
+    if(kmpSearch(str2, str1) != -1) {
         return true;
     }
     else {
