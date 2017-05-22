@@ -452,7 +452,9 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     public BaseNode visitFunccall(LanguageParser.FunccallContext ctx)
     {
         CallCommandNode node = new CallCommandNode();
-        node.AddChild(visit(ctx.identifier()));
+        BaseNode temp = visit(ctx.identifier());
+        node.AddChild(temp);
+        node.spelling = temp.content.toString();
         node.AddChild(visit(ctx.funcname));
 
         int children = ctx.getChildCount();

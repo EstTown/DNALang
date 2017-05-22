@@ -1,4 +1,3 @@
-dna a = AATG;
-int b = 2;
-dna c = b[a];
+dna a = ATG;
+Print(rev(a));
 

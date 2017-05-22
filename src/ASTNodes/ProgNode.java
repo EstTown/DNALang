@@ -159,7 +159,6 @@ public class ProgNode extends BaseNode
 		{
 			ProgNode.ProcessNode(item);
 		}
-
 		if (node.getClass().getSimpleName().equals("BlockNode") || node.getClass().getSimpleName().equals("ProgNode"))
 		{
 			TypeChecker typeChecker = new TypeChecker();

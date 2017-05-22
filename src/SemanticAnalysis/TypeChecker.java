@@ -554,26 +554,33 @@ public class TypeChecker extends Visitor
     {
         visitChildren(node);
         //need to access symboltable, therefore find DeclareFunctionNode
-        DeclareFunctionNode temp = (DeclareFunctionNode) ProgNode.RetrieveSymbol(node.getLeftmostchild().getRightsibling().content.toString());
+        DeclareFunctionNode temp = (DeclareFunctionNode) ProgNode.RetrieveSymbol(node.spelling);
 
-        node.type = temp.content.toString();
-
-        //typecheck actual parameters with formal parameters. Formal parameters are in temp (0). Actual parameters in node (2)
-        int childrenToSkip = 2;     //in a callcommandnode, the first two children, will never be the actual parameters, there skip those.
-        if(node.ActualParameters != temp.listOfParameters.size())
+        if(temp == null)
         {
-            ProgNode.errorList.add(new Error("Amount of actual parameters does not match amount of formal parameters", node.line, node.pos));
+            ProgNode.errorList.add(new Error("Function "+"\""+node.spelling+"\""+" has not been declared"));
         }
         else
         {
-            ArrayList<BaseNode> listOfActualParameters = ProgNode.GetListOfChildren(node);
-            for (int i = 0; i < temp.listOfParameters.size(); i++)
+            node.type = temp.content.toString();
+
+            //typecheck actual parameters with formal parameters. Formal parameters are in temp (0). Actual parameters in node (2)
+            int childrenToSkip = 2;     //in a callcommandnode, the first two children, will never be the actual parameters, there skip those.
+            if(node.ActualParameters != temp.listOfParameters.size())
             {
-                if (!temp.listOfParameters.get(i).GetParameterType().equals(listOfActualParameters.get(i+childrenToSkip).type))
+                ProgNode.errorList.add(new Error("Amount of actual parameters does not match amount of formal parameters", node.line, node.pos));
+            }
+            else
+            {
+                ArrayList<BaseNode> listOfActualParameters = ProgNode.GetListOfChildren(node);
+                for (int i = 0; i < temp.listOfParameters.size(); i++)
                 {
-                    ProgNode.errorList.add(new Error("Type of actual parameter "+
-                            "\""+listOfActualParameters.get(i+childrenToSkip).content.toString()+"\"" + " does not match the type of formal parameter "+
-                            "\""+temp.listOfParameters.get(i).GetParameterName()+"\""));
+                    if (!temp.listOfParameters.get(i).GetParameterType().equals(listOfActualParameters.get(i+childrenToSkip).type))
+                    {
+                        ProgNode.errorList.add(new Error("Type of actual parameter "+
+                                "\""+listOfActualParameters.get(i+childrenToSkip).content.toString()+"\"" + " does not match the type of formal parameter "+
+                                "\""+temp.listOfParameters.get(i).GetParameterName()+"\""));
+                    }
                 }
             }
         }
