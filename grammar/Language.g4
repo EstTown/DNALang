@@ -89,7 +89,7 @@ expression
     | left=expression op=(EQEQ|NOTEQ) right=expression      #binaryExp
     | left=expression op=AND  right=expression              #binaryExp
     | left=expression op=OR right=expression                #binaryExp
-    | functioncall                               #functioncallExp
+    | functioncall                                          #functioncallExp
     | first=expression'['second=expression']'                 #getExp
     | identifier                                 #variableExp
     | INT                                        #numberExp

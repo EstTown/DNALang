@@ -145,6 +145,8 @@ public class ProgNode extends BaseNode
 					if (!node.getParent().getClass().getSimpleName().equals("CallCommandNode"))
 						errorList.add(new Error("Undeclared symbol..\""+node.content+"\"", node.line, node.pos));
                 }
+
+
                 break;
 			case "DeclareFunctionNode":
 				ProgNode.OpenScope();
