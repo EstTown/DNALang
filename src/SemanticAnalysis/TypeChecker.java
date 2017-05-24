@@ -608,6 +608,7 @@ public class TypeChecker extends Visitor
 				|| node.functionName.equals("kmpSearch")
 				|| node.functionName.equals("kmpTable")
 				|| node.functionName.equals("remove")
+				|| node.functionName.equals("print")
 				)
 			ProgNode.errorList.add(new Error("Cannot use reserved function name \"" + node.functionName + "\", Line: " + node.line));
 

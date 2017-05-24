@@ -1,0 +1,89 @@
+public static void print(String str)
+{
+    System.out.println(str);
+}
+
+public static void print(String str, int num)
+{
+    for(int i = 0; i < str.length(); i++){
+        System.out.print(str.charAt(i));
+        if (((i+1) % num) == 0)
+               System.out.print(" ");
+    }
+}
+
+public static void print(String str, int num, boolean flag, String type) {
+    String ANSI_RED = "\u001B[31m";
+    String ANSI_GREEN = "\u001B[32m";
+    String ANSI_RESET = "\u001B[0m";
+    String substr = "";
+    int substrCounter = 0;
+
+    if (flag == true) {
+      if (type.equals("protein")) {
+        for (int i = 0; i < str.length(); i++) {
+          //Look for 'M'
+          if (str.charAt(i) == 'M') {
+            System.out.print(ANSI_GREEN);
+          }
+
+          //Print
+          System.out.print(str.charAt(i));
+          if (((i + 1) % num) == 0) System.out.print(" ");
+
+          //Reset
+          System.out.print(ANSI_RESET);
+        }
+      } else {
+        for (int i = 0; i < str.length(); i++) {
+          //Get substring
+          if (i < str.length() - 3)
+            substr =
+                new StringBuilder()
+                    .append(str.charAt(i))
+                    .append(str.charAt(i + 1))
+                    .append(str.charAt(i + 2))
+                    .toString();
+
+          switch (substr) {
+              //Starts
+            case "ATG":
+            case "AUG":
+              if (i % num == 0) {
+                substrCounter = 1;
+                System.out.print(ANSI_GREEN);
+              }
+              break;
+              //Stops
+            case "STOP":
+            case "TAA":
+            case "TAG":
+            case "TGA":
+            case "UAA":
+            case "UAG":
+            case "UGA":
+              if (i % num == 0) {
+                substrCounter = 1;
+                System.out.print(ANSI_RED);
+              }
+              break;
+            default:
+          }
+
+          System.out.print(str.charAt(i));
+          if (((i + 1) % num) == 0) System.out.print(" ");
+
+          if (substrCounter == 3) {
+            System.out.print(ANSI_RESET);
+          }
+
+          substrCounter++;
+        }
+      }
+
+    } else {
+      print(str, num);
+    }
+
+    System.out.println(ANSI_RESET);
+}
