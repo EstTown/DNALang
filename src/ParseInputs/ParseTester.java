@@ -112,11 +112,8 @@ public class ParseTester
             ast = astBuilder.visitProg(cst);
             ast.PrintTree();
 
-
             //PrettyPrinter pretty = new PrettyPrinter();
             //ast.Accept(pretty);
-
-
 
             FunctionTableFiller functionTableFiller = new FunctionTableFiller();
             ast.Accept(functionTableFiller);
@@ -125,8 +122,6 @@ public class ParseTester
             SymbolTableFiller symbolTableFiller = new SymbolTableFiller();
             ast.Accept(symbolTableFiller);
 
-
-
             //notify user of errors
             //Collections.reverse(ProgNode.errorList); //errors get added in reverse direction
 			for (Error error : ProgNode.errorList){
@@ -134,12 +129,12 @@ public class ParseTester
 			}
 
             //if(ProgNode.errorList.isEmpty()) {
-
+            /*
                 CodeGenerator gen = new CodeGenerator();
                 ast.Accept(gen);
-                gen.makeFile(false);
-
+                gen.makeFile(true);
             //}
+            */
         }
         catch (IOException parser)
         {

@@ -31,12 +31,12 @@ public class Parser {
 		else{
 			for(String str : args){
 				if (str.equals("-showjava"))
-					this.MakeJavaFile = true;
+					this.cf_makeJavaFile = true;
 			}
 		}
 	}
 
-	private boolean MakeJavaFile = false;
+	private boolean cf_makeJavaFile = false;
 
 	private String[] args;
 
@@ -74,7 +74,7 @@ public class Parser {
 				ast.Accept(codegen);
 
 				//Make Java file
-				codegen.makeFile(this.MakeJavaFile);
+				codegen.makeFile(this.cf_makeJavaFile);
 
 				//Get programcode
 				//File source = codegen.source;
@@ -83,8 +83,7 @@ public class Parser {
 				//Compile and run
 				JavaC out = new JavaC(this.args, internalJavaFile);
 				out.CompileAndRun();
-
-
+				
 			}
 			else{
 				//Print errors to user

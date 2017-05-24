@@ -86,7 +86,7 @@ public class CodeGenerator extends Visitor {
 
 
 	//Putting it all together
-	public void makeFile(boolean MakeJavaFile){
+	public void makeFile(boolean cf_makeJavaFile){
 	    //Step 1
 	    //Assemble parts of java file
 		readCustomFuncionTextFiles();
@@ -108,10 +108,12 @@ public class CodeGenerator extends Visitor {
             formattedSource = new Formatter().formatSource(code);
         } catch (Exception ex) {
             System.out.println("Google's Java formatter done fucked up." + ex.getMessage());
+			System.out.println(code);
         }
 
+
 		//Make file
-		if (MakeJavaFile == true) {
+		if (cf_makeJavaFile == true) {
 			try {
 				File file = new File("out.java");
 				FileWriter fileWriter = new FileWriter(file);
@@ -182,7 +184,13 @@ public class CodeGenerator extends Visitor {
 		infunction = true;
 		//Return type
 		emitToFunction(ps);
-		emitToFunction(declareFunctionNode.content.toString());
+		if (declareFunctionNode.content.toString().equals("dna")
+				|| declareFunctionNode.content.toString().equals("rna")
+				|| declareFunctionNode.content.toString().equals("protein")
+				|| declareFunctionNode.content.toString().equals("codon"))
+			emitToFunction("String");
+		else
+			emitToFunction(declareFunctionNode.content.toString());
 		emitToFunction(" ");
 		//Identifier
 		emitToFunction(declareFunctionNode.functionName);
@@ -619,14 +627,36 @@ public class CodeGenerator extends Visitor {
 	@Override
 	public void Visit(EqualNode equalNode)
 	{
-		equalNode.getLeftmostchild().Accept(this);
-		if (infunction)
-			emitToFunction(" == ");
-		else if (indecl)
-			emitToDecl(" == ");
-		else
-			emitToMain( " == ");
-		equalNode.getLeftmostchild().getRightsibling().Accept(this);
+		if (equalNode.getLeftmostchild().type.equals("dna")
+				|| equalNode.getLeftmostchild().type.equals("rna")
+				|| equalNode.getLeftmostchild().type.equals("codon")
+				|| equalNode.getLeftmostchild().type.equals("protein")) {
+
+			equalNode.getLeftmostchild().Accept(this);
+			if (infunction)
+				emitToFunction(".equals(");
+			else if (indecl)
+				emitToDecl(".equals(");
+			else
+				emitToMain(".equals(");
+			equalNode.getLeftmostchild().getRightsibling().Accept(this);
+			if (infunction)
+				emitToFunction(")");
+			else if (indecl)
+				emitToDecl(")");
+			else
+				emitToMain(")");
+		}
+		else{
+			equalNode.getLeftmostchild().Accept(this);
+			if (infunction)
+				emitToFunction(" == ");
+			else if (indecl)
+				emitToDecl(" == ");
+			else
+				emitToMain(" == ");
+			equalNode.getLeftmostchild().getRightsibling().Accept(this);
+		}
 	}
 
 	@Override
@@ -762,7 +792,7 @@ public class CodeGenerator extends Visitor {
 		else{
 			emitToMain("comp(");
 			visitChildren(complementaryNode);
-			emitToDecl(")");
+			emitToMain(")");
 		}
 	}
 
@@ -910,21 +940,49 @@ public class CodeGenerator extends Visitor {
 			emitToFunction("as(");
 			convertNode.getLeftmostchild().Accept(this);
 			emitToFunction(", ");
-			convertNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToFunction("\"" + convertNode.content + "\"");
+			//convertNode.getLeftmostchild().getRightsibling().Accept(this);
 			emitToFunction(")");
 		}
 		else if (indecl){
 			emitToDecl("as(");
 			convertNode.getLeftmostchild().Accept(this);
 			emitToDecl(", ");
-			convertNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToDecl("\"" + convertNode.content + "\"");
+			//convertNode.getLeftmostchild().getRightsibling().Accept(this);
 			emitToDecl(")");
 		}
 		else{
 			emitToMain("as(");
 			convertNode.getLeftmostchild().Accept(this);
 			emitToMain(", ");
-			convertNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToMain("\"" + convertNode.content + "\"");
+			//convertNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToMain(")");
+		}
+	}
+
+	@Override
+	public void Visit(GetNode getNode){
+		if (infunction){
+			emitToFunction("get(");
+			getNode.getLeftmostchild().Accept(this);
+			emitToFunction(", ");
+			getNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToFunction(")");
+		}
+		else if (indecl){
+			emitToDecl("get(");
+			getNode.getLeftmostchild().Accept(this);
+			emitToDecl(", ");
+			getNode.getLeftmostchild().getRightsibling().Accept(this);
+			emitToDecl(")");
+		}
+		else {
+			emitToMain("get(");
+			getNode.getLeftmostchild().Accept(this);
+			emitToMain(", ");
+			getNode.getLeftmostchild().getRightsibling().Accept(this);
 			emitToMain(")");
 		}
 	}

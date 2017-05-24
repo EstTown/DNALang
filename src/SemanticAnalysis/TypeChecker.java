@@ -229,11 +229,11 @@ public class TypeChecker extends Visitor
 
         String type1 = node.getLeftmostchild().type;
         String type2 = node.getLeftmostchild().getRightsibling().type;
+
         if (!type1.equals(type2))
         {
             ProgNode.errorList.add(new Error("cannot assign " + type2 + " to " + type1, node.line, node.pos));
         }
-
     }
 
     @Override
@@ -554,26 +554,32 @@ public class TypeChecker extends Visitor
     {
         visitChildren(node);
         //need to access symboltable, therefore find DeclareFunctionNode
-        DeclareFunctionNode temp = (DeclareFunctionNode) ProgNode.RetrieveSymbol(node.getLeftmostchild().getRightsibling().content.toString());
-
-        node.type = temp.content.toString();
-
-        //typecheck actual parameters with formal parameters. Formal parameters are in temp (0). Actual parameters in node (2)
-        int childrenToSkip = 2;     //in a callcommandnode, the first two children, will never be the actual parameters, there skip those.
-        if(node.ActualParameters != temp.listOfParameters.size())
+        DeclareFunctionNode temp = (DeclareFunctionNode) ProgNode.RetrieveSymbol(node.spelling);
+		if(temp == null )
         {
-            ProgNode.errorList.add(new Error("Amount of actual parameters does not match amount of formal parameters", node.line, node.pos));
-        }
+			ProgNode.errorList.add(new Error("Function "+"\""+node.spelling+"\""+" has not been declared. Line: " + node.line + " col: " + node.pos));
+		}
         else
         {
-            ArrayList<BaseNode> listOfActualParameters = ProgNode.GetListOfChildren(node);
-            for (int i = 0; i < temp.listOfParameters.size(); i++)
+            node.type = temp.content.toString();
+
+            //typecheck actual parameters with formal parameters. Formal parameters are in temp (0). Actual parameters in node (2)
+            int childrenToSkip = 2;     //in a callcommandnode, the first two children, will never be the actual parameters, there skip those.
+            if(node.ActualParameters != temp.listOfParameters.size())
             {
-                if (!temp.listOfParameters.get(i).GetParameterType().equals(listOfActualParameters.get(i+childrenToSkip).type))
+                ProgNode.errorList.add(new Error("Amount of actual parameters does not match amount of formal parameters", node.line, node.pos));
+            }
+            else
+            {
+                ArrayList<BaseNode> listOfActualParameters = ProgNode.GetListOfChildren(node);
+                for (int i = 0; i < temp.listOfParameters.size(); i++)
                 {
-                    ProgNode.errorList.add(new Error("Type of actual parameter "+
-                            "\""+listOfActualParameters.get(i+childrenToSkip).content.toString()+"\"" + " does not match the type of formal parameter "+
-                            "\""+temp.listOfParameters.get(i).GetParameterName()+"\""));
+                    if (!temp.listOfParameters.get(i).GetParameterType().equals(listOfActualParameters.get(i+childrenToSkip).type))
+                    {
+                        ProgNode.errorList.add(new Error("Type of actual parameter "+
+                                "\""+listOfActualParameters.get(i+childrenToSkip).content.toString()+"\"" + " does not match the type of formal parameter "+
+                                "\""+temp.listOfParameters.get(i).GetParameterName()+"\""));
+                    }
                 }
             }
         }
@@ -586,6 +592,25 @@ public class TypeChecker extends Visitor
 
         String functionReturnType = node.content.toString();
         //find return type. It should be
+
+		//Cannot use reserved functionnames
+		if (node.functionName.equals("rev")
+				|| node.functionName.equals("contains")
+				|| node.functionName.equals("len")
+				|| node.functionName.equals("comp")
+				|| node.functionName.equals("toDna")
+				|| node.functionName.equals("toRna")
+				|| node.functionName.equals("toProtein")
+				|| node.functionName.equals("as")
+				|| node.functionName.equals("count")
+				|| node.functionName.equals("get")
+				|| node.functionName.equals("pos")
+				|| node.functionName.equals("kmpSearch")
+				|| node.functionName.equals("kmpTable")
+				|| node.functionName.equals("remove")
+				)
+			ProgNode.errorList.add(new Error("Cannot use reserved function name \"" + node.functionName + "\", Line: " + node.line));
+
 
         for(BaseNode tempNode1 : ProgNode.GetListOfChildren(node))
         {
@@ -646,5 +671,36 @@ public class TypeChecker extends Visitor
             ProgNode.errorList.add(new Error("Expression cannot be "+types.type1, node.line, node.pos));
         }
         node.type = types.type1;
+    }
+
+    @Override
+    public void Visit(PrintCommandNode node)
+    {
+        visitChildren(node);
+        ArrayList<BaseNode> list = ProgNode.GetListOfChildren(node);
+        /*
+        BaseNode temp1 = node.getLeftmostchild();
+        BaseNode temp2 = node.getLeftmostchild().getRightsibling();
+        BaseNode temp3 = node.getLeftmostchild().getRightsibling().getRightsibling();
+        */
+
+        if(list.size() == 2 || list.size() == 3)
+        {
+            if(list.get(0).type.equals(INTTYPE)||list.get(0).type.equals(BOOLTYPE)||list.get(0).type.equals(CODONTYPE))
+            {
+                ProgNode.errorList.add(new Error("Cannot print an "+"\""+list.get(0).type+"\""+" with an interval",node.line, node.pos));
+            }
+            if(!list.get(1).type.equals(INTTYPE))
+            {
+                ProgNode.errorList.add(new Error("Second parameter in a print must be of type int", node.line, node.pos));
+            }
+        }
+        if(list.size() == 3)
+        {
+            if(!list.get(2).type.equals(BOOLTYPE))
+            {
+                ProgNode.errorList.add(new Error("Third parameter of a print statement must be of type bool", node.line, node.pos));
+            }
+        }
     }
 }

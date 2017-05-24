@@ -175,7 +175,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
 		node.line = ctx.getStart().getLine();
 		node.pos = ctx.getStart().getCharPositionInLine();
 
-        node.AddChild(visit(ctx.left));
+		node.AddChild(visit(ctx.left));
         node.AddChild(visit(ctx.right));
 
         return node;
@@ -381,11 +381,23 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     @Override
     public BaseNode visitPrint(LanguageParser.PrintContext ctx)
     {
-        PrintCommandNode node = new PrintCommandNode();
-        node.AddChild(visit(ctx.left));
-		node.line = ctx.getStart().getLine();
-		node.pos = ctx.getStart().getCharPositionInLine();
+		PrintCommandNode node = new PrintCommandNode();
 
+		//This check allows us to have an empty print-stmt
+		if (ctx.expression(0) != null) {
+			node.AddChild(visit(ctx.expression(0)));
+		}
+		if(ctx.expression(1)!=null)
+		{
+		    node.AddChild(visit(ctx.expression(1)));
+        }
+        if(ctx.expression(2)!=null)
+        {
+            node.AddChild(visit(ctx.expression(2)));
+        }
+
+        node.line = ctx.getStart().getLine();
+        node.pos = ctx.getStart().getCharPositionInLine();
         return node;
     }
 
@@ -452,7 +464,9 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     public BaseNode visitFunccall(LanguageParser.FunccallContext ctx)
     {
         CallCommandNode node = new CallCommandNode();
-        node.AddChild(visit(ctx.identifier()));
+        BaseNode temp = visit(ctx.identifier());
+        node.AddChild(temp);
+        node.spelling = temp.content.toString();
         node.AddChild(visit(ctx.funcname));
 
         int children = ctx.getChildCount();
@@ -478,8 +492,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
     public BaseNode visitComplementary(LanguageParser.ComplementaryContext ctx)
     {
         BaseNode node;
-
-        switch(ctx.op.getType())
+		switch(ctx.op.getType())
         {
             case LanguageLexer.COMPLEMENTARY:
                 node = new ComplementaryNode();

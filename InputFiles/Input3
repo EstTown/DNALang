@@ -1,8 +1,2 @@
-int a = 4;
-
-if (true){
-    int b = 6;
-    Print(b);
-}
-
-int c = 8;
+dna seq = ATG;
+Print(seq);

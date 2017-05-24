@@ -89,7 +89,7 @@ expression
     | left=expression op=(EQEQ|NOTEQ) right=expression      #binaryExp
     | left=expression op=AND  right=expression              #binaryExp
     | left=expression op=OR right=expression                #binaryExp
-    | functioncall                               #functioncallExp
+    | functioncall                                          #functioncallExp
     | first=expression'['second=expression']'                 #getExp
     | identifier                                 #variableExp
     | INT                                        #numberExp
@@ -111,7 +111,9 @@ jump
 	;
 
 printstatement
-	: 'Print' '(' left=expression ')' ';'   #print
+    :'Print' '(' expression? ')' ';'                              #print
+    |'Print' '(' expression',' expression ')' ';'                 #print
+	|'Print' '(' expression',' expression',' expression ')' ';'   #print
 	;
 
 //*******************
@@ -252,7 +254,7 @@ DIV     : '/' ;
 ADD     : '+' ;
 MUL     : '*' ;
 MOD		: '%' ;
-CONTAINS: 'contains:';
+CONTAINS: ' contains ';
 COMPLEMENTARY    : 'comp:';
 REVERSE          : 'rev:';
 LENGTH           : 'len:';
