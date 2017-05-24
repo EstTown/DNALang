@@ -116,7 +116,7 @@
                 // stop codon
                 case "UAA" :
                 case "UAG" :
-                case "UGA" :
+                case "UGA" : protein = protein + "stop";
                     break;
 
                 case "CAU" :
