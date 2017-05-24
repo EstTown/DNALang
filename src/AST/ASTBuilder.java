@@ -384,12 +384,20 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
 		PrintCommandNode node = new PrintCommandNode();
 
 		//This check allows us to have an empty print-stmt
-		if (ctx.left != null) {
-			node.AddChild(visit(ctx.left));
-			node.line = ctx.getStart().getLine();
-			node.pos = ctx.getStart().getCharPositionInLine();
+		if (ctx.expression(0) != null) {
+			node.AddChild(visit(ctx.expression(0)));
 		}
+		if(ctx.expression(1)!=null)
+		{
+		    node.AddChild(visit(ctx.expression(1)));
+        }
+        if(ctx.expression(2)!=null)
+        {
+            node.AddChild(visit(ctx.expression(2)));
+        }
 
+        node.line = ctx.getStart().getLine();
+        node.pos = ctx.getStart().getCharPositionInLine();
         return node;
     }
 

@@ -229,11 +229,11 @@ public class TypeChecker extends Visitor
 
         String type1 = node.getLeftmostchild().type;
         String type2 = node.getLeftmostchild().getRightsibling().type;
+
         if (!type1.equals(type2))
         {
             ProgNode.errorList.add(new Error("cannot assign " + type2 + " to " + type1, node.line, node.pos));
         }
-
     }
 
     @Override
@@ -671,5 +671,36 @@ public class TypeChecker extends Visitor
             ProgNode.errorList.add(new Error("Expression cannot be "+types.type1, node.line, node.pos));
         }
         node.type = types.type1;
+    }
+
+    @Override
+    public void Visit(PrintCommandNode node)
+    {
+        visitChildren(node);
+        ArrayList<BaseNode> list = ProgNode.GetListOfChildren(node);
+        /*
+        BaseNode temp1 = node.getLeftmostchild();
+        BaseNode temp2 = node.getLeftmostchild().getRightsibling();
+        BaseNode temp3 = node.getLeftmostchild().getRightsibling().getRightsibling();
+        */
+
+        if(list.size() == 2 || list.size() == 3)
+        {
+            if(list.get(0).type.equals(INTTYPE)||list.get(0).type.equals(BOOLTYPE)||list.get(0).type.equals(CODONTYPE))
+            {
+                ProgNode.errorList.add(new Error("Cannot print an "+"\""+list.get(0).type+"\""+" with an interval",node.line, node.pos));
+            }
+            if(!list.get(1).type.equals(INTTYPE))
+            {
+                ProgNode.errorList.add(new Error("Second parameter in a print must be of type int", node.line, node.pos));
+            }
+        }
+        if(list.size() == 3)
+        {
+            if(!list.get(2).type.equals(BOOLTYPE))
+            {
+                ProgNode.errorList.add(new Error("Third parameter of a print statement must be of type bool", node.line, node.pos));
+            }
+        }
     }
 }

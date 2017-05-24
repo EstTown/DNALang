@@ -111,7 +111,9 @@ jump
 	;
 
 printstatement
-	: 'Print' '(' left=expression? ')' ';'   #print
+    :'Print' '(' expression? ')' ';'                              #print
+    |'Print' '(' expression',' expression ')' ';'                 #print
+	|'Print' '(' expression',' expression',' expression ')' ';'   #print
 	;
 
 //*******************
