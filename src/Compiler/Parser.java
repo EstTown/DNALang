@@ -51,7 +51,6 @@ public class Parser {
 			LanguageLexer lexer = new LanguageLexer(antlrStream);
 			CommonTokenStream tokens = new CommonTokenStream(lexer);
 			LanguageParser parser = new LanguageParser(tokens);
-			System.out.println("--- " + parser.getNumberOfSyntaxErrors());
 
 			//Building AST
 			ASTBuilder astBuilder = new ASTBuilder();
