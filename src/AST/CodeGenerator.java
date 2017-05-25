@@ -107,7 +107,7 @@ public class CodeGenerator extends Visitor {
         try {
             formattedSource = new Formatter().formatSource(code);
         } catch (Exception ex) {
-            System.out.println("Google's Java formatter done fucked up." + ex.getMessage());
+            System.out.println("Formatter error: " + ex.getMessage());
 			System.out.println(code);
         }
 
@@ -512,11 +512,11 @@ public class CodeGenerator extends Visitor {
 	public void Visit(AminoLiteralNode aminoLiteralNode)
 	{
 		if (infunction)
-			emitToFunction('"' + aminoLiteralNode.content.toString() + '"');
+			emitToFunction(aminoLiteralNode.content.toString());
 		else if (indecl)
-			emitToDecl('"' + aminoLiteralNode.content.toString() + '"');
+			emitToDecl(aminoLiteralNode.content.toString());
 		else
-			emitToMain('"' + aminoLiteralNode.content.toString() + '"');
+			emitToMain(aminoLiteralNode.content.toString());
 	}
 
 	@Override

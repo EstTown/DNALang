@@ -100,6 +100,7 @@ public class ParseTester
             CommonTokenStream tokens = new CommonTokenStream(lexer);
 
             LanguageParser parser = new LanguageParser(tokens);
+
             //stackoverflow guide, uses "parser.compileUnit();", but that one is the same as "parser.prog();" in our case
             //ParseTree tree = parser.prog();
             //TestASTBuilder testAstBuilder = new TestASTBuilder();
