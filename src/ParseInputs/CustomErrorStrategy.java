@@ -9,6 +9,9 @@ public class CustomErrorStrategy extends DefaultErrorStrategy {
 
 	@Override
 	public void sync(Parser recognizer) throws RecognitionException {
+		String ANSI_RED = "\u001B[31m";
+		String ANSI_RESET = "\u001B[0m";
+		System.out.print(ANSI_RED);
 		ATNState s = (ATNState)((ParserATNSimulator)recognizer.getInterpreter()).atn.states.get(recognizer.getState());
 		if(!this.inErrorRecoveryMode(recognizer)) {
 			TokenStream tokens = recognizer.getInputStream();
@@ -36,6 +39,7 @@ public class CustomErrorStrategy extends DefaultErrorStrategy {
 					case 8:
 					default:
 				}
+				System.out.print(ANSI_RESET);
 				System.exit(1);
 			}
 		}
