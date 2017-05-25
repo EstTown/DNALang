@@ -92,7 +92,6 @@ public class ParseTester
             CommonTokenStream tokens = new CommonTokenStream(lexer);
 
             LanguageParser parser = new LanguageParser(tokens);
-			parser.setErrorHandler(new CustomErrorStrategy());
 
 			//System.out.println("++ " + parser.;
 			//stackoverflow guide, uses "parser.compileUnit();", but that one is the same as "parser.prog();" in our case
