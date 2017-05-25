@@ -1,5 +1,3 @@
-dna seq; = ATTGTCTTGCAG;
-dna complSeq = comp:(seq);
+dna seq = ATTGTCTTGCAG;
 
-Print(complSeq, 3, true);
 Print(seq as rna, 3, true);
