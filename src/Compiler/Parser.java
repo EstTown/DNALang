@@ -7,6 +7,7 @@ import ASTNodes.Error;
 import ASTNodes.ProgNode;
 import Generated.LanguageLexer;
 import Generated.LanguageParser;
+import ParseInputs.CustomErrorStrategy;
 import SemanticAnalysis.FunctionTableFiller;
 import SemanticAnalysis.SymbolTableFiller;
 import com.sun.corba.se.impl.presentation.rmi.ExceptionHandler;
@@ -51,6 +52,7 @@ public class Parser {
 			LanguageLexer lexer = new LanguageLexer(antlrStream);
 			CommonTokenStream tokens = new CommonTokenStream(lexer);
 			LanguageParser parser = new LanguageParser(tokens);
+			parser.setErrorHandler(new CustomErrorStrategy());
 
 			//Building AST
 			ASTBuilder astBuilder = new ASTBuilder();
@@ -83,7 +85,7 @@ public class Parser {
 				//Compile and run
 				JavaC out = new JavaC(this.args, internalJavaFile);
 				out.CompileAndRun();
-				
+
 			}
 			else{
 				//Print errors to user

@@ -72,7 +72,7 @@ public class CodeGenerator extends Visitor {
 		}
 		*/
 
-		String[] names = {"As", "Comp", "Contains", "Count", "Get", "Len", "Pos", "Remove", "Rev"};
+		String[] names = {"As", "Comp", "Contains", "Count", "Get", "Len", "Pos", "Remove", "Rev", "CustomPrint"};
 
 		for (String name : names){
 			InputStream x = getClass().getResourceAsStream("/CustomFunctions/" + name);
@@ -107,7 +107,7 @@ public class CodeGenerator extends Visitor {
         try {
             formattedSource = new Formatter().formatSource(code);
         } catch (Exception ex) {
-            System.out.println("Google's Java formatter done fucked up." + ex.getMessage());
+            System.out.println("Formatter error: " + ex.getMessage());
 			System.out.println(code);
         }
 
@@ -276,7 +276,11 @@ public class CodeGenerator extends Visitor {
 	@Override
 	public void Visit(AssignCommandNode assignCommandNode)
 	{
-		//Identifier and equal symbol
+		//We cant put this in the class (outter), needs to be in main
+		if (assignCommandNode.getParent() != null &&
+				assignCommandNode.getParent().getClass().getSimpleName().equals("ProgNode"))
+			indecl = false;
+
 		if (!assignCommandNode.getParent().getClass().getSimpleName().equals("DeclareVarNode"))
 			assignCommandNode.getLeftmostchild().Accept(this);
 		if (infunction)
@@ -401,17 +405,81 @@ public class CodeGenerator extends Visitor {
 	{
 		indecl = false;
 
-		if (infunction)
-			emitToFunction("System.out.println(");
-		else
-			emitToMain("System.out.println(");
+		int children = ProgNode.GetListOfChildren(printCommandNode).size();
+		//System.out.println(children);
+		if (children < 2) {
+			if (infunction)
+				emitToFunction("print(");
+			else
+				emitToMain("print(");
 
-		visitChildren(printCommandNode);
+			visitChildren(printCommandNode);
 
-		if (infunction)
-			emitToFunction(");");
-		else
-			emitToMain(");");
+			if (infunction)
+				emitToFunction(");");
+			else
+				emitToMain(");");
+		}
+		else if (children == 2){
+			if (infunction)
+				emitToFunction("print(");
+			else
+				emitToMain("print(");
+
+			//Visit first
+			printCommandNode.getLeftmostchild().Accept(this);
+
+			if (infunction)
+				emitToFunction(", ");
+			else
+				emitToMain(", ");
+
+			//Visit second
+			printCommandNode.getLeftmostchild().getRightsibling().Accept(this);
+
+			if (infunction)
+				emitToFunction(");");
+			else
+				emitToMain(");");
+
+		}
+		else if (children == 3){
+			if (infunction)
+				emitToFunction("print(");
+			else
+				emitToMain("print(");
+
+			//Visit first
+			printCommandNode.getLeftmostchild().Accept(this);
+
+			if (infunction)
+				emitToFunction(", ");
+			else
+				emitToMain(", ");
+
+			//Visit second
+			printCommandNode.getLeftmostchild().getRightsibling().Accept(this);
+
+			if (infunction)
+				emitToFunction(", ");
+			else
+				emitToMain(", ");
+
+			//Visit third
+			printCommandNode.getLeftmostchild().getRightsibling().getRightsibling().Accept(this);
+
+			//Print type
+			if (infunction)
+				emitToFunction(", \"" + printCommandNode.getLeftmostchild().type + "\"");
+			else
+				emitToMain(", \"" + printCommandNode.getLeftmostchild().type + "\"");
+
+			if (infunction)
+				emitToFunction(");");
+			else
+				emitToMain(");");
+
+		}
 	}
 
 	@Override
@@ -444,11 +512,11 @@ public class CodeGenerator extends Visitor {
 	public void Visit(AminoLiteralNode aminoLiteralNode)
 	{
 		if (infunction)
-			emitToFunction('"' + aminoLiteralNode.content.toString() + '"');
+			emitToFunction(aminoLiteralNode.content.toString());
 		else if (indecl)
-			emitToDecl('"' + aminoLiteralNode.content.toString() + '"');
+			emitToDecl(aminoLiteralNode.content.toString());
 		else
-			emitToMain('"' + aminoLiteralNode.content.toString() + '"');
+			emitToMain(aminoLiteralNode.content.toString());
 	}
 
 	@Override

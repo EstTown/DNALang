@@ -1,11 +1,11 @@
 grammar Language;
 
 prog
-	: declarations* functions* statements*
+	: declarations* functions* statements* EOF
 	;
 
 declarations
-	: declaration ';'
+	: declaration SEMI
 	;
 
 declaration
@@ -14,13 +14,13 @@ declaration
 	;
 
 arraytype
-	: TYPE '['expression']'
+	: TYPE LBRACK expression RBRACK
 	;
 
 //maybe add a #
 identifier
 	: Word
-	//| Word
+	| Word
 	;
 
 statements
@@ -41,9 +41,9 @@ block
 */
 
 statement
-	: assignment ';'        #assign
+	: assignment SEMI        #assign
 	| compoundstatement     #compoundstmt
-	| expression ';'        #expr
+	| expression SEMI        #expr
 	| printstatement        #printstmt
 	;
 
@@ -54,13 +54,13 @@ compoundstatement
 	;
 
 selection
-	: 'if' '(' predicate=expression ')'  '{' block '}'                                          #if
-	| 'if' '(' predicate=expression ')'  '{' block '}' 'else' '{' block '}'                     #ifelse
+	: 'if' LPAREN predicate=expression RPAREN  LCURLY block RCURLY                                          #if
+	| 'if' LPAREN predicate=expression RPAREN  LCURLY block RCURLY 'else' LCURLY block RCURLY                     #ifelse
 	;
 
 iteration
-	: 'while' '(' predicate=expression ')' '{' block '}'                                                    #while
-	| 'for' '(' iterator=assignment ';' predicate=expression ';' increment=assignment ')' '{' block '}'     #for
+	: 'while' LPAREN predicate=expression RPAREN LCURLY block RCURLY                                                    #while
+	| 'for' LPAREN iterator=assignment SEMI predicate=expression SEMI increment=assignment RPAREN LCURLY block RCURLY     #for
 	;
 
 functions
@@ -69,7 +69,7 @@ functions
 
 functiondeclaration
 	:
-	TYPE funcname=identifier '(' declaration (',' declaration)* ')' '{' block '}'
+	TYPE funcname=identifier LPAREN declaration (COMMA declaration)* RPAREN LCURLY block LCURLY
 	//| 'void' funcname=identifier '(' declaration (',' declaration)* ')' '{' block '}'
 	;
 
@@ -90,7 +90,7 @@ expression
     | left=expression op=AND  right=expression              #binaryExp
     | left=expression op=OR right=expression                #binaryExp
     | functioncall                                          #functioncallExp
-    | first=expression'['second=expression']'               #getExp
+    | first=expression LBRACK second=expression RBRACK                #getExp
     | identifier                                 #variableExp
     | INT                                        #numberExp
     | BOOL                                       #boolExp
@@ -101,19 +101,19 @@ expression
     ;
 
 functioncall
-	: op=(COMPLEMENTARY|REVERSE|LENGTH)  '(' expression ')'        #complementary
-	|funcname=identifier '(' (expression) (',' (expression))* ')'  #funccall
+	: op=(COMPLEMENTARY|REVERSE|LENGTH)  LPAREN expression RPAREN        #complementary
+	|funcname=identifier LPAREN (expression) (COMMA (expression))* RPAREN  #funccall
 	;
 
 jump
-	: 'break' ';'                   #break
-	| 'return' expression ';'       #return
+	: 'break' SEMI                   #break
+	| 'return' expression SEMI      #return
 	;
 
 printstatement
-    :'Print' '(' expression? ')' ';'                              #print
-    |'Print' '(' expression',' expression ')' ';'                 #print
-	|'Print' '(' expression',' expression',' expression ')' ';'   #print
+    :'Print' LPAREN expression? RPAREN SEMI                              #print
+    |'Print' LPAREN expression COMMA expression RPAREN SEMI                #print
+	|'Print' LPAREN expression COMMA expression COMMA expression RPAREN SEMI   #print
 	;
 
 //*******************

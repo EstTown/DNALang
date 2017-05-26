@@ -1,27 +1,19 @@
 package ParseInputs;
 import AST.*;
 import ASTNodes.BaseNode;
-import ASTNodes.DeclareVarNodes.DeclareVarNode;
 import ASTNodes.Error;
 import ASTNodes.ProgNode;
-import ASTNodes.TerminalNodes.IdentifierNode;
-import ASTNodes.TerminalNodes.IntegerLiteralNode;
 import Generated.*;
 
 import java.io.*;
 
 import SemanticAnalysis.FunctionTableFiller;
 import SemanticAnalysis.SymbolTableFiller;
-import SemanticAnalysis.TypeChecker;
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import Generated.*;
 
 public class ParseTester
 {
@@ -100,7 +92,9 @@ public class ParseTester
             CommonTokenStream tokens = new CommonTokenStream(lexer);
 
             LanguageParser parser = new LanguageParser(tokens);
-            //stackoverflow guide, uses "parser.compileUnit();", but that one is the same as "parser.prog();" in our case
+
+			//System.out.println("++ " + parser.;
+			//stackoverflow guide, uses "parser.compileUnit();", but that one is the same as "parser.prog();" in our case
             //ParseTree tree = parser.prog();
             //TestASTBuilder testAstBuilder = new TestASTBuilder();
             //tree.accept(testAstBuilder);
@@ -129,12 +123,12 @@ public class ParseTester
 			}
 
             //if(ProgNode.errorList.isEmpty()) {
-            /*
+
                 CodeGenerator gen = new CodeGenerator();
                 ast.Accept(gen);
                 gen.makeFile(true);
             //}
-            */
+
         }
         catch (IOException parser)
         {

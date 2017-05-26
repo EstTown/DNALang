@@ -116,7 +116,7 @@
                 // stop codon
                 case "UAA" :
                 case "UAG" :
-                case "UGA" :
+                case "UGA" : protein = protein + "stop";
                     break;
 
                 case "CAU" :
@@ -178,8 +178,16 @@
         return protein;
     }
 
+    public static String removeSpecialChars(String str){
+        str = str.replace("(", "");
+        str = str.replace(",", "");
+        str = str.replace(")", "");
+        return str;
+    }
+
     public static  String as(String str, String type)
     {
+        str = removeSpecialChars(str);
         if (type.equals("dna")) {
             return toDna(str);
         }

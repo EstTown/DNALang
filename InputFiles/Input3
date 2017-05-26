@@ -1,2 +1,3 @@
-dna seq = ATG;
-Print(seq);
+dna seq = ATTGTCTTGCAG;
+
+Print(seq as rna, 3, true);

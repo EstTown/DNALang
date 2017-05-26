@@ -37,23 +37,29 @@ public class JavaC {
 		Iterable<? extends JavaFileObject> compilationUnits = Arrays.asList(this.internalFile);
 		JavaCompiler.CompilationTask a = compiler.getTask(null, null, diagnostics, null, null, compilationUnits);
 		a.call();
-		//Report if shit hit the fan
-		for (Diagnostic diagnostic : diagnostics.getDiagnostics()) {
-			System.out.println(diagnostic.getCode());
-			System.out.println(diagnostic.getKind());
-			System.out.println(diagnostic.getPosition());
-			System.out.println(diagnostic.getStartPosition());
-			System.out.println(diagnostic.getEndPosition());
-			System.out.println(diagnostic.getSource());
-			System.out.println(diagnostic.getMessage(null));
-		}
 
-		//Run the generated out.class file
-		try {
-			//executeProcessAndShow("java -cp src/Output out");
-			executeProcessAndShow("java out");
-		}catch (IOException ex){
-			System.out.println("Error" + ex.getMessage());
+		//Run the generated out.class file, if theres no errors from java compiler
+		if (diagnostics.getDiagnostics().isEmpty()) {
+			try {
+				//executeProcessAndShow("java -cp src/Output out");
+				executeProcessAndShow("java out");
+			} catch (IOException ex) {
+				System.out.println("Error" + ex.getMessage());
+			}
+		}
+		else{
+			//Report java-compiler errors
+			System.out.println("Java compiler encountered error(s):");
+			for (Diagnostic diagnostic : diagnostics.getDiagnostics()) {
+				//System.out.println(diagnostic.getCode());
+				//System.out.println(diagnostic.getKind());
+				//System.out.println(diagnostic.getPosition());
+				//System.out.println(diagnostic.getStartPosition());
+				//System.out.println(diagnostic.getEndPosition());
+				//ystem.out.println(diagnostic.getSource());
+				System.out.print(diagnostic.getMessage(null));
+				System.out.print(" at: " + diagnostic.getPosition() + "\n");
+			}
 		}
 
 	}
