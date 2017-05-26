@@ -373,7 +373,6 @@ public class TypeChecker extends Visitor
     @Override
     public void Visit(ConvertNode node) {
         visitChildren(node);
-
         //get type of what is to be converted
         String type1 = node.getLeftmostchild().type;
         //get what identifier or literal has to be converted to
@@ -386,7 +385,7 @@ public class TypeChecker extends Visitor
         }
         else if(type1.equals(type2))
         {
-            //should give warning, because this would make no sense
+            node.type = type1;
         }
         else if(type1.equals(DNATYPE) && (type2.equals(RNATYPE) || type2.equals(PROTEINTYPE)))
         {
