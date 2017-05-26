@@ -625,18 +625,6 @@ public class TypeChecker extends Visitor
                 {
                     ProgNode.errorList.add(new Error("Function must end with a return statement", node.line,node.pos));
                 }
-                //from here on, should/could be done in ReturnCommandNode
-                /*
-                else
-                {
-                    String returnType = list.get(list.size()-1).getLeftmostchild().type;
-                    if(!returnType.equals(node.content.toString()))
-                    {
-                        ProgNode.errorList.add(new Error("Function "+node.functionName+
-                                " must return a value of type "+"\""+node.content.toString()+"\"",node.line,node.pos));
-                    }
-                }
-                */
             }
         }
     }
@@ -678,11 +666,6 @@ public class TypeChecker extends Visitor
     {
         visitChildren(node);
         ArrayList<BaseNode> list = ProgNode.GetListOfChildren(node);
-        /*
-        BaseNode temp1 = node.getLeftmostchild();
-        BaseNode temp2 = node.getLeftmostchild().getRightsibling();
-        BaseNode temp3 = node.getLeftmostchild().getRightsibling().getRightsibling();
-        */
 
         if(list.size() == 2 || list.size() == 3)
         {

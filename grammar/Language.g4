@@ -20,7 +20,6 @@ arraytype
 //maybe add a #
 identifier
 	: Word
-	| Word
 	;
 
 statements
@@ -41,9 +40,9 @@ block
 */
 
 statement
-	: assignment SEMI        #assign
+	: assignment SEMI       #assign
 	| compoundstatement     #compoundstmt
-	| expression SEMI        #expr
+	| expression SEMI       #expr
 	| printstatement        #printstmt
 	;
 
@@ -54,12 +53,12 @@ compoundstatement
 	;
 
 selection
-	: 'if' LPAREN predicate=expression RPAREN  LCURLY block RCURLY                                          #if
+	: 'if' LPAREN predicate=expression RPAREN  LCURLY block RCURLY                                                #if
 	| 'if' LPAREN predicate=expression RPAREN  LCURLY block RCURLY 'else' LCURLY block RCURLY                     #ifelse
 	;
 
 iteration
-	: 'while' LPAREN predicate=expression RPAREN LCURLY block RCURLY                                                    #while
+	: 'while' LPAREN predicate=expression RPAREN LCURLY block RCURLY                                                      #while
 	| 'for' LPAREN iterator=assignment SEMI predicate=expression SEMI increment=assignment RPAREN LCURLY block RCURLY     #for
 	;
 
@@ -69,7 +68,7 @@ functions
 
 functiondeclaration
 	:
-	TYPE funcname=identifier LPAREN declaration (COMMA declaration)* RPAREN LCURLY block LCURLY
+	TYPE funcname=identifier LPAREN declaration (COMMA declaration)* RPAREN LCURLY block RCURLY
 	//| 'void' funcname=identifier '(' declaration (',' declaration)* ')' '{' block '}'
 	;
 
@@ -101,18 +100,18 @@ expression
     ;
 
 functioncall
-	: op=(COMPLEMENTARY|REVERSE|LENGTH)  LPAREN expression RPAREN        #complementary
+	: op=(COMPLEMENTARY|REVERSE|LENGTH)  LPAREN expression RPAREN          #complementary
 	|funcname=identifier LPAREN (expression) (COMMA (expression))* RPAREN  #funccall
 	;
 
 jump
 	: 'break' SEMI                   #break
-	| 'return' expression SEMI      #return
+	| 'return' expression SEMI       #return
 	;
 
 printstatement
-    :'Print' LPAREN expression? RPAREN SEMI                              #print
-    |'Print' LPAREN expression COMMA expression RPAREN SEMI                #print
+    :'Print' LPAREN expression? RPAREN SEMI                                    #print
+    |'Print' LPAREN expression COMMA expression RPAREN SEMI                    #print
 	|'Print' LPAREN expression COMMA expression COMMA expression RPAREN SEMI   #print
 	;
 

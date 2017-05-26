@@ -122,12 +122,13 @@ public class ParseTester
 				System.out.println(error.getMessage());
 			}
 
-            //if(ProgNode.errorList.isEmpty()) {
-
+			/*
+            if(ProgNode.errorList.isEmpty()) {
                 CodeGenerator gen = new CodeGenerator();
                 ast.Accept(gen);
                 gen.makeFile(true);
-            //}
+            }
+            */
 
         }
         catch (IOException parser)

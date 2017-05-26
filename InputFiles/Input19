@@ -1,3 +1,18 @@
 int a = 5;
+bool b = true;
+int c = 27;
+
+int add(int parameter1, int parameter2) {return parameter1+parameter2; }
+bool something(bool var1, bool var2, bool parameter1){return b;}
+if(b){
+int b = 5;
+while(a < c) {
+int ger;
+int many = ger;
+
+}
+}
+
+else{
 Print(a);
-int b;
+}

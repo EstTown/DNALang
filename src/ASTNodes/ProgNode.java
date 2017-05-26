@@ -72,7 +72,6 @@ public class ProgNode extends BaseNode
         else{return false;}
     }
 
-
     public static ArrayList<BaseNode> GetListOfChildren(BaseNode node) {
 		ArrayList<BaseNode> list = new ArrayList<BaseNode>();
 
@@ -112,7 +111,6 @@ public class ProgNode extends BaseNode
 		return null;
 	}
 
-
     //this method builds the symbol table
     public static void ProcessNode(BaseNode node)
 	{
@@ -125,6 +123,7 @@ public class ProgNode extends BaseNode
 					ProgNode.OpenScope();
 				}
                 break;
+            /*
 			case "DeclareVarNode":
 				if(!ProgNode.DeclaredLocally(node.spelling))
                 {
@@ -135,6 +134,33 @@ public class ProgNode extends BaseNode
                     errorList.add(new Error("Identifier \""+node.spelling+"\""+" already used", node.line, node.pos));
                 }
 				break;
+			*/
+
+            case "DeclareVarNode":
+                BaseNode temp4 = ProgNode.RetrieveSymbol(node.spelling);
+                if(ProgNode.DeclaredLocally(node.spelling))
+                {
+                    ProgNode.errorList.add(new Error("Identifier \""+node.spelling+"\""+" already used",
+                            node.line, node.pos));
+                }
+                else if(temp4 != null)
+                {
+                    //this fixes java name shadowing
+                    BaseNode parent = temp4.getParent();
+                    if(!parent.getClass().getSimpleName().equals("ProgNode"))
+                    {
+                        errorList.add(new Error("Identifier "+"\""+node.spelling+"\"" +"is already declared in outer, " +
+                                "non-global, scope", node.line, node.pos));
+                    }
+                    else
+                    {
+                        EnterSymbol(node.spelling.toString(), node);
+                    }
+                }
+                else
+                {
+                    ProgNode.EnterSymbol(node.spelling.toString(), node);
+                }
 			case "DeclareArrayNode":
 				break;
 			case "IdentifierNode":
