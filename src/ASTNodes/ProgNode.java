@@ -125,7 +125,6 @@ public class ProgNode extends BaseNode
 					ProgNode.OpenScope();
 				}
                 break;
-			//insert identifiers with their type also
 			case "DeclareVarNode":
 				if(!ProgNode.DeclaredLocally(node.spelling))
                 {
@@ -146,7 +145,6 @@ public class ProgNode extends BaseNode
 						errorList.add(new Error("Undeclared symbol..\""+node.content+"\"", node.line, node.pos));
                 }
 
-
                 break;
 			case "DeclareFunctionNode":
 				ProgNode.OpenScope();
@@ -158,6 +156,7 @@ public class ProgNode extends BaseNode
             default:
                 break;
 		}
+
 		for (BaseNode item : GetListOfChildren(node))
 		{
 			ProgNode.ProcessNode(item);

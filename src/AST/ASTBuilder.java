@@ -288,7 +288,7 @@ public class ASTBuilder extends LanguageBaseVisitor<BaseNode>
         node.pos = ctx.getStart().getCharPositionInLine();
 
         node.spelling = visit(ctx.left).content.toString();
-        node.AddChild(visit(ctx.left)); //this caused some sort of problem, don't remember, but it does have to be here
+        node.AddChild(visit(ctx.left));
         node.AddChild(visit(ctx.right));
 
         return node;

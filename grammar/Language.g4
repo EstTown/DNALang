@@ -20,7 +20,7 @@ arraytype
 //maybe add a #
 identifier
 	: Word
-	| Word
+	//| Word
 	;
 
 statements
@@ -90,7 +90,7 @@ expression
     | left=expression op=AND  right=expression              #binaryExp
     | left=expression op=OR right=expression                #binaryExp
     | functioncall                                          #functioncallExp
-    | first=expression'['second=expression']'                 #getExp
+    | first=expression'['second=expression']'               #getExp
     | identifier                                 #variableExp
     | INT                                        #numberExp
     | BOOL                                       #boolExp
