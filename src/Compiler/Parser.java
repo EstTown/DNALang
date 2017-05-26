@@ -52,14 +52,18 @@ public class Parser {
 			LanguageLexer lexer = new LanguageLexer(antlrStream);
 			CommonTokenStream tokens = new CommonTokenStream(lexer);
 			LanguageParser parser = new LanguageParser(tokens);
-			parser.setErrorHandler(new CustomErrorStrategy());
 
 			//Building AST
 			ASTBuilder astBuilder = new ASTBuilder();
 			LanguageParser.ProgContext cst = parser.prog();
+
+			if (parser.getNumberOfSyntaxErrors() != 0)
+				System.exit(1);
+
 			BaseNode ast;
 			ast = astBuilder.visitProg(cst);
 			//ast.PrintTree();  		-- used for debugging
+
 
 			//Traverse the AST, filling the symboltable with function-declarations
 			FunctionTableFiller functionTableFiller = new FunctionTableFiller();
