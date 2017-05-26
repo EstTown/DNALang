@@ -69,7 +69,7 @@ functions
 
 functiondeclaration
 	:
-	TYPE funcname=identifier LPAREN declaration (COMMA declaration)* RPAREN LCURLY block LCURLY
+	TYPE funcname=identifier LPAREN declaration (COMMA declaration)* RPAREN LCURLY block RCURLY
 	//| 'void' funcname=identifier '(' declaration (',' declaration)* ')' '{' block '}'
 	;
 

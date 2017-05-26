@@ -1182,13 +1182,11 @@ public class LanguageParser extends Parser {
 			return getRuleContext(DeclarationContext.class,i);
 		}
 		public TerminalNode RPAREN() { return getToken(LanguageParser.RPAREN, 0); }
-		public List<TerminalNode> LCURLY() { return getTokens(LanguageParser.LCURLY); }
-		public TerminalNode LCURLY(int i) {
-			return getToken(LanguageParser.LCURLY, i);
-		}
+		public TerminalNode LCURLY() { return getToken(LanguageParser.LCURLY, 0); }
 		public BlockContext block() {
 			return getRuleContext(BlockContext.class,0);
 		}
+		public TerminalNode RCURLY() { return getToken(LanguageParser.RCURLY, 0); }
 		public IdentifierContext identifier() {
 			return getRuleContext(IdentifierContext.class,0);
 		}
@@ -1253,7 +1251,7 @@ public class LanguageParser extends Parser {
 			setState(166);
 			block();
 			setState(167);
-			match(LCURLY);
+			match(RCURLY);
 			}
 		}
 		catch (RecognitionException re) {
@@ -2417,7 +2415,7 @@ public class LanguageParser extends Parser {
 		"\u00a0\7 \2\2\u00a0\u00a2\5\6\4\2\u00a1\u009f\3\2\2\2\u00a2\u00a5\3\2"+
 		"\2\2\u00a3\u00a1\3\2\2\2\u00a3\u00a4\3\2\2\2\u00a4\u00a6\3\2\2\2\u00a5"+
 		"\u00a3\3\2\2\2\u00a6\u00a7\7\36\2\2\u00a7\u00a8\7\32\2\2\u00a8\u00a9\5"+
-		"\16\b\2\u00a9\u00aa\7\32\2\2\u00aa\33\3\2\2\2\u00ab\u00ac\5\n\6\2\u00ac"+
+		"\16\b\2\u00a9\u00aa\7\35\2\2\u00aa\33\3\2\2\2\u00ab\u00ac\5\n\6\2\u00ac"+
 		"\u00ad\7+\2\2\u00ad\u00ae\5\36\20\2\u00ae\35\3\2\2\2\u00af\u00b0\b\20"+
 		"\1\2\u00b0\u00b1\7\33\2\2\u00b1\u00b2\5\36\20\2\u00b2\u00b3\7\36\2\2\u00b3"+
 		"\u00cb\3\2\2\2\u00b4\u00b5\7(\2\2\u00b5\u00cb\5\36\20\24\u00b6\u00b7\t"+
