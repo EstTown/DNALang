@@ -10,7 +10,7 @@ declarations
 
 declaration
 	: (type=TYPE | arrtype=arraytype) assignment  #dclAssign
-	| (type=TYPE | arrtype=arraytype) identifier  #declareVariable
+	//| (type=TYPE | arrtype=arraytype) identifier  #declareVariable
 	;
 
 arraytype

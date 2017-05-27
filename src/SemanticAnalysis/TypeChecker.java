@@ -55,6 +55,12 @@ public class TypeChecker extends Visitor
             }
             return false;
         }
+        private void SwapTypes()
+        {
+            String typeTemp = this.type1;
+            this.type1 = this.type2;
+            this.type2 = typeTemp;
+        }
     }
     private void DoSimpleBoolCheck(ExpressionNode node, String operation)
     {
@@ -108,10 +114,8 @@ public class TypeChecker extends Visitor
             }
     }
 
-    private void DoComplexCheck(ExpressionNode node, String operation, String nodetype)
+    private void DoComplexCheck(ExpressionNode node, String operation, String nodetype, BinaryExpressionTypes types)
     {
-        BinaryExpressionTypes types = new BinaryExpressionTypes(node);
-
         if(types.type1.equals(types.type2) && !types.type1.equals(CODONTYPE) &&
                 !types.type1.equals(INTTYPE) && !types.type1.equals(BOOLTYPE))
         {
@@ -280,7 +284,6 @@ public class TypeChecker extends Visitor
         visitChildren(node);
         BinaryExpressionTypes types = new BinaryExpressionTypes(node);
 
-        //extended with special cases, done with DoComplexCheck
         if(!types.TypesAreTheSame())
         {
             ProgNode.errorList.add(new Error("Cannot compare "+types.type1+" and "+types.type2));
@@ -453,19 +456,25 @@ public class TypeChecker extends Visitor
     @Override
     public void Visit(PositionNode node) {
         visitChildren(node);
-        DoComplexCheck(node, "find position of ", INTTYPE);
+        BinaryExpressionTypes types = new BinaryExpressionTypes(node);
+        DoComplexCheck(node, "find position of ", INTTYPE, types);
+
+
     }
 
     @Override
     public void Visit(CountNode node) {
         visitChildren(node);
-        DoComplexCheck(node, "count ", INTTYPE);
+        BinaryExpressionTypes types = new BinaryExpressionTypes(node);
+        DoComplexCheck(node, "count ", INTTYPE, types);
     }
 
     @Override
     public void Visit(ContainsNode node) {
         visitChildren(node);
-        DoComplexCheck(node, "find ", BOOLTYPE);
+        BinaryExpressionTypes types = new BinaryExpressionTypes(node);
+        types.SwapTypes();
+        DoComplexCheck(node, "find ", BOOLTYPE, types);
     }
 
     @Override
@@ -473,7 +482,7 @@ public class TypeChecker extends Visitor
         visitChildren(node);
         BinaryExpressionTypes types = new BinaryExpressionTypes(node);
         //resulting type will always be the secondary type, which is the parameter, from which we want to remove something
-        DoComplexCheck(node, "remove ", types.type2);
+        DoComplexCheck(node, "remove ", types.type2, types);
     }
 
     @Override
