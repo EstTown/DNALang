@@ -124,7 +124,7 @@
                     break;
 
                 case "CAA" :
-                case "CAG" : protein = protein + "E";
+                case "CAG" : protein = protein + "Q";
                     break;
 
                 case "AAU" :
